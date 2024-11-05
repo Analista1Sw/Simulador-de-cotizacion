@@ -1,0 +1,84 @@
+<div class="flex justify-content-center flex-wrap" style="min-height: 20%">
+  <p-toast [position]="'bottom-right'"/>
+  <div class="surface-card p-4 shadow-2 border-round w-full lg:w-6 mt-1">
+    <div class="text-center mb-5">
+      <img [src]="'images/LOGO-MAX.png'" width="150" height="100" />
+      <div class="text-900 text-3xl font-medium mb-3"></div>
+      <span class="text-600 font-italic line-height-3"
+        >Ingresa el producto a crear</span
+      >
+    </div>
+
+    <div>
+      <form [formGroup]="fomr2()" (ngSubmit)="addProduct()">
+        <label class="block text-900 font-medium mb-2"
+          >Descripción del producto</label
+        >
+        <input
+          type="text"
+          placeholder="descripción"
+          pInputText
+          class="w-full mb-3"
+          formControlName="description"
+        />
+
+        <label class="block text-900 font-medium mb-2">Precio</label>
+        <input
+          formControlName="precio"
+          type="number"
+          placeholder="$"
+          pInputText
+          class="w-full mb-3"
+        />
+
+        <label class="block text-900 font-medium mb-2">Unidad de Medida</label>
+        <input
+          formControlName="unidadmedida"
+          type="text"
+          placeholder="N/A, M2, ML, UND"
+          pInputText
+          class="w-full mb-3"
+        />
+
+        <label class="block text-900 font-medium mb-2"> Medida</label>
+        <input
+          formControlName="medida"
+          pInputText
+          placeholder="Medida en centimetros 60 | 60x60"
+          pInputText
+          class="w-full mb-3"
+          customCurrent
+        />
+
+        <label class="block text-900 font-medium mb-2">Categoria</label>
+
+        <select
+          formControlName="idCategoria"
+          class="w-full h-2rem border-round mb-5 opacity-40 border-gray-400"
+          placeholder="Selecciona una categoria"
+        >
+          @for (categoria of categorias; track $index) {
+          <option value="{{ categoria.id }}" class="w-full">
+            {{ categoria.nombre }}
+          </option>
+          }
+        </select>
+        <button
+          type="submit"
+          pButton
+          pRipple
+          label="Agregar"
+          icon="pi pi-plus"
+          class="w-full"
+          [disabled]="this.fomr2().invalid"
+
+        ></button>
+      </form>
+    </div>
+  </div>
+  <!-- {{ categorias | json }} -->
+
+  <!-- <pre>{{ fomr2().value | json }}</pre> -->
+
+
+</div>

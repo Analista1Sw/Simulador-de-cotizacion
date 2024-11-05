@@ -1,0 +1,46 @@
+.centered-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 20px;
+  }
+  
+  .p-card {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+  }
+  
+  .card-header {
+    background-color: #a7482e;
+    opacity: 80%;
+    color: white;
+    padding: 1.5rem;
+    text-align: center;
+    border-radius: 12px 12px 0 0;
+  }
+  
+  .custom-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    width: 100%;
+  }
+
+  .button-active {
+    border: 2px solid #555B04; /* Color de borde */
+    color: #555B04; /* Color de texto */
+    background-color: transparent; /* Fondo transparente */
+  }
+  
+  .button-disabled {
+    border: 2px solid transparent; /* Sin borde cuando está deshabilitado */
+    color: transparent; /* Sin color de texto cuando está deshabilitado */
+    background-color: transparent; /* Fondo transparente */
+  }
+  
+  .button-active:hover {
+    background-color: #555B04; /* Fondo verde al pasar el mouse */
+    color: #f5f5dc; /* Texto crema al pasar el mouse */
+  }
+  
+  

@@ -1,0 +1,71 @@
+<div
+  class="flex justify-content-center align-items-center"
+  style="height: 100vh"
+>
+  <div
+    class="card flex flex-column justify-content-center align-items-center"
+    style="
+      width: 300px;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    "
+  >
+    <h2 class="text-center mb-3">Gestión de Proyectos</h2>
+
+    <p class="text-center mb-4">
+      Aquí puedes crear nuevos apartamentos y proyectos para facilitar tus
+      gestión inmobiliaria.
+    </p>
+
+    <div class="flex flex-column align-items-center">
+      <p-button
+        label="Crear Apartamento"
+        [raised]="true"
+        size="large"
+        severity="success"
+        icon="pi pi-shop"
+        class="mb-2"
+        (click)="openModal('apartamento')"
+      ></p-button>
+      <p-button
+        label="Crear Proyecto"
+        [raised]="true"
+        severity="success"
+        size="large"
+        icon="pi pi-shop"
+        class="mb-2"
+        (click)="openModal('proyecto')"
+      ></p-button>
+    </div>
+
+    <p-dialog
+      [(visible)]="displayModal"
+      [styleClass]="'custom-modal'"
+      [responsive]="true"
+      [breakpoints]="{ '960px': '75vw', '640px': '90vw' }"
+      (onHide)="clearForm()"
+    >
+      <ng-template pTemplate="header">
+        <h3>Detalles del Proyecto</h3>
+      </ng-template>
+
+      <div>
+        <label for="nombre">Nombre:</label>
+        <input id="nombre" [(ngModel)]="nombre" required />
+
+        <p-dropdown
+          [options]="tipoApartamentoOptions"
+          [(ngModel)]="selectedTipoApartamento"
+          placeholder="Selecciona un tipo"
+        ></p-dropdown>
+      </div>
+
+      <div class="flex justify-content-end gap-2">
+        <p-button label="Cancelar" (onClick)="displayModal = false"></p-button>
+        <p-button label="Guardar" (onClick)="handleFormSubmit()"></p-button>
+      </div>
+    </p-dialog>
+  </div>
+</div>

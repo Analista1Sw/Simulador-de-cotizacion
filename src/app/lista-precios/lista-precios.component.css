@@ -1,0 +1,4 @@
+.custom-splitButton-menu {
+  max-height: 200px; /* Ajusta esta altura según tus necesidades */
+  overflow-y: auto;
+}

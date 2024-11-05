@@ -1,0 +1,116 @@
+<div class="cotizador-container">
+  <p-card header="Simulador de Remodelaciones" class="simulador-card">
+    <div class="p-fluid form-grid">
+      <div class="form-field">
+        <label for="room">Zona de la Remodelación</label>
+        <p-dropdown
+          [options]="roomOptions"
+          [(ngModel)]="selectedRoom"
+          placeholder="Selecciona la zona"
+          (onChange)="updateMaterials()"
+          [style]="{ width: '100%' }"
+        ></p-dropdown>
+      </div>
+    </div>
+
+    <h3>Materiales para {{ selectedRoom }}</h3>
+
+    <div *ngIf="selectedRoomMaterials" class="material-selection">
+      <div
+        class="form-field"
+        *ngFor="let material of ['muro', 'piso', 'techo']"
+      >
+        <label for="{{ material }}">{{
+          "Selecciona " + material | titlecase
+        }}</label>
+        <p-dropdown
+          [options]="selectedRoomMaterials[material + 's']"
+          [(ngModel)]="selectedMaterials[material]"
+          placeholder="Selecciona un material para {{ material }}"
+          [style]="{ width: '100%' }"
+        ></p-dropdown>
+      </div>
+    </div>
+
+    <div class="filter-section">
+      <p-inputText
+        placeholder="Buscar accesorio..."
+        [(ngModel)]="searchText"
+      ></p-inputText>
+      <p-dropdown
+        [options]="categoryOptions"
+        placeholder="Filtrar por categoría"
+        [(ngModel)]="selectedCategory"
+      ></p-dropdown>
+    </div>
+
+    <h4>Accesorios</h4>
+    <table class="material-table" *ngIf="filteredAccessories().length > 0">
+      <thead>
+        <tr>
+          <th>Accesorio</th>
+          <th>Cantidad</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let accesorio of filteredAccessories()">
+          <td>{{ accesorio.nombre }}</td>
+          <td>
+            <button (click)="decrementQuantity(accesorio)" class="quantity-btn">
+              -
+            </button>
+            {{ accesorio.cantidad }}
+            <button (click)="incrementQuantity(accesorio)" class="quantity-btn">
+              +
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="button-row">
+      <button
+        pButton
+        label="Generar Cotización"
+        class="p-button-success"
+        icon="pi pi-check"
+        (click)="confirmQuote()"
+        [disabled]="!isQuoteReady"
+      ></button>
+      <!-- <button
+        pButton
+        label="Descargar PDF"
+        class="p-button-secondary"
+        icon="pi pi-download"
+        (click)="downloadPDF()"
+      ></button> -->
+    </div>
+  </p-card>
+
+  <!-- Modal de confirmación -->
+  <p-dialog
+    header="Confirmar Cotización"
+    [(visible)]="displayModal"
+    [modal]="true"
+    [closable]="false"
+    [style]="{ width: '400px' }"
+  >
+    <p>¿Estás seguro de que deseas generar la cotización?</p>
+    <p-footer>
+      <button
+        pButton
+        label="Confirmar"
+        icon="pi pi-check"
+        (click)="proceedWithQuote()"
+        class="p-button-success"
+      ></button>
+      <button
+        pButton
+        label="Cancelar"
+        icon="pi pi-times"
+        (click)="cancelQuote()"
+        class="p-button-secondary"
+      ></button>
+    </p-footer>
+  </p-dialog>
+</div>

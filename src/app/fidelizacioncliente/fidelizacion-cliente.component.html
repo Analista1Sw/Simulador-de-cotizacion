@@ -1,0 +1,109 @@
+<p-toast></p-toast>
+
+<div class="p-fluid centered-container">
+  <div class="p-card" style="max-width: 600px; width: 100%">
+    <div class="p-card-header card-header">
+      <h2>Fidelización de Cliente - Remodelaciones</h2>
+    </div>
+    <div class="p-card-body">
+      <form [formGroup]="fidelizacionForm" (ngSubmit)="onSubmit()">
+        <div class="p-fluid grid">
+          <!-- Cédula -->
+          <div class="field col-12 sm:col-6">
+            <div class="p-float-label">
+              <input
+                id="cedula"
+                type="text"
+                pInputText
+                formControlName="cedula"
+                placeholder="Ej: 123456789"
+              />
+              <label for="cedula">Cédula</label>
+            </div>
+          </div>
+
+          <!-- Nombre Completo -->
+          <div class="field col-12 sm:col-6">
+            <div class="p-float-label">
+              <input
+                id="nombre"
+                type="text"
+                pInputText
+                formControlName="nombre"
+                placeholder="Ej: Juan Pérez"
+              />
+              <label for="nombre">Nombre Completo</label>
+            </div>
+          </div>
+
+          <!-- Correo Electrónico -->
+          <div class="field col-12 sm:col-6">
+            <div class="p-float-label">
+              <input
+                id="email"
+                type="email"
+                pInputText
+                formControlName="email"
+                placeholder="ejemplo@correo.com"
+              />
+              <label for="email">Correo Electrónico</label>
+            </div>
+          </div>
+
+          <!-- Teléfono -->
+          <div class="field col-12 sm:col-6">
+            <div class="p-float-label">
+              <input
+                id="telefono"
+                type="tel"
+                pInputText
+                formControlName="telefono"
+                placeholder="Ej: 1234567890"
+              />
+              <label for="telefono">Teléfono</label>
+            </div>
+          </div>
+
+          <!-- Proyecto -->
+          <div class="field col-12 sm:col-6">
+            <div class="p-float-label">
+              <p-dropdown
+                formControlName="proyecto"
+                [options]="proyectos"
+                optionLabel="nombre"
+                placeholder="Selecciona un proyecto"
+                (onChange)="onProyectoChange($event)"
+              ></p-dropdown>
+              <label for="proyecto">Proyecto</label>
+            </div>
+          </div>
+
+          <!-- Tipo de Apartamento -->
+          <div class="field col-12 sm:col-6" *ngIf="tiposApartamento">
+            <div class="p-float-label">
+              <p-dropdown
+                formControlName="tipoApartamento"
+                [options]="tiposApartamento"
+                optionLabel="name"
+                placeholder="Selecciona un tipo de apartamento"
+              ></p-dropdown>
+              <label for="tipoApartamento">Tipo de Apartamento</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Botón de Guardar -->
+        <div class="p-col-12">
+          <button
+            pButton
+            label="Enviar"
+            icon="pi pi-check"
+            [disabled]="!isFormValid()"
+            [ngClass]="isFormValid() ? 'button-active' : 'button-disabled'"
+            (click)="onSubmit()"
+          ></button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

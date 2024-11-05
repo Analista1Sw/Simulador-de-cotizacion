@@ -1,0 +1,35 @@
+<div class="resumen-container">
+    <h2>Resumen de Cotización</h2>
+    <table class="resumen-table">
+      <thead>
+        <tr>
+          <th>Tipo</th>
+          <th>Material</th>
+          <th>Cantidad</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let material of selectedMaterials.muros">
+          <td>Muro</td>
+          <td>{{ material }}</td>
+          <td>1</td>
+        </tr>
+        <tr *ngFor="let material of selectedMaterials.pisos">
+          <td>Piso</td>
+          <td>{{ material }}</td>
+          <td>1</td>
+        </tr>
+        <tr *ngFor="let material of selectedMaterials.techos">
+          <td>Techo</td>
+          <td>{{ material }}</td>
+          <td>1</td>
+        </tr>
+        <tr *ngFor="let accesorio of selectedMaterials.accesorios">
+          <td>Accesorio</td>
+          <td>{{ accesorio.nombre }}</td>
+          <td>{{ accesorio.cantidad }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
