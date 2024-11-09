@@ -1,15 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
 import { NgIf } from '@angular/common';
+import { NgForm } from '@angular/forms';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-pre-alistamiento',
   standalone: true,
   imports: [
+    ToastModule,
     ButtonModule,
     RouterModule,
     DialogModule,
@@ -19,58 +23,68 @@ import { NgIf } from '@angular/common';
   ],
   templateUrl: './pre-alistamiento.component.html',
   styleUrls: ['./pre-alistamiento.component.css'],
+  providers: [MessageService], 
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class PreAlistamientoComponent {
-  displayModal: boolean = false;
-  modalType: string = '';
+  displayModal: boolean = false; // Nueva propiedad para controlar la visibilidad
+  constructor(private messageService: MessageService) {}
 
-  tipoProyectoOptions = [
-    { label: 'Residencial', value: 'residencial' },
-    { label: 'Comercial', value: 'comercial' },
-    { label: 'Industrial', value: 'industrial' },
-  ];
 
-  tipoApartamentoOptions = [
-    { label: 'Residencial', value: 'residencial' },
-    { label: 'Comercial', value: 'comercial' },
-    { label: 'Industrial', value: 'industrial' },
-  ];
-
-  selectedTipoProyecto: string | null = null;
-  selectedTipoApartamento: string | null = null;
   nombre: string = '';
-  nombreProyecto: string = '';
-  descripcion: string = '';
+  direccion: string = '';
+  ciudadPais: string = '';
+  tipoApartamentoOptions = [
+    { label: 'Tipo A', value: 'tipoA' },
+    { label: 'Tipo B', value: 'tipoB' },
+    { label: 'Tipo C', value: 'tipoC' },
+  ];
+  selectedTipoApartamento: string = '';
+  tamano: number | null = null;
+  numeroHabitaciones: number | null = null;
+  numeroBanos: number | null = null;
+  estadoActual: string = '';
+  anioConstruccion: number | null = null;
 
-  openModal(type: string) {
-    this.modalType = type;
+  // Método para mostrar el formulario y ocultar la sección introductoria
+  openModal() {
     this.displayModal = true;
   }
 
-  handleFormSubmit() {
-    if (this.modalType === 'apartamento') {
-      const formData = {
+  handleFormSubmit(form: NgForm) {
+    if (form.valid) {
+      console.log({
         nombre: this.nombre,
-        descripcion: this.descripcion,
-      };
-      console.log('Datos del apartamento:', formData);
+        direccion: this.direccion,
+        ciudadPais: this.ciudadPais,
+        tipoApartamento: this.selectedTipoApartamento,
+        tamano: this.tamano,
+        numeroHabitaciones: this.numeroHabitaciones,
+        numeroBanos: this.numeroBanos,
+        estadoActual: this.estadoActual,
+        anioConstruccion: this.anioConstruccion,
+      });
+      this.clearForm();
+      this.displayModal = false; 
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Proyecto Creado',
+        detail: 'El proyecto ha sido creado exitosamente.',
+      });
     } else {
-      const formData = {
-        nombreProyecto: this.nombreProyecto,
-        tipoProyecto: this.selectedTipoProyecto,
-      };
-      console.log('Datos del proyecto:', formData);
+      // Manejo de errores de validación
+      console.log('Formulario no válido');
     }
-
-    // Redirigir a la página deseada
-    window.location.href = '/preAlistamiento/apartamento'; 
   }
   clearForm() {
-    // Limpia los campos del formulario
     this.nombre = '';
-    this.nombreProyecto = '';
-    this.descripcion = '';
-    this.selectedTipoProyecto = null;
-    this.selectedTipoApartamento = null;
+    this.direccion = '';
+    this.ciudadPais = '';
+    this.selectedTipoApartamento = '';
+    this.tamano = null;
+    this.numeroHabitaciones = null;
+    this.numeroBanos = null;
+    this.estadoActual = '';
+    this.anioConstruccion = null;
   }
 }

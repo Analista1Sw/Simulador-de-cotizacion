@@ -40,13 +40,13 @@
           <div class="field col-12 sm:col-6">
             <div class="p-float-label">
               <input
-                id="email"
+                id="correo"
                 type="email"
                 pInputText
-                formControlName="email"
+                formControlName="correo"
                 placeholder="ejemplo@correo.com"
               />
-              <label for="email">Correo Electrónico</label>
+              <label for="correo">Correo Electrónico</label>
             </div>
           </div>
 
@@ -82,12 +82,13 @@
           <div class="field col-12 sm:col-6" *ngIf="tiposApartamento">
             <div class="p-float-label">
               <p-dropdown
-                formControlName="tipoApartamento"
+                formControlName="apartamentoId"
                 [options]="tiposApartamento"
-                optionLabel="name"
+                optionLabel="label"
+                optionValue="value"
                 placeholder="Selecciona un tipo de apartamento"
               ></p-dropdown>
-              <label for="tipoApartamento">Tipo de Apartamento</label>
+              <label for="apartamentoId">Tipo de Apartamento</label>
             </div>
           </div>
         </div>
@@ -107,3 +108,4 @@
     </div>
   </div>
 </div>
+{{fidelizacionForm.value | json}}

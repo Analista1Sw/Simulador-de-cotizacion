@@ -33,7 +33,7 @@
   }
   
   .button-disabled {
-    border: 2px solid transparent; /* Sin borde cuando está deshabilitado */
+    border: 2px ; /* Sin borde cuando está deshabilitado */
     color: transparent; /* Sin color de texto cuando está deshabilitado */
     background-color: transparent; /* Fondo transparente */
   }

@@ -1,71 +1,264 @@
 <div
   class="flex justify-content-center align-items-center"
-  style="height: 100vh"
+  style="min-height: 80vh; background-color: #f4f4f9"
 >
   <div
-    class="card flex flex-column justify-content-center align-items-center"
+    *ngIf="!displayModal"
+    class="intro-section card flex flex-column justify-content-center align-items-center"
     style="
-      width: 300px;
-      background-color: #f9f9f9;
-      border-radius: 8px;
+      width: 400px;
+      max-width: 100%;
+      background-color: #ffffff;
+      border-radius: 10px;
       padding: 20px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      margin: 20px;
     "
   >
     <h2 class="text-center mb-3">Gestión de Proyectos</h2>
-
-    <p class="text-center mb-4">
-      Aquí puedes crear nuevos apartamentos y proyectos para facilitar tus
+    <p class="text-center mb-4" style="color: #555">
+      Aquí puedes crear nuevos apartamentos y proyectos para facilitar tu
       gestión inmobiliaria.
     </p>
+    <p-button
+      label="Crear Proyecto"
+      [raised]="true"
+      severity="success"
+      size="large"
+      icon="pi pi-plus"
+      class="mb-2"
+      (click)="openModal()"
+    ></p-button>
+  </div>
 
-    <div class="flex flex-column align-items-center">
-      <p-button
-        label="Crear Apartamento"
-        [raised]="true"
-        size="large"
-        severity="success"
-        icon="pi pi-shop"
-        class="mb-2"
-        (click)="openModal('apartamento')"
-      ></p-button>
-      <p-button
-        label="Crear Proyecto"
-        [raised]="true"
-        severity="success"
-        size="large"
-        icon="pi pi-shop"
-        class="mb-2"
-        (click)="openModal('proyecto')"
-      ></p-button>
-    </div>
+  <div
+    *ngIf="displayModal"
+    class="form-section card p-fluid"
+    style="
+      width: 600px;
+      max-width: 100%;
+      background-color: #ffffff;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      margin: 20px;
+    "
+  >
+    <h3>Detalles del Proyecto</h3>
 
-    <p-dialog
-      [(visible)]="displayModal"
-      [styleClass]="'custom-modal'"
-      [responsive]="true"
-      [breakpoints]="{ '960px': '75vw', '640px': '90vw' }"
-      (onHide)="clearForm()"
-    >
-      <ng-template pTemplate="header">
-        <h3>Detalles del Proyecto</h3>
-      </ng-template>
+    <!-- Formulario en dos columnas -->
+    <form #projectForm="ngForm" (ngSubmit)="handleFormSubmit(projectForm)">
+      <div class="grid">
+        <!-- Nombre del Proyecto -->
+        <div class="col-12 md:col-6">
+          <div class="field">
+            <label for="nombre">Nombre del Proyecto:</label>
+            <input
+              id="nombre"
+              name="nombre"
+              [(ngModel)]="nombre"
+              required
+              #nombreInput="ngModel"
+              class="input-field w-full"
+            />
+            <small
+              *ngIf="nombreInput.invalid && nombreInput.touched"
+              class="p-error"
+              >El nombre es obligatorio.</small
+            >
+          </div>
+        </div>
 
-      <div>
-        <label for="nombre">Nombre:</label>
-        <input id="nombre" [(ngModel)]="nombre" required />
+        <!-- Dirección -->
+        <div class="col-12 md:col-6">
+          <div class="field">
+            <label for="direccion">Dirección:</label>
+            <input
+              id="direccion"
+              name="direccion"
+              [(ngModel)]="direccion"
+              required
+              #direccionInput="ngModel"
+              class="input-field w-full"
+            />
+            <small
+              *ngIf="direccionInput.invalid && direccionInput.touched"
+              class="p-error"
+              >La dirección es obligatoria.</small
+            >
+          </div>
+        </div>
 
-        <p-dropdown
-          [options]="tipoApartamentoOptions"
-          [(ngModel)]="selectedTipoApartamento"
-          placeholder="Selecciona un tipo"
-        ></p-dropdown>
+        <!-- Ciudad y País -->
+        <div class="col-12 md:col-6">
+          <div class="field">
+            <label for="ciudadPais">Ciudad y País:</label>
+            <input
+              id="ciudadPais"
+              name="ciudadPais"
+              [(ngModel)]="ciudadPais"
+              required
+              #ciudadPaisInput="ngModel"
+              class="input-field w-full"
+            />
+            <small
+              *ngIf="ciudadPaisInput.invalid && ciudadPaisInput.touched"
+              class="p-error"
+              >Ciudad y país son obligatorios.</small
+            >
+          </div>
+        </div>
+
+        <!-- Tamaño -->
+        <div class="col-12 md:col-6">
+          <div class="field">
+            <label for="tamano">Tamaño:</label>
+            <input
+              id="tamano"
+              name="tamano"
+              type="number"
+              [(ngModel)]="tamano"
+              required
+              #tamanoInput="ngModel"
+              class="input-field w-full"
+            />
+            <small
+              *ngIf="tamanoInput.invalid && tamanoInput.touched"
+              class="p-error"
+              >El tamaño es obligatorio.</small
+            >
+          </div>
+        </div>
+
+        <!-- Tipo de Apartamento -->
+        <div class="col-12 md:col-6">
+          <div class="field">
+            <label for="tipoApartamento">Tipo de Apartamento:</label>
+            <p-dropdown
+              id="tipoApartamento"
+              name="tipoApartamento"
+              [options]="tipoApartamentoOptions"
+              [(ngModel)]="selectedTipoApartamento"
+              required
+              #tipoApartamentoInput="ngModel"
+              placeholder="Selecciona un tipo"
+            ></p-dropdown>
+            <small
+              *ngIf="
+                tipoApartamentoInput.invalid && tipoApartamentoInput.touched
+              "
+              class="p-error"
+              >Debe seleccionar un tipo de apartamento.</small
+            >
+          </div>
+        </div>
+
+        <!-- Número de Habitaciones -->
+        <div class="col-12 md:col-6">
+          <div class="field">
+            <label for="numeroHabitaciones">Número de Habitaciones:</label>
+            <input
+              id="numeroHabitaciones"
+              name="numeroHabitaciones"
+              type="number"
+              [(ngModel)]="numeroHabitaciones"
+              required
+              #numeroHabitacionesInput="ngModel"
+              class="input-field w-full"
+            />
+            <small
+              *ngIf="
+                numeroHabitacionesInput.invalid &&
+                numeroHabitacionesInput.touched
+              "
+              class="p-error"
+              >El número de habitaciones es obligatorio.</small
+            >
+          </div>
+        </div>
+
+        <!-- Número de Baños -->
+        <div class="col-12 md:col-6">
+          <div class="field">
+            <label for="numeroBanos">Número de Baños:</label>
+            <input
+              id="numeroBanos"
+              name="numeroBanos"
+              type="number"
+              [(ngModel)]="numeroBanos"
+              required
+              #numeroBanosInput="ngModel"
+              class="input-field w-full"
+            />
+            <small
+              *ngIf="numeroBanosInput.invalid && numeroBanosInput.touched"
+              class="p-error"
+              >El número de baños es obligatorio.</small
+            >
+          </div>
+        </div>
+
+        <!-- Estado Actual -->
+        <div class="col-12 md:col-6">
+          <div class="field">
+            <label for="estadoActual">Estado Actual:</label>
+            <input
+              id="estadoActual"
+              name="estadoActual"
+              [(ngModel)]="estadoActual"
+              required
+              #estadoActualInput="ngModel"
+              class="input-field w-full"
+            />
+            <small
+              *ngIf="estadoActualInput.invalid && estadoActualInput.touched"
+              class="p-error"
+              >El estado actual es obligatorio.</small
+            >
+          </div>
+        </div>
+
+        <!-- Año de Construcción -->
+        <div class="col-12 md:col-6">
+          <div class="field">
+            <label for="anioConstruccion">Año de Construcción:</label>
+            <input
+              id="anioConstruccion"
+              name="anioConstruccion"
+              type="number"
+              [(ngModel)]="anioConstruccion"
+              required
+              #anioConstruccionInput="ngModel"
+              class="input-field w-full"
+            />
+            <small
+              *ngIf="
+                anioConstruccionInput.invalid && anioConstruccionInput.touched
+              "
+              class="p-error"
+              >El año de construcción es obligatorio.</small
+            >
+          </div>
+        </div>
       </div>
 
-      <div class="flex justify-content-end gap-2">
-        <p-button label="Cancelar" (onClick)="displayModal = false"></p-button>
-        <p-button label="Guardar" (onClick)="handleFormSubmit()"></p-button>
+      <!-- Botones de acción -->
+      <div class="flex justify-content-end gap-2 mt-4">
+        <p-button
+          label="Cancelar"
+          icon="pi pi-times"
+          (click)="displayModal = false"
+          class="p-button-text"
+        ></p-button>
+        <p-button
+          label="Guardar"
+          icon="pi pi-check"
+          [disabled]="projectForm.invalid"
+          type="submit"
+          class="p-button-success"
+        ></p-button>
       </div>
-    </p-dialog>
+    </form>
+    <p-toast position="top-right"></p-toast>
   </div>
 </div>

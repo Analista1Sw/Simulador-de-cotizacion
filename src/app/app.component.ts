@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { MenuItem, PrimeNGConfig } from 'primeng/api';
 import { AppMenuComponent } from './layout/app-menu/app-menu.component';
@@ -13,7 +13,10 @@ import { MenubarModule } from 'primeng/menubar';
   styleUrl: './app.component.css',
 })
 export class AppComponent implements OnInit {
-  constructor(private primengConfig: PrimeNGConfig) {}
+  constructor(private router: Router, private primengConfig: PrimeNGConfig) {}
+  isNotRootRoute(): boolean {
+    return this.router.url !== '';
+  }
   title = 'Simulador';
   items: MenuItem[] | undefined;
   ngOnInit() {

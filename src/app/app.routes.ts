@@ -13,15 +13,16 @@ import { CrearAptoComponent } from './crear-apto/crear-apto.component';
 import { FidelizacionClienteComponent } from './fidelizacioncliente/fidelizacion-cliente.component';
 import { PruebaComponent } from './prueba/prueba.component';
 import { ResumenCotizacionComponent } from './resumen-cotizacion/resumen-cotizacion.component';
+import { LoginComponent } from './login/login.component';
 
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent },
+  { path: '', component: LoginComponent},
   { path: 'home', component: HomeComponent },
   { path: 'lista', component: ListaPreciosComponent },
   { path: 'fidel', component: FidelizacionClienteComponent },
   { path: 'cotizar', component: CotizadorComponent },
-  { path: 'resumen', component: ResumenCotizacionComponent},
+  { path: 'resumen', component: ResumenCotizacionComponent },
   { path: 'preAlistamiento', component: PreAlistamientoComponent },
   { path: 'preAlistamiento/apartamento', component: CrearAptoComponent },
   { path: 'prueba', component: PruebaComponent },
