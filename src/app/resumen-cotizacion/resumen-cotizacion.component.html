@@ -1,35 +1,190 @@
-<div class="resumen-container">
-    <h2>Resumen de Cotización</h2>
-    <table class="resumen-table">
-      <thead>
-        <tr>
-          <th>Tipo</th>
-          <th>Material</th>
-          <th>Cantidad</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let material of selectedMaterials.muros">
-          <td>Muro</td>
-          <td>{{ material }}</td>
-          <td>1</td>
-        </tr>
-        <tr *ngFor="let material of selectedMaterials.pisos">
-          <td>Piso</td>
-          <td>{{ material }}</td>
-          <td>1</td>
-        </tr>
-        <tr *ngFor="let material of selectedMaterials.techos">
-          <td>Techo</td>
-          <td>{{ material }}</td>
-          <td>1</td>
-        </tr>
-        <tr *ngFor="let accesorio of selectedMaterials.accesorios">
-          <td>Accesorio</td>
-          <td>{{ accesorio.nombre }}</td>
-          <td>{{ accesorio.cantidad }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+<img [src]="'images/LOGO-MAX.png'" width="150" height="100" />
+<div
+
+  class="p-d-flex p-jc-center p-ai-center"
+  style="min-height: 100vh; background-color: #f4f5f7"
   
+>
+
+  <div
+  
+    class="p-card p-p-4 p-shadow-3 p-d-flex p-flex-column p-ai-center"
+    style="
+      border-radius: 12px;
+      max-width: 1000px;
+      width: 100%;
+      padding: 16px;
+      background-color: #ffffff;
+    "
+  >
+    <h2
+      class="p-text-center p-mb-4"
+      style="
+        font-size: 2.4rem;
+        font-weight: bold;
+        color: #4caf50;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        text-align: center;
+      "
+    >
+      <i
+        class="pi pi-file"
+        style="
+          color: #4caf50;
+          margin-right: 8px;
+          margin-left: 8px;
+          font-size: 2.2rem;
+        "
+      ></i>
+      Resumen de Cotización
+    </h2>
+
+    <div *ngIf="data; else cargando">
+      <!-- Sección Proyecto -->
+      <div
+        class="p-mb-4 p-p-3 p-shadow-2"
+        style="background: #f7f9f9; border-radius: 8px"
+      >
+        <h3 class="p-text-primary">
+          <i class="pi pi-user" style="color: #5c9b42; margin-right: 12px"></i>
+          Cliente
+        </h3>
+        <div class="p-grid p-align-start p-text-secondary">
+          <div class="p-col-12 p-md-6">
+            <p><strong>Cliente:</strong> {{ data.proyecto?.cliente }}</p>
+            <p><strong>Cédula:</strong> {{ data.proyecto?.cedula }}</p>
+          </div>
+          <div class="p-col-12 p-md-6">
+            <h3 class="p-text-primary">
+              <i
+                class="pi pi-folder-open"
+                style="color: #5c9b42; margin-right: 12px"
+              ></i>
+              Proyecto
+            </h3>
+            <p><strong>Nombre Proyecto:</strong> {{ data.proyecto?.nombre }}</p>
+            <p><strong>Número Cotización:</strong> {{ data.proyecto?.id }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sección Productos por Zona -->
+      <div class="p-mb-4">
+        <h3 class="p-text-primary">
+          <i class="pi pi-map" style="color: #5c9b42; margin-right: 12px"></i>
+          Productos por Zona
+        </h3>
+        <div
+          *ngFor="
+            let zona of ['productosZona1', 'productosZona2', 'productosZona3']
+          "
+          class="p-mb-3"
+        >
+          <div
+            class="p-p-3 p-shadow-2"
+            style="background: #f7f9f9; border-radius: 8px"
+          >
+            <h4 style="font-weight: bold; color: #555">{{ zona }}</h4>
+            <table class="p-datatable p-datatable-striped" style="width: 100%">
+              <thead>
+                <tr style="background-color: #eaeded; color: #5c9b42">
+                  <th>ID</th>
+                  <th>Tipo Producto</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let producto of data[zona]">
+                  <td>{{ producto.id }}</td>
+                  <td>{{ producto.tipoProducto }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sección Accesorios -->
+      <div class="p-mb-4">
+        <h3 class="p-text-primary">
+          <i class="pi pi-tools" style="color: #5c9b42; margin-right: 12px"></i>
+          Accesorios
+        </h3>
+        <div
+          class="p-p-3 p-shadow-2"
+          style="background: #f7f9f9; border-radius: 8px"
+        >
+          <table class="p-datatable p-datatable-striped" style="width: 100%">
+            <thead>
+              <tr style="background-color: #eaeded; color: #5c9b42">
+                <th>ID</th>
+                <th>Tipo Producto</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let accesorio of data.accesorios">
+                <td>{{ accesorio.id }}</td>
+                <td>{{ accesorio.tipoProducto }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Sección Total Cotización -->
+      <div
+        class="p-mb-4 p-p-3 p-shadow-2"
+        style="background: #f7f9f9; border-radius: 8px"
+      >
+        <h3 class="p-text-primary">
+          <i
+            class="pi pi-money-bill"
+            style="color: #5c9b42; margin-right: 12px"
+          ></i>
+          Total Cotización
+        </h3>
+        <p class="p-text-bold p-text-lg" style="color: #333">
+          <strong>Total:</strong> {{ data.totalCotizacion | currency }}
+        </p>
+      </div>
+
+      <!-- Sección texto legal -->
+      <div
+        class="p-mt-5 p-p-3 p-shadow-2 p-text-justify"
+        style="background-color: #fff8e1; border-radius: 5px; color: #5a5c5b"
+      >
+        <p>
+          La presente cotización constituye exclusivamente una estimación
+          preliminar de carácter informativo y referencial, elaborada con base
+          en la información general proporcionada hasta el momento, y no
+          representa una oferta comercial según los términos previstos en el
+          artículo 845 del Código de Comercio Colombiano. Los valores,
+          especificaciones y condiciones aquí expresados son aproximados y
+          podrán variar según las condiciones específicas del proyecto,
+          disponibilidad de materiales, fluctuaciones de precios en el mercado,
+          modificaciones en el alcance del trabajo y resultados de la visita
+          técnica al sitio de ejecución. Para la elaboración de una propuesta
+          formal y vinculante, se requerirá necesariamente una visita técnica al
+          sitio, evaluación detallada de condiciones específicas y confirmación
+          escrita de las especificaciones técnicas finales del proyecto. Esta
+          estimación tiene una vigencia referencial y los precios están sujetos
+          a confirmación al momento de emitir una propuesta formal, la cual
+          deberá constar por escrito y ser expresamente aceptada por ambas
+          partes para generar cualquier tipo de vínculo contractual.
+        </p>
+        <!-- Texto truncado para brevedad -->
+      </div>
+    </div>
+
+    <!-- Estado Cargando -->
+    <ng-template #cargando>
+      <div class="p-text-center p-text-secondary">
+        <i
+          class="pi pi-spinner pi-spin"
+          style="font-size: 2rem; color: #5c9b42"
+        ></i
+        ><br />
+        Cargando datos...
+      </div>
+    </ng-template>
+  </div>
+</div>

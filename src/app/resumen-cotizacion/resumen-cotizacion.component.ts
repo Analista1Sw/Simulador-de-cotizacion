@@ -1,20 +1,27 @@
-import { Component } from '@angular/core';
-import { MaterialesPorCategoria } from '../cotizador/cotizador.component';
-import { CotizacionService } from '../../services/cotizacion.service';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { CotizacionService } from '../../services/Resumen.service';
 
 @Component({
   selector: 'app-resumen-cotizacion',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule],
   templateUrl: './resumen-cotizacion.component.html',
-  styleUrls: ['./resumen-cotizacion.component.css']
+  styleUrls: ['./resumen-cotizacion.component.css'],
 })
-export class ResumenCotizacionComponent {
-  selectedMaterials!: MaterialesPorCategoria;
+export class ResumenCotizacionComponent implements OnInit {
+  data: any; 
+  constructor(private cotizacionService: CotizacionService) {}
 
-  constructor(private cotizacionService: CotizacionService) {
-    this.selectedMaterials = this.cotizacionService.getCotizacion();
+  ngOnInit() {
+    this.cotizacionService.getResumen().subscribe({
+      next: (response) => {
+        this.data = response;
+        console.log('Datos recibidos del backend:', this.data);
+      },
+      error: (error) => {
+        console.error('Error al obtener los datos:', error);
+      },
+    });
   }
 }

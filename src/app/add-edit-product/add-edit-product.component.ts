@@ -22,7 +22,6 @@ import { ButtonModule } from 'primeng/button';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { JsonPipe } from '@angular/common';
 import { DropdownModule } from 'primeng/dropdown';
-import { SelectItem } from 'primeng/api';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { RippleModule } from 'primeng/ripple';
@@ -35,38 +34,35 @@ import { RippleModule } from 'primeng/ripple';
     ReactiveFormsModule,
     FormsModule,
     AutoCompleteModule,
-    ReactiveFormsModule,
     InputGroupModule,
     InputGroupAddonModule,
     InputTextModule,
-    JsonPipe,
     FloatLabelModule,
     ButtonModule,
     InputNumberModule,
     DropdownModule,
     ToastModule,
-    RippleModule
+    RippleModule,
   ],
   providers: [MessageService],
   templateUrl: './add-edit-product.component.html',
-  styleUrl: './add-edit-product.component.css',
-
+  styleUrls: ['./add-edit-product.component.css'], 
 })
 export class AddEditProductComponent {
   categorias: Category[] = [];
   selectedItem: string | undefined;
-  id:number
+  id: number;
   cat: Number = 3;
 
-  // Creacion del signal para la sincronizacion del formulario
+  // Creación del signal para la sincronización del formulario
   fomr2 = signal<FormGroup>(
     new FormGroup({
-      description: new FormControl('', [
+      tipoProducto: new FormControl('', [
         Validators.required,
         Validators.maxLength(255),
       ]),
       precio: new FormControl(null, Validators.required),
-      unidadmedida: new FormControl(''),
+      unidadMedida: new FormControl(''),
       medida: new FormControl(''),
       idCategoria: new FormControl([], [Validators.required]),
     })
@@ -78,37 +74,35 @@ export class AddEditProductComponent {
     private _categoryService: CategoryService,
     private aRoute: ActivatedRoute
   ) {
-    this.id =  Number (aRoute.snapshot.paramMap.get('id'))
+    this.id = Number(aRoute.snapshot.paramMap.get('id'));
   }
 
-  // Metodos para desencadenar la notificacion toast
-    showAdd() {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Agregado',
-          detail: 'El producto ha sido agregado con exito'
-          });
-    }
-
-    showUdpate() {
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Actualizado',
-        detail: 'El producto ha sido actualizado con exito'
-        });
+  // Métodos para desencadenar la notificación toast
+  showAdd() {
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Agregado',
+      detail: 'El producto ha sido agregado con éxito',
+    });
   }
 
-  // Este metodo se ejecuta al cargarse el componente
+  showUpdate() {
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Actualizado',
+      detail: 'El producto ha sido actualizado con éxito',
+    });
+  }
+
+  // Este método se ejecuta al cargarse el componente
   ngOnInit() {
-    if(this.id != 0){
+    if (this.id != 0) {
       this.getProduct(this.id);
     }
     this.getListCategories();
-
-    this._categoryService.getListProducts
-
   }
-  // Metodo para obtener todas las categorias
+
+  // Método para obtener todas las categorías
   getListCategories() {
     this._categoryService.getListProducts().subscribe((data: Category[]) => {
       console.log(data);
@@ -116,66 +110,58 @@ export class AddEditProductComponent {
     });
   }
 
-  // Metodo para crear el producto por medio del servicio
+  // Método para crear el producto por medio del servicio
   addProduct() {
-
-    // Se establecen los valores el fomurlario a la interfaz de producto
+    // Se establecen los valores del formulario a la interfaz de producto
     const product: Product = {
-      descripcion: this.fomr2().value.description,
-      // imagen: this.fomr2().value.imagen,
+      tipoProducto: this.fomr2().value.tipoProducto,
       precio: this.fomr2().value.precio,
-      unidadmedida: this.fomr2().value.unidadmedida,
+      unidadMedida: this.fomr2().value.unidadMedida,
       medida: this.fomr2().value.medida,
-      idcategoria: this.fomr2().value.idCategoria,
+      categoriaProductos: this.fomr2().value.idCategoria,
     };
-      //verificacion si el formulario es valido
 
-
-    if(this.id !== 0){
-      //Es editar
-      product.id = this.id
-      this._productService.updateProduct(this.id, product).subscribe(()=>{
-        console.log('El producto fue actualizado')
+    if (this.id !== 0) {
+      // Es editar
+      product.id = this.id;
+      this._productService.updateProduct(this.id, product).subscribe(() => {
+        console.log('El producto fue actualizado');
         this.fomr2().reset();
-        this.showUdpate();
+        this.showUpdate();
+      });
+    } else if (this.fomr2().valid) {
+      this._productService.saveProduct(product).subscribe(() => {
+        console.log('Producto agregado');
+        this.fomr2().reset();
+        this.showAdd();
 
-      })
-  }else if (this.fomr2().valid) {
-    this._productService.saveProduct(product).subscribe(() => {
-      console.log('Producto agregado');
-      console.log(product)
-      this.fomr2().reset();
-      this.showAdd();
+        // Se vuelven a establecer los valores del formulario
+        this.fomr2.set(
+          new FormGroup({
+            tipoProducto: new FormControl('', [
+              Validators.required,
+              Validators.maxLength(255),
+            ]),
+            precio: new FormControl(null, Validators.required),
+            unidadMedida: new FormControl(''),
+            medida: new FormControl(''),
+            idCategoria: new FormControl([], [Validators.required]),
+          })
+        );
+      });
+    }
+  }
 
-      // Se vuelven a establecer los valores del formulario
-      this.fomr2.set(
-        new FormGroup({
-          description: new FormControl('', [
-            Validators.required,
-            Validators.maxLength(255),
-          ]),
-          precio: new FormControl(null, Validators.required),
-          unidadmedida: new FormControl(''),
-          medida: new FormControl(''),
-          idCategoria: new FormControl([], [Validators.required]),
-        })
-      );
-    });
-
-  }}
-
-  // Funcion para consultar un producto especifico y estabelcer cada valor em los inputs del formulario
-  getProduct(id:number){
-    this._productService.getProduct(id).subscribe((data:Product) =>{
-      // console.log(data)
-
+  // Función para consultar un producto específico y establecer cada valor en los inputs del formulario
+  getProduct(id: number) {
+    this._productService.getProduct(id).subscribe((data: Product) => {
       this.fomr2().setValue({
-        description: data.descripcion,
+        tipoProducto: data.tipoProducto,
         precio: data.precio,
-        unidadmedida: data.unidadmedida,
+        unidadMedida: data.unidadMedida,
         medida: data.medida,
-        idCategoria: data.idcategoria
-      })
-    })
+        idCategoria: data.categoriaProductos,
+      });
+    });
   }
 }

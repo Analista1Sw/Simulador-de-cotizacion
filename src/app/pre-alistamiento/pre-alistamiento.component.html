@@ -1,6 +1,9 @@
 <div
   class="flex justify-content-center align-items-center"
-  style="min-height: 80vh; background-color: #f4f4f9"
+  style="
+    min-height: 80vh;
+    background: linear-gradient(to bottom right, #f4f4f9, #e0e7ff);
+  "
 >
   <div
     *ngIf="!displayModal"
@@ -11,7 +14,7 @@
       background-color: #ffffff;
       border-radius: 10px;
       padding: 20px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
       margin: 20px;
     "
   >
@@ -27,7 +30,16 @@
       size="large"
       icon="pi pi-plus"
       class="mb-2"
-      (click)="openModal()"
+      (click)="openModal(false)"
+    ></p-button>
+    <p-button
+      label="Crear Apartamento"
+      [raised]="true"
+      severity="success"
+      size="large"
+      icon="pi pi-plus"
+      class="mb-2"
+      (click)="openModal(true)"
     ></p-button>
   </div>
 
@@ -40,13 +52,12 @@
       background-color: #ffffff;
       border-radius: 10px;
       padding: 20px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
       margin: 20px;
     "
   >
-    <h3>Detalles del Proyecto</h3>
+    <h4 class="text-center mt-4 mb-3">Detalles del Proyecto</h4>
 
-    <!-- Formulario en dos columnas -->
     <form #projectForm="ngForm" (ngSubmit)="handleFormSubmit(projectForm)">
       <div class="grid">
         <!-- Nombre del Proyecto -->
@@ -88,156 +99,94 @@
             >
           </div>
         </div>
-
-        <!-- Ciudad y País -->
-        <div class="col-12 md:col-6">
+        <!-- Descripción del Proyecto -->
+        <div class="col-12">
           <div class="field">
-            <label for="ciudadPais">Ciudad y País:</label>
-            <input
-              id="ciudadPais"
-              name="ciudadPais"
-              [(ngModel)]="ciudadPais"
-              required
-              #ciudadPaisInput="ngModel"
+            <label for="descripcion">Descripción del Proyecto:</label>
+            <textarea
+              id="descripcion"
+              name="descripcion"
+              [(ngModel)]="descripcion"
+              rows="4"
               class="input-field w-full"
-            />
-            <small
-              *ngIf="ciudadPaisInput.invalid && ciudadPaisInput.touched"
-              class="p-error"
-              >Ciudad y país son obligatorios.</small
-            >
+            ></textarea>
           </div>
         </div>
+        <!-- Sección de Apartamento -->
+        <div *ngIf="isCreatingApartment">
+          <h4 class="text-center mt-4 mb-3">Detalles del Apartamento</h4>
 
-        <!-- Tamaño -->
-        <div class="col-12 md:col-6">
-          <div class="field">
-            <label for="tamano">Tamaño:</label>
-            <input
-              id="tamano"
-              name="tamano"
-              type="number"
-              [(ngModel)]="tamano"
-              required
-              #tamanoInput="ngModel"
-              class="input-field w-full"
-            />
-            <small
-              *ngIf="tamanoInput.invalid && tamanoInput.touched"
-              class="p-error"
-              >El tamaño es obligatorio.</small
-            >
+          <!-- Nombre del Apartamento -->
+          <div class="col-12 md:col-6">
+            <div class="field">
+              <label for="nombreApartamento">Nombre del Apartamento:</label>
+              <input
+                id="nombreApartamento"
+                name="nombreApartamento"
+                [(ngModel)]="nombreApartamento"
+                required
+                #nombreApartamentoInput="ngModel"
+                class="input-field w-full"
+              />
+              <small
+                *ngIf="
+                  nombreApartamentoInput.invalid &&
+                  nombreApartamentoInput.touched
+                "
+                class="p-error"
+              >
+                El nombre del apartamento es obligatorio.
+              </small>
+            </div>
           </div>
-        </div>
 
-        <!-- Tipo de Apartamento -->
-        <div class="col-12 md:col-6">
-          <div class="field">
-            <label for="tipoApartamento">Tipo de Apartamento:</label>
-            <p-dropdown
-              id="tipoApartamento"
-              name="tipoApartamento"
-              [options]="tipoApartamentoOptions"
-              [(ngModel)]="selectedTipoApartamento"
-              required
-              #tipoApartamentoInput="ngModel"
-              placeholder="Selecciona un tipo"
-            ></p-dropdown>
-            <small
-              *ngIf="
-                tipoApartamentoInput.invalid && tipoApartamentoInput.touched
-              "
-              class="p-error"
-              >Debe seleccionar un tipo de apartamento.</small
-            >
+          <!-- Medida del Apartamento -->
+          <div class="col-12 md:col-6">
+            <div class="field">
+              <label for="medidaApartamento"
+                >Medida del Apartamento (m²):</label
+              >
+              <input
+                type="number"
+                id="medidaApartamento"
+                name="medidaApartamento"
+                [(ngModel)]="medidaApartamento"
+                required
+                #medidaApartamentoInput="ngModel"
+                class="input-field w-full"
+              />
+              <small
+                *ngIf="
+                  medidaApartamentoInput.invalid &&
+                  medidaApartamentoInput.touched
+                "
+                class="p-error"
+              >
+                La medida del apartamento es obligatoria.
+              </small>
+            </div>
           </div>
-        </div>
 
-        <!-- Número de Habitaciones -->
-        <div class="col-12 md:col-6">
-          <div class="field">
-            <label for="numeroHabitaciones">Número de Habitaciones:</label>
-            <input
-              id="numeroHabitaciones"
-              name="numeroHabitaciones"
-              type="number"
-              [(ngModel)]="numeroHabitaciones"
-              required
-              #numeroHabitacionesInput="ngModel"
-              class="input-field w-full"
-            />
-            <small
-              *ngIf="
-                numeroHabitacionesInput.invalid &&
-                numeroHabitacionesInput.touched
-              "
-              class="p-error"
-              >El número de habitaciones es obligatorio.</small
-            >
-          </div>
-        </div>
-
-        <!-- Número de Baños -->
-        <div class="col-12 md:col-6">
-          <div class="field">
-            <label for="numeroBanos">Número de Baños:</label>
-            <input
-              id="numeroBanos"
-              name="numeroBanos"
-              type="number"
-              [(ngModel)]="numeroBanos"
-              required
-              #numeroBanosInput="ngModel"
-              class="input-field w-full"
-            />
-            <small
-              *ngIf="numeroBanosInput.invalid && numeroBanosInput.touched"
-              class="p-error"
-              >El número de baños es obligatorio.</small
-            >
-          </div>
-        </div>
-
-        <!-- Estado Actual -->
-        <div class="col-12 md:col-6">
-          <div class="field">
-            <label for="estadoActual">Estado Actual:</label>
-            <input
-              id="estadoActual"
-              name="estadoActual"
-              [(ngModel)]="estadoActual"
-              required
-              #estadoActualInput="ngModel"
-              class="input-field w-full"
-            />
-            <small
-              *ngIf="estadoActualInput.invalid && estadoActualInput.touched"
-              class="p-error"
-              >El estado actual es obligatorio.</small
-            >
-          </div>
-        </div>
-
-        <!-- Año de Construcción -->
-        <div class="col-12 md:col-6">
-          <div class="field">
-            <label for="anioConstruccion">Año de Construcción:</label>
-            <input
-              id="anioConstruccion"
-              name="anioConstruccion"
-              type="number"
-              [(ngModel)]="anioConstruccion"
-              required
-              #anioConstruccionInput="ngModel"
-              class="input-field w-full"
-            />
-            <small
-              *ngIf="
-                anioConstruccionInput.invalid && anioConstruccionInput.touched
-              "
-              class="p-error"
-              >El año de construcción es obligatorio.</small
-            >
+          <!-- Zonas -->
+          <div class="col-12">
+            <div class="field">
+              <label for="zonas">Zonas (Cocinas, Baños, Habitaciones):</label>
+              <textarea
+                id="zonas"
+                name="zonas"
+                [(ngModel)]="zonas"
+                required
+                #zonasInput="ngModel"
+                rows="3"
+                class="input-field w-full"
+              ></textarea>
+              <small
+                *ngIf="zonasInput.invalid && zonasInput.touched"
+                class="p-error"
+              >
+                Las zonas son obligatorias.
+              </small>
+            </div>
           </div>
         </div>
       </div>

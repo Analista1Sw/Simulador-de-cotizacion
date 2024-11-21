@@ -1,14 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
-import { ButtonModule } from 'primeng/button';
 import { MenuItem, PrimeNGConfig } from 'primeng/api';
-import { AppMenuComponent } from './layout/app-menu/app-menu.component';
 import { MenubarModule } from 'primeng/menubar';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, ButtonModule, AppMenuComponent, MenubarModule],
+  imports: [RouterOutlet, MenubarModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
@@ -33,26 +31,21 @@ export class AppComponent implements OnInit {
         routerLink: 'fidel',
       },
 
-      // {
-      //   label: 'Lista de Precios',
-      //   icon: 'pi pi-list',
-      //   routerLink: 'lista',
-      // },
+      {
+        label: 'Lista de Precios',
+        icon: 'pi pi-list',
+        routerLink: 'lista',
+      },
       {
         label: 'Simulador',
         icon: 'pi pi-dollar',
         routerLink: 'cotizar',
       },
-      // {
-      //   label: 'Prueba',
-      //   icon: 'pi pi-dollar',
-      //   routerLink: 'prueba',
-      // },
-      // {
-      //   label: 'Pre-Alistamiento',
-      //   icon: 'pi pi-building-columns',
-      //   routerLink: 'preAlistamiento',
-      // },
+      {
+        label: 'Pre-Alistamiento',
+        icon: 'pi pi-building-columns',
+        routerLink: 'preAlistamiento',
+      },
     ];
   }
 }

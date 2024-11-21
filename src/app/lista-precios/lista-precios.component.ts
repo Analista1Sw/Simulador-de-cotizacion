@@ -24,10 +24,6 @@ import { SplitButtonModule } from 'primeng/splitbutton';
 import { PaginatorModule } from 'primeng/paginator';
 import { ToastModule } from 'primeng/toast';
 
-
-
-
-
 const PRIMENG = [
   ButtonModule,
   TableModule,
@@ -35,8 +31,7 @@ const PRIMENG = [
   RippleModule,
   SplitButtonModule,
   PaginatorModule,
-  ToastModule
-
+  ToastModule,
 ];
 
 interface PageEvent {
@@ -61,46 +56,46 @@ interface PageEvent {
   styleUrl: './lista-precios.component.css',
 })
 export class ListaPreciosComponent {
-
   // constructor
-  constructor(private _productService: ProductService,private _categoryService: CategoryService,private messageService: MessageService) {
-
+  constructor(
+    private _productService: ProductService,
+    private _categoryService: CategoryService,
+    private messageService: MessageService
+  ) {
     // arreglo de categorias
     this.items = [
       {
         label: 'Acabados',
-        items:[
-            {
-              label: 'Muros',
-              command: () => {
-                this.getListProductsByCategory(1);
-              },
+        items: [
+          {
+            label: 'Muros',
+            command: () => {
+              this.getListProductsByCategory(1);
             },
-            {
-              label: 'Pisos Generales',
-              command: () => {
-                this.getListProductsByCategory(2);
-              },
+          },
+          {
+            label: 'Pisos Generales',
+            command: () => {
+              this.getListProductsByCategory(2);
             },
-            {
-              label: 'Pisos Baños',
-              command: () => {
-                this.getListProductsByCategory(3);
-              },
+          },
+          {
+            label: 'Pisos Baños',
+            command: () => {
+              this.getListProductsByCategory(3);
             },
-            {
-              label: 'Techos',
-              command: () => {
-                this.getListProductsByCategory(4);
-              },
+          },
+          {
+            label: 'Techos',
+            command: () => {
+              this.getListProductsByCategory(4);
             },
-
+          },
         ],
-
       },
       {
         label: 'Carpinteria',
-        items:[
+        items: [
           {
             label: 'Habitaciones',
             command: () => {
@@ -119,7 +114,7 @@ export class ListaPreciosComponent {
               this.getListProductsByCategory(10);
             },
           },
-      ],
+        ],
       },
       {
         label: 'Red electrica',
@@ -129,35 +124,32 @@ export class ListaPreciosComponent {
       },
       {
         label: 'Aparatos',
-       items: [
-        {
-          label: 'Cocina',
-          command: () => {
-            this.getListProductsByCategory(8);
+        items: [
+          {
+            label: 'Cocina',
+            command: () => {
+              this.getListProductsByCategory(8);
+            },
           },
-        },
-        {
-          label: 'Baños',
-          command: () => {
-            this.getListProductsByCategory(9);
+          {
+            label: 'Baños',
+            command: () => {
+              this.getListProductsByCategory(9);
+            },
           },
-        }
-       ]
+        ],
       },
-
     ];
   }
 
   first: number = 0;
 
-    rows: number = 10;
+  rows: number = 10;
 
-    onPageChange(event: PageEvent) {
-        this.first = event.first;
-        this.rows = event.rows;
-    }
-
-
+  onPageChange(event: PageEvent) {
+    this.first = event.first;
+    this.rows = event.rows;
+  }
 
   selectedItem: string | undefined;
 
@@ -165,9 +157,8 @@ export class ListaPreciosComponent {
   ListProducts: Product[] = [];
   ListCategories: Category[] = [];
   cols: any[] = [];
-  matchModeOptions: SelectItem[]  = [];
+  matchModeOptions: SelectItem[] = [];
   items: MenuItem[] = [];
-
 
   ngOnInit() {
     const customFilterName = 'custom-equals';
@@ -179,9 +170,7 @@ export class ListaPreciosComponent {
   }
   value!: number;
 
-
-
-  getListProducts(){
+  getListProducts() {
     this._productService.getListProducts().subscribe((data: Product[]) => {
       console.log(data);
       this.ListProducts = data;
@@ -220,7 +209,7 @@ export class ListaPreciosComponent {
       style: 'currency',
       currency: 'USD',
       minimumFractionDigits: 2,
-      maximumFractionDigits: 2
+      maximumFractionDigits: 2,
     }).format(value / 100);
     return formattedValue;
   }
@@ -229,7 +218,7 @@ export class ListaPreciosComponent {
     this.messageService.add({
       severity: 'warn',
       summary: 'Producto eliminado',
-      detail: 'El producto ha sido eliminado con exito'
-      });
-}
+      detail: 'El producto ha sido eliminado con exito',
+    });
+  }
 }

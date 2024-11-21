@@ -1,98 +1,149 @@
 .cotizador-container {
-  max-width: 800px;
-  margin: auto;
-  padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 30px;
+  /* background-color: #f7f9fc; */
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
 
 .simulador-card {
   padding: 20px;
+  /* background: #ffffff; */
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
-.material-selection {
-  display: flex;
-  flex-direction: column;
+h2 {
+  text-align: center;
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+p {
+  text-align: center;
+  color: #555;
+  font-size: 14px;
+}
+
+h3 {
+  font-size: 20px;
+  margin-top: 20px;
+  color: #007bff;
+}
+
+h4 {
+  font-size: 18px;
+  color: #555;
+  margin-top: 20px;
 }
 
 .form-field {
-  margin-bottom: 1.5rem;
+  margin-bottom: 20px;
 }
 
-label {
-  font-weight: bold;
+.material-selection {
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.material-dropdowns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
 }
 
 .material-table {
   width: 100%;
   border-collapse: collapse;
-}
-
-.material-table th,
-.material-table td {
-  padding: 12px;
-  text-align: left;
+  margin-top: 10px;
 }
 
 .material-table th {
-  background-color: #555B04;
+  background-color: #007bff;
   color: white;
+  padding: 10px;
+  text-align: left;
 }
 
-.material-table tr:nth-child(even) {
-  background-color: #f2f2f2;
-}
-
-.button-row {
-  display: flex;
-  justify-content: space-between;
+.material-table td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
 }
 
 .quantity-btn {
-  background-color: #8A9403;
+  background-color: #007bff;
   color: white;
   border: none;
   border-radius: 4px;
-  padding: 6px 12px;
+  padding: 5px 8px;
   cursor: pointer;
   transition: background-color 0.3s;
 }
 
 .quantity-btn:hover {
-  background-color: #8A9403;
+  background-color: #0056b3;
 }
 
-.p-button-success,
-.p-button-secondary {
-  margin-top: 1rem;
+.button-row {
+  margin-top: 20px;
+  text-align: center;
 }
 
-.btn {
-  background-color: #8A9403;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  padding: 10px 20px;
-  cursor: pointer;
-  transition: background-color 0.3s;
+.generate-btn {
+  width: 100%;
+  font-size: 16px;
 }
 
-.btn:hover {
-  background-color: #8A9403;
+.error-message {
+  margin-top: 10px;
+  color: #dc3545;
+  font-size: 14px;
 }
 
-.btn-success {
+.confirm-btn {
   background-color: #28a745;
 }
 
-.btn-secondary {
-  background-color: #6c757d;
+.cancel-btn {
+  background-color: #dc3545;
 }
 
-.form-field input:focus,
-.form-field select:focus,
-.quantity-btn:focus {
-  outline: 2px solid #007ad9;
-  outline-offset: 2px;
+.material-dropdowns > p-dropdown {
+  flex-shrink: 0; /* Evita que los dropdowns se ajusten a contenido más largo */
+  max-width: 180px; /* Limita el tamaño del dropdown */
+  width: 100%; /* Asegura que no se expanda más allá del contenedor */
 }
+
+
+p-dropdown {
+  max-width: 180px; /* Limita el tamaño máximo del dropdown */
+  width: 100%; /* Hace que el dropdown se ajuste al contenedor */
+}
+
+.ui-dropdown-items {
+  max-width: 180px; /* Establece un límite en el ancho de los elementos */
+  overflow: hidden; /* Evita que el texto desborde el contenedor */
+}
+
+.ui-dropdown-item {
+  text-overflow: ellipsis; /* Añade puntos suspensivos si el texto es demasiado largo */
+  white-space: nowrap; /* Asegura que el texto no se divida en varias líneas */
+}
+
+.ui-dropdown-label {
+  white-space: nowrap; /* Impide que el texto se divida en varias líneas */
+  overflow: hidden; /* Oculta cualquier texto que sobrepase el tamaño */
+  text-overflow: ellipsis; /* Añade "..." al final si el texto es demasiado largo */
+}
+
+
+.custom-dropdown {
+  max-width: 250px; /* Cambia este valor según sea necesario */
+  width: 100%; /* Permite que se ajuste al contenedor */
+}
+
+

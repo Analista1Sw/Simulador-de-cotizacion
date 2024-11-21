@@ -1,9 +1,14 @@
 export interface Product{
   id?: number,
-  descripcion: string;
-  imagen?: string;
+  tipoProducto: string;
   precio: number;
-  unidadmedida: string;
+  unidadMedida: string;
   medida: number;
-  idcategoria: number;
+  categoriaProductos: CategoriaProducto[];
+}
+
+export interface CategoriaProducto {
+  id: number;
+  tipoCategoria: string;
+  descripcionCategoria: string;
 }

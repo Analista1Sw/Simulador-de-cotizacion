@@ -1,116 +1,134 @@
+
 <div class="cotizador-container">
-  <p-card header="Simulador de Remodelaciones" class="simulador-card">
-    <div class="p-fluid form-grid">
+  <form [formGroup]="form2">
+    
+    <p-card header="" class="simulador-card">
+      <img [src]="'images/LOGO-MAX.png'" width="150" height="100" />
+      <h2>¡Transforma tu Espacio!</h2>
+      <p>Selecciona la zona que deseas remodelar y elige los materiales perfectos para tu proyecto.</p>
+
       <div class="form-field">
         <label for="room">Zona de la Remodelación</label>
         <p-dropdown
-          [options]="roomOptions"
-          [(ngModel)]="selectedRoom"
-          placeholder="Selecciona la zona"
-          (onChange)="updateMaterials()"
-          [style]="{ width: '100%' }"
+          [options]="zonas"
+          formControlName="zona"
+          optionLabel="nombre"
+          (onChange)="onZonaChange()"
+          placeholder="Seleccione una zona"
+          aria-label="Zona de la remodelación"
         ></p-dropdown>
       </div>
-    </div>
 
-    <h3>Materiales para {{ selectedRoom }}</h3>
+      <h3>Materiales para {{ selectedZona?.nombre || 'Selecciona una zona' }}</h3>
 
-    <div *ngIf="selectedRoomMaterials" class="material-selection">
-      <div
-        class="form-field"
-        *ngFor="let material of ['muro', 'piso', 'techo']"
-      >
-        <label for="{{ material }}">{{
-          "Selecciona " + material | titlecase
-        }}</label>
-        <p-dropdown
-          [options]="selectedRoomMaterials[material + 's']"
-          [(ngModel)]="selectedMaterials[material]"
-          placeholder="Selecciona un material para {{ material }}"
-          [style]="{ width: '100%' }"
-        ></p-dropdown>
+      <div *ngIf="selectedRoomMaterials" class="material-selection">
+        <h4>Selecciona Materiales Disponibles</h4>
+
+        <div class="material-dropdowns">
+          <div class="form-field">
+            <label for="muros">Muros</label>
+            <p-dropdown
+              [options]="selectedRoomMaterials.muros"
+              formControlName="muro"
+              optionLabel="tipoProducto"
+              placeholder="Selecciona un muro"
+              class="custom-dropdown"
+            ></p-dropdown>
+          </div>
+          <div class="form-field">
+            <label for="pisos">Pisos</label>
+            <p-dropdown
+              [options]="selectedRoomMaterials.pisos"
+              formControlName="piso"
+              optionLabel="tipoProducto"
+              placeholder="Selecciona un piso"
+              class="custom-dropdown"
+            ></p-dropdown>
+          </div>
+          <div class="form-field">
+            <label for="techos">Techos</label>
+            <p-dropdown
+              [options]="selectedRoomMaterials.techos"
+              formControlName="techo"
+              optionLabel="tipoProducto"
+              placeholder="Selecciona un techo"
+              class="custom-dropdown"
+            ></p-dropdown>
+          </div>
+        </div>
+
+        <h4>Accesorios</h4>
+        <table class="material-table" *ngIf="filteredAccessories().length > 0">
+          <thead>
+            <tr>
+              <th>Accesorio</th>
+              <th>Cantidad</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let accesorio of filteredAccessories()">
+              <td>{{ accesorio.nombre }}</td>
+              <td class="quantity-field">
+                <button
+                  (click)="decrementQuantity(accesorio)"
+                  class="quantity-btn"
+                  aria-label="Disminuir cantidad"
+                >
+                  <i class="pi pi-minus"></i>
+                </button>
+                {{ accesorio.cantidad }}
+                <button
+                  (click)="incrementQuantity(accesorio)"
+                  class="quantity-btn"
+                  aria-label="Incrementar cantidad"
+                >
+                  <i class="pi pi-plus"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="button-row">
+          <button
+            pButton
+            label="Generar Cotización"
+            class="p-button-success generate-btn"
+            icon="pi pi-check"
+            (click)="confirmQuote()"
+            [disabled]="!isQuoteReady"
+          ></button>
+          <p *ngIf="!isQuoteReady" class="error-message">
+            Por favor, completa todos los campos requeridos.
+          </p>
+        </div>
       </div>
-    </div>
+    </p-card>
 
-    <div class="filter-section">
-      <p-inputText
-        placeholder="Buscar accesorio..."
-        [(ngModel)]="searchText"
-      ></p-inputText>
-      <p-dropdown
-        [options]="categoryOptions"
-        placeholder="Filtrar por categoría"
-        [(ngModel)]="selectedCategory"
-      ></p-dropdown>
-    </div>
-
-    <h4>Accesorios</h4>
-    <table class="material-table" *ngIf="filteredAccessories().length > 0">
-      <thead>
-        <tr>
-          <th>Accesorio</th>
-          <th>Cantidad</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let accesorio of filteredAccessories()">
-          <td>{{ accesorio.nombre }}</td>
-          <td>
-            <button (click)="decrementQuantity(accesorio)" class="quantity-btn">
-              -
-            </button>
-            {{ accesorio.cantidad }}
-            <button (click)="incrementQuantity(accesorio)" class="quantity-btn">
-              +
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <div class="button-row">
-      <button
-        pButton
-        label="Generar Cotización"
-        class="p-button-success"
-        icon="pi pi-check"
-        (click)="confirmQuote()"
-        [disabled]="!isQuoteReady"
-      ></button>
-      <!-- <button
-        pButton
-        label="Descargar PDF"
-        class="p-button-secondary"
-        icon="pi pi-download"
-        (click)="downloadPDF()"
-      ></button> -->
-    </div>
-  </p-card>
-
-  <!-- Modal de confirmación -->
-  <p-dialog
-    header="Confirmar Cotización"
-    [(visible)]="displayModal"
-    [modal]="true"
-    [closable]="false"
-    [style]="{ width: '400px' }"
-  >
-    <p>¿Estás seguro de que deseas generar la cotización?</p>
-    <p-footer>
-      <button
-        pButton
-        label="Confirmar"
-        icon="pi pi-check"
-        (click)="proceedWithQuote()"
-        class="p-button-success"
-      ></button>
-      <button
-        pButton
-        label="Cancelar"
-        icon="pi pi-times"
-        (click)="cancelQuote()"
-        class="p-button-secondary"
-      ></button>
-    </p-footer>
-  </p-dialog>
+    <p-dialog
+      header="Confirmar Cotización"
+      [(visible)]="displayModal"
+      [modal]="true"
+      [closable]="false"
+      [style]="{ width: '400px' }"
+    >
+      <p>¿Estás seguro de que deseas generar la cotización?</p>
+      <p-footer>
+        <button
+          pButton
+          label="Confirmar"
+          icon="pi pi-check"
+          (click)="proceedWithQuote()"
+          class="p-button-success confirm-btn"
+        ></button>
+        <button
+          pButton
+          label="Cancelar"
+          icon="pi pi-times"
+          (click)="cancelQuote()"
+          class="p-button-secondary cancel-btn"
+        ></button>
+      </p-footer>
+    </p-dialog>
+  </form>
 </div>
