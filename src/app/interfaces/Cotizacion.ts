@@ -1,4 +1,4 @@
-import { MaterialesPorCategoria } from '../interfaces/MaterialesPorCategoria';
+import { MaterialesPorCategoria } from './MaterialesPorCategoria';
 
 export interface Cotizacion {
   cotizacionId: number;

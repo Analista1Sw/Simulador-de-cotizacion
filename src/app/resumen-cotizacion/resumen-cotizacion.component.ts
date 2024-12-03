@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core'; 
 import { CommonModule } from '@angular/common';
-import { CotizacionService } from '../../services/Resumen.service';
+import { CotizacionService } from '../services/Resumen.service';
 
 @Component({
   selector: 'app-resumen-cotizacion',
@@ -10,11 +10,16 @@ import { CotizacionService } from '../../services/Resumen.service';
   styleUrls: ['./resumen-cotizacion.component.css'],
 })
 export class ResumenCotizacionComponent implements OnInit {
-  data: any; 
+  data: any;
+
+  // Ejemplo de id que se pasará al servicio
+  private idCotizacion: number = 53;  
+
   constructor(private cotizacionService: CotizacionService) {}
 
   ngOnInit() {
-    this.cotizacionService.getResumen().subscribe({
+    // Pasar el idCotizacion al método getResumen()
+    this.cotizacionService.getResumen(this.idCotizacion).subscribe({
       next: (response) => {
         this.data = response;
         console.log('Datos recibidos del backend:', this.data);

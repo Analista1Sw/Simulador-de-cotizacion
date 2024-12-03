@@ -1,0 +1,145 @@
+<div
+  *ngIf="form"
+  class="p-d-flex p-jc-center p-ai-center"
+  style="min-height: 100vh; background-color: #f7f7f7; padding: 20px"
+>
+  <div
+    class="p-card"
+    style="
+      max-width: 600px;
+      width: 100%;
+      padding: 2.5rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      background-color: #ffffff;
+    "
+  >
+    <h2 class="text-center" style="margin-bottom: 2rem; color: #3f51b5">
+      Crear Apartamento
+    </h2>
+
+    <form [formGroup]="form" class="p-fluid">
+      <!-- Campo de Proyecto -->
+      <div class="p-field" style="margin-bottom: 1.5rem">
+        <label for="proyecto">Proyecto</label>
+        <p-dropdown
+          id="proyecto"
+          formControlName="proyecto"
+          [options]="proyectos"
+          optionLabel="label"
+          placeholder="Seleccione un proyecto"
+          class="p-inputtext-sm"
+        ></p-dropdown>
+      </div>
+
+      <!-- Campo de Tipo de Apartamento -->
+      <div class="p-field" style="margin-bottom: 1.5rem">
+        <label for="tipoApartamento">Tipo de Apartamento</label>
+        <input
+          id="tipoApartamento"
+          type="text"
+          formControlName="tipoApartamento"
+          placeholder="Ej: Apartamento Tipo A"
+          class="p-inputtext p-inputtext-sm"
+        />
+      </div>
+
+      <!-- Botón Agregar Zona -->
+      <div class="p-d-flex p-jc-end" style="margin-bottom: 2rem">
+        <button
+          type="button"
+          pButton
+          label="Agregar Zona"
+          icon="pi pi-plus"
+          class="p-button-success"
+          (click)="agregarZona()"
+        ></button>
+      </div>
+
+      <!-- Iteración sobre el FormArray -->
+      <div formArrayName="zonas">
+        <div
+          *ngFor="let zona of zonas.controls; let i = index"
+          [formGroupName]="i"
+          class="p-card p-shadow-3"
+          style="margin-bottom: 1.5rem; padding: 1rem"
+        >
+          <h4 style="color: #3f51b5; margin-bottom: 1.5rem">
+            Zona {{ i + 1 }} 
+          </h4>
+
+          <!-- Dropdown para seleccionar zona -->
+          <div class="p-field" style="margin-bottom: 1.5rem">
+            <label for="zona{{ i }}">Zona</label>
+            <p-dropdown
+              id="zona{{ i }}"
+              formControlName="idZona"
+              [options]="zonasDisponibles"
+              optionLabel="label"
+              placeholder="Seleccione una zona"
+              class="p-inputtext-sm"
+            ></p-dropdown>
+          </div>
+
+          <!-- Medidas -->
+          <div class="p-field" style="margin-bottom: 1.5rem">
+            <label for="muros{{ i }}">Medida de Muros (m²)</label>
+            <input
+              id="muros{{ i }}"
+              type="text"
+              formControlName="muros"
+              placeholder="Ej: 20.5"
+              class="p-inputtext p-inputtext-sm"
+            />
+          </div>
+
+          <div class="p-field" style="margin-bottom: 1.5rem">
+            <label for="pisos{{ i }}">Medida de Pisos (m²)</label>
+            <input
+              id="pisos{{ i }}"
+              type="text"
+              formControlName="pisos"
+              placeholder="Ej: 15.75"
+              class="p-inputtext p-inputtext-sm"
+            />
+          </div>
+
+          <div class="p-field" style="margin-bottom: 1.5rem">
+            <label for="techo{{ i }}">Medida de Techo (m²)</label>
+            <input
+              id="techo{{ i }}"
+              type="text"
+              formControlName="techo"
+              placeholder="Ej: 15.75"
+              class="p-inputtext p-inputtext-sm"
+            />
+          </div>
+
+          <!-- Botón Eliminar Zona -->
+          <div class="p-d-flex p-jc-end">
+            <button
+              type="button"
+              pButton
+              label="Eliminar Zona"
+              icon="pi pi-trash"
+              class="p-button-rounded p-button-danger"
+              (click)="eliminarZona(i)"
+            ></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botones finales -->
+      <div class="p-d-flex p-jc-between" style="margin-top: 2rem">
+        <button
+          pButton
+          type="button"
+          label="Guardar"
+          class="p-button-primary"
+          (click)="onSubmit()"
+        ></button>
+      </div>
+      <p-toast></p-toast>
+    </form>
+  </div>
+</div>

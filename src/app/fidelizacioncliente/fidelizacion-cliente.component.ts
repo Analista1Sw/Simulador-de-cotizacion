@@ -9,8 +9,8 @@ import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { ToastModule } from 'primeng/toast';
 import { Router } from '@angular/router';
-import { DatosProyecto } from '../../interfaces/DatosProyecto';
-import { ProyectoService } from '../../services/DatosProyecto.service';
+import { DatosProyecto } from '../interfaces/DatosProyecto';
+import { ProyectoService } from '../services/DatosProyecto.service';
 
 @Component({
   selector: 'app-fidelizacion-cliente',

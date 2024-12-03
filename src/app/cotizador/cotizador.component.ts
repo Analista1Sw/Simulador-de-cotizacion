@@ -1,43 +1,29 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import {
-  ReactiveFormsModule,
-  FormsModule,
-  FormGroup,
-  FormControl,
-  Validators,
-} from '@angular/forms';
-import { MessageService } from 'primeng/api';
-import { DropdownModule } from 'primeng/dropdown';
-import { InputNumberModule } from 'primeng/inputnumber';
-import { ButtonModule } from 'primeng/button';
-import { CardModule } from 'primeng/card';
-import { ToastModule } from 'primeng/toast';
-import { DialogModule } from 'primeng/dialog';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { TabViewModule } from 'primeng/tabview';
-import { CotizacionService } from '../../services/cotizacion.service';
-import { MaterialesPorCategoria } from '../../interfaces/MaterialesPorCategoria';
-import { Zona } from '../../interfaces/MaterialesPorCategoria';
-
-import { ProductoAEnviar } from '../../interfaces/MaterialesPorCategoria';
-import { Producto } from '../../interfaces/MaterialesPorCategoria';
-import { Cotizacion } from '../../interfaces/Cotizacion';
+import { DropdownModule } from 'primeng/dropdown';
+import { ButtonModule } from 'primeng/button';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { DialogModule } from 'primeng/dialog';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
+import { CotizacionService } from '../services/cotizacion.service';
+import { MaterialesPorCategoria } from '../interfaces/MaterialesPorCategoria';
+import { Producto } from '../interfaces/MaterialesPorCategoria';
 
 @Component({
   selector: 'app-cotizador',
   standalone: true,
   imports: [
     CommonModule,
-    ReactiveFormsModule,
-    FormsModule,
-    DropdownModule,
-    InputNumberModule,
-    ButtonModule,
-    CardModule,
-    ToastModule,
-    DialogModule,
     TabViewModule,
+    DropdownModule,
+    ButtonModule,
+    FormsModule,
+    DialogModule,
+    ToastModule
   ],
   templateUrl: './cotizador.component.html',
   styleUrls: ['./cotizador.component.css'],
@@ -45,29 +31,22 @@ import { Cotizacion } from '../../interfaces/Cotizacion';
 })
 export class CotizadorComponent {
   form2: FormGroup;
-  displayModal = false;
-  isQuoteReady = true; // Button is always enabled
-  zonas: Zona[] = [];
-  selectedZona?: Zona;
-  selectedRoom = '';
-  searchText = '';
-  selectedCategory = '';
-  productosFiltrados: Producto[] = [];
+  displayModal: boolean = false; // Controla la visibilidad del modal
+  materialesMuro: Producto[] = [];
+  materialesPiso: Producto[] = [];
+  materialesTecho: Producto[] = [];
+  materialesZocalo: Producto[] = [];
+  materialesAparatos: Producto[] = [];
 
-  selectedMaterialsByZone: { [zone: string]: { [key: string]: string } } = {};
-
-  selectedRoomMaterials: MaterialesPorCategoria = {
-    muros: [],
-    pisos: [],
-    techos: [],
-    accesorios: [],
-  };
-
-  categoryOptions = [
-    { label: 'Almacenamiento', value: 'Almacenamiento' },
-    { label: 'Iluminación', value: 'Iluminación' },
-    { label: 'Aparatos', value: 'Aparatos' },
-  ];
+  selectedMaterialMuroHabitacion: Producto | null = null;
+  selectedMaterialPisoHabitacion: Producto | null = null;
+  selectedMaterialTechoHabitacion: Producto | null = null;
+  selectedMaterialMuroBa: Producto | null = null;
+  selectedMaterialPisoBa: Producto | null = null;
+  selectedMaterialTechoBa: Producto | null = null;
+  selectedMaterialMuroCocina: string | null = null;
+  selectedMaterialPisoCocina: string | null = null;
+  selectedMaterialTechoCocina: string | null = null;
 
   constructor(
     private router: Router,
@@ -76,203 +55,90 @@ export class CotizadorComponent {
   ) {
     this.form2 = new FormGroup({
       zona: new FormControl(null, Validators.required),
-      muro: new FormControl(null),
-      piso: new FormControl(null),
-      techo: new FormControl(null),
-      accesorios: new FormControl([]),
     });
   }
 
   ngOnInit(): void {
-    this.loadZonas();
+    this.loadMateriales();
   }
 
-  loadZonas() {
-    this.cotizacionService.getZonas().subscribe(
-      (zonas: any[]) => {
-        this.zonas = zonas.map((zona) => ({
-          id: zona.id,
-          nombre: zona.itemsZonas?.zonas?.nombre?.trim() || 'Sin Nombre',
-        }));
-      },
-      (error: any) => {
-        console.error('Error al cargar zonas:', error);
-      }
-    );
-  }
-
-  onZonaChange(): void {
-    const selectedZone = this.form2.controls['zona'].value;
-
-    if (selectedZone) {
-      this.cotizacionService.getMaterialesByZona(selectedZone.id).subscribe(
-        (materiales: MaterialesPorCategoria) => {
-          this.selectedRoomMaterials = materiales;
-          console.log('Materiales cargados:', materiales);
-        },
-        (error) => {
-          console.error('Error al cargar materiales:', error);
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail:
-              'No se pudieron cargar los materiales para la zona seleccionada.',
-          });
-        }
-      );
-    }
-  }
-
-  cargarProductosPorCategoria(tipoCategoria: string): void {
-    this.cotizacionService.getProductosByCategoria(tipoCategoria).subscribe(
-      (productos: Producto[]) => {
-        this.productosFiltrados = productos;
+  loadMateriales(): void {
+    this.cotizacionService.getMaterialesByZona('1').subscribe(
+      (materiales: MaterialesPorCategoria) => {
+        console.log(materiales); // Verifica la estructura de los datos
+        this.materialesMuro = materiales.muros;
+        this.materialesPiso = materiales.pisos;
+        this.materialesTecho = materiales.techos;
+        this.materialesZocalo = materiales.accesorios.filter((m) =>
+          m.categoria.includes('Zócalo')
+        );
+        this.materialesAparatos = materiales.accesorios.filter((m) =>
+          m.categoria.includes('Aparato')
+        );
       },
       (error) => {
-        console.error('Error al cargar productos:', error);
+        console.error('Error al cargar materiales:', error);
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
-          detail: 'No se pudieron cargar los productos.',
+          detail: 'No se pudieron cargar los materiales.',
         });
       }
     );
-  }
-
-  onCategoryChange(): void {
-    const selectedCategory = this.selectedCategory;
-    if (selectedCategory) {
-      this.cargarProductosPorCategoria(selectedCategory);
-    }
-  }
-
-  filteredAccessories() {
-    if (Array.isArray(this.selectedRoomMaterials.accesorios)) {
-      return this.selectedRoomMaterials.accesorios.filter((accesorio) => {
-        const nombreAccesorio = accesorio.nombre
-          ? accesorio.nombre.toLowerCase()
-          : '';
-        const searchText = this.searchText ? this.searchText.toLowerCase() : '';
-        const matchesSearch = nombreAccesorio.includes(searchText);
-
-        return matchesSearch;
-      });
-    }
-    return [];
-  }
-
-  incrementQuantity(accesorio: { cantidad: number }) {
-    accesorio.cantidad += 1;
-  }
-
-  decrementQuantity(accesorio: { cantidad: number }) {
-    if (accesorio.cantidad > 1) {
-      accesorio.cantidad -= 1;
-    }
   }
 
   submitAllZonesQuote() {
-    if (!this.selectedRoomMaterials) {
-      this.messageService.add({
-        severity: 'warn',
-        summary: 'Sin datos',
-        detail: 'No hay materiales seleccionados para enviar.',
-      });
-      return;
-    }
-  
-    const productosAEnviar: ProductoAEnviar[] = [];
-  
-    // Mapea los materiales seleccionados a ProductoAEnviar
-    Object.keys(this.selectedRoomMaterials).forEach((category) => {
-      const materiales = this.selectedRoomMaterials[category as keyof MaterialesPorCategoria];
-  
-      materiales.forEach((material) => {
-        if (material.cantidad) {
-          productosAEnviar.push({
-            idProducto: material.id,
-            idZona: this.selectedZona?.id ?? 0,
-            cantidad: material.cantidad,
-            idProyecto: 1, // Asumiendo 1 como ID de proyecto por defecto
-          });
-        }
-      });
-    });
-  
-    // Mapea ProductoAEnviar a Producto
-    const productosParaEnviar: Producto[] = productosAEnviar.map((item) => ({
-      id: item.idProducto,
-      tipoProducto: '', // Asigna con los datos reales, si están disponibles
-      descripcionProducto: '', // Asigna con los datos reales, si están disponibles
-      unidadMedida: '', // Asigna con los datos reales, si están disponibles
-      medida: 0, // Asigna con los datos reales, si están disponibles
-      precio: 0, // Asigna con los datos reales, si están disponibles
-      idEmpresa: 1, // Asigna un valor apropiado
-      categoriaProductos: item.categoriaProductos || [] // Aquí, asigna las categorías obtenidas de algún lado
+    const materialesSeleccionados = [
+      this.selectedMaterialMuroHabitacion,
+      this.selectedMaterialPisoHabitacion,
+      this.selectedMaterialTechoHabitacion,
+      this.selectedMaterialMuroBa,
+      this.selectedMaterialPisoBa,
+      this.selectedMaterialTechoBa,
+    ].filter((material) => material !== null);
+
+    const productosAEnviar = materialesSeleccionados.map((material) => ({
+      idProducto: material!.id,
+      idZona: 1, // Id de zona, según la lógica de tu backend
+      cantidad: 1, // Cantidad predeterminada
     }));
-    
-  
-    // Envía los datos transformados al backend
-    this.cotizacionService.sendAllQuotes(productosParaEnviar).subscribe(
+
+    this.cotizacionService.sendAllQuotes(productosAEnviar).subscribe(
       () => {
         this.messageService.add({
           severity: 'success',
-          summary: 'Cotización enviada',
-          detail: 'Los datos de la cotización se enviaron correctamente.',
+          summary: 'Éxito',
+          detail: 'Los materiales han sido enviados.',
         });
-        this.resetForm();
       },
       (error) => {
-        console.error('Error al enviar la cotización:', error);
+        console.error('Error al enviar materiales:', error);
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
-          detail: 'No se pudo enviar la cotización.',
+          detail: 'No se pudieron enviar los materiales.',
         });
       }
     );
   }
-  
-
-  resetForm() {
-    this.form2.reset();
-    this.selectedMaterialsByZone = {};
-    this.selectedRoomMaterials = {
-      muros: [],
-      pisos: [],
-      techos: [],
-      accesorios: [],
-    };
-    this.selectedZona = undefined;
-    this.isQuoteReady = false;
-  }
-
-  confirmQuote() {
+  // Muestra el modal cuando se hace clic en "Generar Cotización"
+  showConfirmationDialog() {
     this.displayModal = true;
   }
-
+  // Acción cuando se confirma la cotización
   proceedWithQuote() {
-    this.displayModal = false;
-
-    const cotizacion: Cotizacion = {
-      cotizacionId: Math.floor(Math.random() * 100000), // Generar un ID ficticio
-      cliente: 'Juan Pérez', // Cambia esto por datos reales del cliente
-      proyecto: 'Remodelación Casa', // Cambia esto según el proyecto seleccionado
-      materiales: this.selectedRoomMaterials,
-    };
-
-    console.log('Cotización generada:', cotizacion);
-
-    this.router.navigate(['resumen/'], {
-      state: { data: cotizacion },
+    // Mostrar el toast de éxito
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Cotización Generada',
+      detail: 'La cotización se ha generado correctamente.',
     });
+    // Redirigir a la página de resumen
+    this.router.navigate(['/resumen']); 
+    this.displayModal = false; 
   }
-
+  // Acción cuando se cancela la cotización
   cancelQuote() {
-    this.displayModal = false;
-  }
-
-  downloadPDF() {
-    // Lógica para descargar el PDF
+    this.displayModal = false; 
   }
 }

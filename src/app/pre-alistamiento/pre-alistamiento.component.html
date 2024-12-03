@@ -39,7 +39,7 @@
       size="large"
       icon="pi pi-plus"
       class="mb-2"
-      (click)="openModal(true)"
+      (click)="goToDetallesApto()"
     ></p-button>
   </div>
 
@@ -110,83 +110,6 @@
               rows="4"
               class="input-field w-full"
             ></textarea>
-          </div>
-        </div>
-        <!-- Sección de Apartamento -->
-        <div *ngIf="isCreatingApartment">
-          <h4 class="text-center mt-4 mb-3">Detalles del Apartamento</h4>
-
-          <!-- Nombre del Apartamento -->
-          <div class="col-12 md:col-6">
-            <div class="field">
-              <label for="nombreApartamento">Nombre del Apartamento:</label>
-              <input
-                id="nombreApartamento"
-                name="nombreApartamento"
-                [(ngModel)]="nombreApartamento"
-                required
-                #nombreApartamentoInput="ngModel"
-                class="input-field w-full"
-              />
-              <small
-                *ngIf="
-                  nombreApartamentoInput.invalid &&
-                  nombreApartamentoInput.touched
-                "
-                class="p-error"
-              >
-                El nombre del apartamento es obligatorio.
-              </small>
-            </div>
-          </div>
-
-          <!-- Medida del Apartamento -->
-          <div class="col-12 md:col-6">
-            <div class="field">
-              <label for="medidaApartamento"
-                >Medida del Apartamento (m²):</label
-              >
-              <input
-                type="number"
-                id="medidaApartamento"
-                name="medidaApartamento"
-                [(ngModel)]="medidaApartamento"
-                required
-                #medidaApartamentoInput="ngModel"
-                class="input-field w-full"
-              />
-              <small
-                *ngIf="
-                  medidaApartamentoInput.invalid &&
-                  medidaApartamentoInput.touched
-                "
-                class="p-error"
-              >
-                La medida del apartamento es obligatoria.
-              </small>
-            </div>
-          </div>
-
-          <!-- Zonas -->
-          <div class="col-12">
-            <div class="field">
-              <label for="zonas">Zonas (Cocinas, Baños, Habitaciones):</label>
-              <textarea
-                id="zonas"
-                name="zonas"
-                [(ngModel)]="zonas"
-                required
-                #zonasInput="ngModel"
-                rows="3"
-                class="input-field w-full"
-              ></textarea>
-              <small
-                *ngIf="zonasInput.invalid && zonasInput.touched"
-                class="p-error"
-              >
-                Las zonas son obligatorias.
-              </small>
-            </div>
           </div>
         </div>
       </div>

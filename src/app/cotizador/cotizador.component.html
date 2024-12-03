@@ -1,134 +1,250 @@
+<div class="p-m-5">
+  <div class="header-container p-d-flex p-ai-center p-mb-3">
+    <!-- <img
+      [src]="'images/Final03.png'"
+      width="100"
+      height="100"
+      class="logo p-mr-3"
+      alt="Logo"
+    /> -->
+    <h1 class="text-center p-m-0" style="font-size: 1.8em; color: #333">
+      Simulador de Remodelación de Apartamentos
+    </h1>
+  </div>
 
-<div class="cotizador-container">
-  <form [formGroup]="form2">
-    
-    <p-card header="" class="simulador-card">
-      <img [src]="'images/LOGO-MAX.png'" width="150" height="100" />
-      <h2>¡Transforma tu Espacio!</h2>
-      <p>Selecciona la zona que deseas remodelar y elige los materiales perfectos para tu proyecto.</p>
-
-      <div class="form-field">
-        <label for="room">Zona de la Remodelación</label>
-        <p-dropdown
-          [options]="zonas"
-          formControlName="zona"
-          optionLabel="nombre"
-          (onChange)="onZonaChange()"
-          placeholder="Seleccione una zona"
-          aria-label="Zona de la remodelación"
-        ></p-dropdown>
-      </div>
-
-      <h3>Materiales para {{ selectedZona?.nombre || 'Selecciona una zona' }}</h3>
-
-      <div *ngIf="selectedRoomMaterials" class="material-selection">
-        <h4>Selecciona Materiales Disponibles</h4>
-
-        <div class="material-dropdowns">
-          <div class="form-field">
-            <label for="muros">Muros</label>
-            <p-dropdown
-              [options]="selectedRoomMaterials.muros"
-              formControlName="muro"
-              optionLabel="tipoProducto"
-              placeholder="Selecciona un muro"
-              class="custom-dropdown"
-            ></p-dropdown>
-          </div>
-          <div class="form-field">
-            <label for="pisos">Pisos</label>
-            <p-dropdown
-              [options]="selectedRoomMaterials.pisos"
-              formControlName="piso"
-              optionLabel="tipoProducto"
-              placeholder="Selecciona un piso"
-              class="custom-dropdown"
-            ></p-dropdown>
-          </div>
-          <div class="form-field">
-            <label for="techos">Techos</label>
-            <p-dropdown
-              [options]="selectedRoomMaterials.techos"
-              formControlName="techo"
-              optionLabel="tipoProducto"
-              placeholder="Selecciona un techo"
-              class="custom-dropdown"
-            ></p-dropdown>
-          </div>
+  <p-tabView>
+    <!-- Tab Habitación -->
+    <p-tabPanel header="🏠 Privadas y Sociales">
+      <div class="p-fluid">
+        <h3>Privadas y Sociales</h3>
+        <div class="field">
+          <label for="muro">Muro</label>
+          <p-dropdown
+            id="muro"
+            [options]="materialesMuro"
+            [(ngModel)]="selectedMaterialMuroHabitacion"
+            placeholder="Selecciona material para muro"
+            optionLabel="tipoProducto"
+          ></p-dropdown>
         </div>
-
-        <h4>Accesorios</h4>
-        <table class="material-table" *ngIf="filteredAccessories().length > 0">
-          <thead>
-            <tr>
-              <th>Accesorio</th>
-              <th>Cantidad</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let accesorio of filteredAccessories()">
-              <td>{{ accesorio.nombre }}</td>
-              <td class="quantity-field">
-                <button
-                  (click)="decrementQuantity(accesorio)"
-                  class="quantity-btn"
-                  aria-label="Disminuir cantidad"
-                >
-                  <i class="pi pi-minus"></i>
-                </button>
-                {{ accesorio.cantidad }}
-                <button
-                  (click)="incrementQuantity(accesorio)"
-                  class="quantity-btn"
-                  aria-label="Incrementar cantidad"
-                >
-                  <i class="pi pi-plus"></i>
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-
-        <div class="button-row">
-          <button
-            pButton
-            label="Generar Cotización"
-            class="p-button-success generate-btn"
-            icon="pi pi-check"
-            (click)="confirmQuote()"
-            [disabled]="!isQuoteReady"
-          ></button>
-          <p *ngIf="!isQuoteReady" class="error-message">
-            Por favor, completa todos los campos requeridos.
-          </p>
+        <div class="field">
+          <label for="piso">Piso</label>
+          <p-dropdown
+            id="piso"
+            [options]="materialesPiso"
+            [(ngModel)]="selectedMaterialPisoHabitacion"
+            placeholder="Selecciona material para piso"
+          ></p-dropdown>
+        </div>
+        <div class="field">
+          <label for="techo">Techo</label>
+          <p-dropdown
+            id="techo"
+            [options]="materialesTecho"
+            [(ngModel)]="selectedMaterialTechoHabitacion"
+            placeholder="Selecciona material para techo"
+          ></p-dropdown>
+        </div>
+        <div class="field">
+          <label for="techo">Guarda Escoba</label>
+          <p-dropdown
+            id="techo"
+            [options]="materialesTecho"
+            [(ngModel)]="selectedMaterialTechoCocina"
+            placeholder="Selecciona material para techo"
+          ></p-dropdown>
+        </div>
+        <div class="field">
+          <label for="muro">Carpinteria</label>
+          <p-dropdown
+            id="muro"
+            [options]="materialesMuro"
+            [(ngModel)]="selectedMaterialMuroHabitacion"
+            placeholder="Selecciona material para carpinteria"
+          ></p-dropdown>
         </div>
       </div>
-    </p-card>
+    </p-tabPanel>
 
-    <p-dialog
-      header="Confirmar Cotización"
-      [(visible)]="displayModal"
-      [modal]="true"
-      [closable]="false"
-      [style]="{ width: '400px' }"
-    >
-      <p>¿Estás seguro de que deseas generar la cotización?</p>
-      <p-footer>
-        <button
-          pButton
-          label="Confirmar"
-          icon="pi pi-check"
-          (click)="proceedWithQuote()"
-          class="p-button-success confirm-btn"
-        ></button>
-        <button
-          pButton
-          label="Cancelar"
-          icon="pi pi-times"
-          (click)="cancelQuote()"
-          class="p-button-secondary cancel-btn"
-        ></button>
-      </p-footer>
-    </p-dialog>
-  </form>
+    <!-- Tab Baño -->
+    <p-tabPanel header="🚿 Baño">
+      <div class="p-fluid">
+        <h3>Baño</h3>
+        <div class="field">
+          <label for="muro">Muro</label>
+          <p-dropdown
+            id="muro"
+            [options]="materialesMuro"
+            [(ngModel)]="selectedMaterialMuroBa"
+            placeholder="Selecciona material para muro"
+          ></p-dropdown>
+        </div>
+        <div class="field">
+          <label for="piso">Piso</label>
+          <p-dropdown
+            id="piso"
+            [options]="materialesPiso"
+            [(ngModel)]="selectedMaterialPisoBa"
+            placeholder="Selecciona material para piso"
+          ></p-dropdown>
+        </div>
+        <div class="field">
+          <label for="techo">Techo</label>
+          <p-dropdown
+            id="techo"
+            [options]="materialesTecho"
+            [(ngModel)]="selectedMaterialTechoBa"
+            placeholder="Selecciona material para techo"
+          ></p-dropdown>
+        </div>
+        <div class="field">
+          <label for="muro">Zocalo</label>
+          <p-dropdown
+            id="muro"
+            [options]="materialesMuro"
+            [(ngModel)]="selectedMaterialMuroHabitacion"
+            placeholder="Selecciona material para zocalo"
+          ></p-dropdown>
+        </div>
+        <div class="field">
+          <label for="muro">Aparatos</label>
+          <p-dropdown
+            id="muro"
+            [options]="materialesMuro"
+            [(ngModel)]="selectedMaterialMuroHabitacion"
+            placeholder="Selecciona aparatos"
+          ></p-dropdown>
+        </div>
+      </div>
+    </p-tabPanel>
+
+    <!-- Tab Cocina -->
+    <p-tabPanel header="🍳 Cocina">
+      <div class="p-fluid">
+        <h3>Cocina</h3>
+        <div class="field">
+          <label for="muro">Muro</label>
+          <p-dropdown
+            id="muro"
+            [options]="materialesMuro"
+            [(ngModel)]="selectedMaterialMuroCocina"
+            placeholder="Selecciona material para muro"
+          ></p-dropdown>
+        </div>
+        <div class="field">
+          <label for="piso">Piso</label>
+          <p-dropdown
+            id="piso"
+            [options]="materialesPiso"
+            [(ngModel)]="selectedMaterialPisoCocina"
+            placeholder="Selecciona material para piso"
+          ></p-dropdown>
+        </div>
+        <div class="field">
+          <label for="techo">Techo</label>
+          <p-dropdown
+            id="techo"
+            [options]="materialesTecho"
+            [(ngModel)]="selectedMaterialTechoCocina"
+            placeholder="Selecciona material para techo"
+          ></p-dropdown>
+        </div>
+        <div class="field">
+          <label for="techo">Guarda Escoba</label>
+          <p-dropdown
+            id="techo"
+            [options]="materialesTecho"
+            [(ngModel)]="selectedMaterialTechoCocina"
+            placeholder="Selecciona material para techo"
+          ></p-dropdown>
+        </div>
+        <div class="field">
+          <label for="muro">Accesorios</label>
+          <p-dropdown
+            id="muro"
+            [options]="materialesMuro"
+            [(ngModel)]="selectedMaterialMuroHabitacion"
+            placeholder="Selecciona accesorios"
+          ></p-dropdown>
+        </div>
+      </div>
+    </p-tabPanel>
+
+    <!-- Tab Lavado -->
+    <p-tabPanel header="🧺 Lavado">
+      <div class="p-fluid">
+        <h3>Lavado</h3>
+        <div class="field">
+          <label for="muro">Muro</label>
+          <p-dropdown
+            id="muro"
+            [options]="materialesMuro"
+            [(ngModel)]="selectedMaterialMuroCocina"
+            placeholder="Selecciona material para muro"
+          ></p-dropdown>
+        </div>
+        <div class="field">
+          <label for="piso">Piso</label>
+          <p-dropdown
+            id="piso"
+            [options]="materialesPiso"
+            [(ngModel)]="selectedMaterialPisoCocina"
+            placeholder="Selecciona material para piso"
+          ></p-dropdown>
+        </div>
+        <div class="field">
+          <label for="techo">Techo</label>
+          <p-dropdown
+            id="techo"
+            [options]="materialesTecho"
+            [(ngModel)]="selectedMaterialTechoCocina"
+            placeholder="Selecciona material para techo"
+          ></p-dropdown>
+        </div>
+        <div class="field">
+          <label for="techo">Guarda Escoba</label>
+          <p-dropdown
+            id="techo"
+            [options]="materialesTecho"
+            [(ngModel)]="selectedMaterialTechoCocina"
+            placeholder="Selecciona material para guarda escoba"
+          ></p-dropdown>
+        </div>
+      </div>
+    </p-tabPanel>
+  </p-tabView>
+  <div class="p-d-flex p-jc-center p-mt-4">
+    <p-button
+      label="Generar Cotización"
+      (click)="showConfirmationDialog()"
+    ></p-button>
+  </div>
+  <!-- Componente de Dialogo -->
+  <p-dialog
+    header="Confirmar Cotización"
+    [(visible)]="displayModal"
+    [modal]="true"
+    [closable]="false"
+    [style]="{ width: '400px' }"
+  >
+    <p>¿Estás seguro de que deseas generar la cotización?</p>
+    <p-footer>
+      <button
+        pButton
+        label="Confirmar"
+        icon="pi pi-check"
+        (click)="proceedWithQuote()"
+        class="p-button-success confirm-btn"
+      ></button>
+      <button
+        pButton
+        label="Cancelar"
+        icon="pi pi-times"
+        (click)="cancelQuote()"
+        class="p-button-secondary cancel-btn"
+      ></button>
+    </p-footer>
+  </p-dialog>
+
+  <p-toast></p-toast>
 </div>

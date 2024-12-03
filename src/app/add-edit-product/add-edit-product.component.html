@@ -1,81 +1,96 @@
+<div class="text-center mb-5">
+  <h2 class="text-primary text-4xl font-bold mb-3">Agregar Producto</h2>
+  <p class="text-secondary font-normal italic">
+    Ingresa la información del producto que deseas crear
+  </p>
+  <div> {{fomr2().value |json }} </div>
+</div>
 
-  <p-toast [position]="'bottom-right'" />
-  
-    <div class="text-center mb-5">
-      <img [src]="'images/LOGO-MAX.png'" width="150" height="100" />
-      <h2 class="text-900 text-3xl font-medium mb-3">Agregar Producto</h2>
-      <span class="text-600 font-italic line-height-3"
-        >Ingresa el producto a crear</span
-      >
-    </div>
+<form [formGroup]="fomr2()" (ngSubmit)="addProduct()">
+  <div class="field mb-5">
+    <label for="descripcion" class="block text-900 font-medium mb-3"
+      >Descripción del producto</label
+    >
+    <input
+      id="descripcion"
+      type="text"
+      placeholder="Ej. Baldosa Cerámica"
+      pInputText
+      formControlName="tipoProducto"
+      class="form-field"
+    />
+  </div>
 
-    <form [formGroup]="fomr2()" (ngSubmit)="addProduct()">
-      <div class="mb-4">
-        <label class="block text-900 font-medium mb-2"
-          >Descripción del producto</label
-        >
-        <input
-          type="text"
-          placeholder="Descripción"
-          pInputText
-          class="w-full mb-3"
-          formControlName="tipoProducto"
-        />
-      </div>
+  <div class="field mb-5">
+    <label for="precio" class="block text-900 font-medium mb-3">Precio</label>
+    <input
+      id="precio"
+      formControlName="precio"
+      type="number"
+      placeholder="$"
+      pInputText
+      class="form-field"
+    />
+  </div>
 
-      <div class="mb-4">
-        <label class="block text-900 font-medium mb-2">Precio</label>
-        <input
-          formControlName="precio"
-          type="number"
-          placeholder="$"
-          pInputText
-          class="w-full mb-3"
-        />
-      </div>
+  <div class="field mb-5">
+    <label  class="block text-900 font-medium mb-3"
+      >Medida</label
+    >
+    <!-- <input
+      formControlName="medida"
+      
+      placeholder="Ej. 60 | 60x60"
+      pInputN
+      class="form-field"
+    /> -->
+    <p-inputNumber 
+    inputId="integeronly" 
+   formControlName="medida" /> 
 
-      <div class="mb-4">
-        <label class="block text-900 font-medium mb-2">Unidad de Medida</label>
-        <input
-          formControlName="unidadMedida"
-          type="text"
-          placeholder="N/A, M2, ML, UND"
-          pInputText
-          class="w-full mb-3"
-        />
-      </div>
+  </div>
 
-      <div class="mb-4">
-        <label class="block text-900 font-medium mb-2">Medida</label>
-        <input
-          formControlName="medida"
-          pInputText
-          placeholder="Medida en centímetros (ej. 60 | 60x60)"
-          class="w-full mb-3"
-        />
-      </div>
+  <div class="field mb-5">
+    <label  class="block text-900 font-medium mb-3">
+      Unidad de Medida</label
+    >
+    <p-dropdown
+   
+      [options]="unidadesMedida"
+      optionLabel="nombre"
+      formControlName="unidadMedida"
+      placeholder="Ej. N/A, M2, ML, UND"
+      class="form-field"
+    >
+    </p-dropdown>
+  </div>
 
-      <div class="mb-4">
-        <label class="block text-900 font-medium mb-2">Categoría</label>
-        <select
-          formControlName="idCategoria"
-          class="w-full h-10 border-round mb-5 border-gray-400"
-        >
-          @for (categoria of categorias; track $index) {
-          <option value="{{ categoria.id }}">{{ categoria.tipoCategoria }}</option>
-          }
-        </select>
-      </div>
+  <div class="field mb-5">
+    <label for="categoria" class="block text-900 font-medium mb-3"
+      >Categoría</label
+    >
+    <p-dropdown
+      
+      [options]="categorias"
+      optionLabel="tipoCategoria"
+      formControlName="categoriaProductos"
+      placeholder="Selecciona una categoria"
+      class="form-field"
+    >
+    </p-dropdown>
+  </div>
 
-      <button
-        type="submit"
-        pButton
-        pRipple
-        label="Agregar Producto"
-        icon="pi pi-plus"
-        class="w-full bg-blue-500 text-white hover:bg-blue-600 transition duration-200"
-        [disabled]="this.fomr2().invalid"
-      ></button>
-    </form>
-
+  <button
+    type="submit"
+    pButton
+    pRipple
+    label="{{
+      this.fomr2().invalid ? 'Completa todos los campos' : 'Agregar Producto'
+    }}"
+    icon="pi pi-plus"
+    [disabled]="this.fomr2().invalid"
+    class="w-full bg-primary text-white hover:bg-primary-700 border-none font-semibold py-3 rounded-md text-lg transition-all duration-300"
+  ></button>
+ 
+</form>
 

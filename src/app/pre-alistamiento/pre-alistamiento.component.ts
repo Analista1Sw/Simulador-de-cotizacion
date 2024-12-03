@@ -1,5 +1,5 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router  } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
@@ -7,7 +7,7 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { NgIf } from '@angular/common';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
-import { ProyectoService } from '../../services/Proyectos.service';
+import { ProyectoService } from '../services/Proyectos.service';
 
 @Component({
   selector: 'app-pre-alistamiento',
@@ -43,7 +43,8 @@ export class PreAlistamientoComponent {
 
   constructor(
     private messageService: MessageService,
-    private proyectoService: ProyectoService
+    private proyectoService: ProyectoService,
+    private router: Router 
   ) {}
 
   // Abrir el modal y definir si es proyecto o apartamento
@@ -94,7 +95,9 @@ export class PreAlistamientoComponent {
       console.log('Formulario no válido');
     }
   }
-
+  goToDetallesApto() {
+    this.router.navigate(['/crearApto']);
+  }
   // Limpiar el formulario
   clearForm() {
     this.nombre = '';

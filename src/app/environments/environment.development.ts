@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  endpoint: 'http://localhost:3000'
+  endpoint: 'http://10.1.0.65:8080/hefesto/',
 };

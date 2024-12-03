@@ -2,8 +2,11 @@ export interface Material {
   id: number;
   nombre?: string;
   cantidad: number;
+  categoria: string;
 }
-
+export interface Material extends Producto {
+  categoria: string;
+}
 
 export interface MaterialesPorCategoria {
   muros: Material[];
@@ -39,6 +42,6 @@ export interface ProductoAEnviar {
   idProducto: number; // o string, dependiendo de tus datos
   idZona: number; // o string
   cantidad: number;
-  idProyecto: number; 
+  idProyecto: number;
   categoriaProductos?: any[];
 }

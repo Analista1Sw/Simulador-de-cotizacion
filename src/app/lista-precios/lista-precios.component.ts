@@ -2,12 +2,12 @@ import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 //interfaces
-import { Product } from '../../interfaces/product';
-import { Category } from '../../interfaces/category';
+import { Product } from '../interfaces/product';
+import { Category } from '../interfaces/category';
 
 //servicios
-import { ProductService } from '../../services/product.service';
-import { CategoryService } from '../../services/category.service';
+import { ProductService } from '../services/product.service';
+import { CategoryService } from '../services/category.service';
 import { SelectItem, MenuItem, MessageService } from 'primeng/api';
 
 //modulos
