@@ -3,7 +3,7 @@
   <p class="text-secondary font-normal italic">
     Ingresa la información del producto que deseas crear
   </p>
-  <div> {{fomr2().value |json }} </div>
+  <!-- <div> {{fomr2().value |json }} </div> -->
 </div>
 
 <form [formGroup]="fomr2()" (ngSubmit)="addProduct()">
@@ -34,9 +34,7 @@
   </div>
 
   <div class="field mb-5">
-    <label  class="block text-900 font-medium mb-3"
-      >Medida</label
-    >
+    <label class="block text-900 font-medium mb-3">Medida</label>
     <!-- <input
       formControlName="medida"
       
@@ -44,18 +42,12 @@
       pInputN
       class="form-field"
     /> -->
-    <p-inputNumber 
-    inputId="integeronly" 
-   formControlName="medida" /> 
-
+    <p-inputNumber inputId="integeronly" formControlName="medida" />
   </div>
 
   <div class="field mb-5">
-    <label  class="block text-900 font-medium mb-3">
-      Unidad de Medida</label
-    >
+    <label class="block text-900 font-medium mb-3"> Unidad de Medida</label>
     <p-dropdown
-   
       [options]="unidadesMedida"
       optionLabel="nombre"
       formControlName="unidadMedida"
@@ -70,7 +62,6 @@
       >Categoría</label
     >
     <p-dropdown
-      
       [options]="categorias"
       optionLabel="tipoCategoria"
       formControlName="categoriaProductos"
@@ -91,6 +82,4 @@
     [disabled]="this.fomr2().invalid"
     class="w-full bg-primary text-white hover:bg-primary-700 border-none font-semibold py-3 rounded-md text-lg transition-all duration-300"
   ></button>
- 
 </form>
-

@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Proyecto } from '../interfaces/Proyecto';
 import { DatosProyecto } from '../interfaces/DatosProyecto';
-import { environment } from '../environments/environment';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -49,8 +49,22 @@ export class ProyectoService {
   }
 
   createApartamento(data: any): Observable<any> {
+    this.myApiUrl = 'apartamentos/create';
+    return this.http.post(this.myAppUrl + this.myApiUrl, data).pipe(
+      catchError((error) => {
+        console.error('Error al crear el apartamento:', error);
+        if (error.status === 400) {
+          console.error('Detalles del error 400:', error.error);
+        }
+        throw error;
+      })
+    );
+  }
+  
+
+  createApartamentosDetalle(data: any): Observable<any> {
     this.myApiUrl = 'apartamentosDetalle/create'
-    return this.http.post(this.myApiUrl, data).pipe(
+    return this.http.post(this.myAppUrl + this.myApiUrl, data).pipe(
       catchError((error) => {
         console.error('Error al crear el apartamento:', error);
         throw error;

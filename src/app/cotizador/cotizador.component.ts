@@ -37,6 +37,7 @@ export class CotizadorComponent {
   materialesTecho: Producto[] = [];
   materialesZocalo: Producto[] = [];
   materialesAparatos: Producto[] = [];
+  materialesGuardaEscoba: Producto[] = [];
 
   selectedMaterialMuroHabitacion: Producto | null = null;
   selectedMaterialPisoHabitacion: Producto | null = null;
@@ -47,6 +48,7 @@ export class CotizadorComponent {
   selectedMaterialMuroCocina: string | null = null;
   selectedMaterialPisoCocina: string | null = null;
   selectedMaterialTechoCocina: string | null = null;
+  selectedGuardaEscoba: string | null = null;
 
   constructor(
     private router: Router,

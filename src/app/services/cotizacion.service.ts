@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { MaterialesPorCategoria } from '../interfaces/MaterialesPorCategoria';
 import { Producto } from '../interfaces/CategoriaProducto';
-import { environment } from '../environments/environment';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',

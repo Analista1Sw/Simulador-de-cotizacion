@@ -6,7 +6,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ProyectoService } from '../services/Proyectos.service';
 import { ButtonModule } from 'primeng/button';
 import { Toast, ToastModule } from 'primeng/toast';
+import { JsonPipe } from '@angular/common';
 import { MessageService } from 'primeng/api';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-detalles-apto',
@@ -19,10 +21,13 @@ import { MessageService } from 'primeng/api';
     ReactiveFormsModule,
     ButtonModule,
     ToastModule,
+    JsonPipe, 
+    RouterModule,
   ],
   providers: [MessageService],
 })
 export class DetallesAptoComponent implements OnInit {
+
   form!: FormGroup;
   proyectos: { label: string; value: number }[] = []; // Proyectos disponibles
   zonasDisponibles: { label: string; value: number }[] = [
@@ -36,6 +41,7 @@ export class DetallesAptoComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private proyectoService: ProyectoService,
+    private router: Router,
     private messageService: MessageService
   ) {
     this.form = this.fb.group({
@@ -46,7 +52,7 @@ export class DetallesAptoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.cargarProyectos(); // Cargar proyectos (si es necesario)
+    this.cargarProyectos(); // Cargar proyectos disponibles
   }
 
   cargarProyectos(): void {
@@ -56,7 +62,7 @@ export class DetallesAptoComponent implements OnInit {
           label: proyecto.nombre,
           value: proyecto.id,
         }));
-        console.log('Proyectos disponibles:', this.proyectos); // Para verificar los proyectos
+        console.log('Proyectos disponibles:', this.proyectos);
       },
       (error) => {
         console.error('Error al cargar proyectos:', error);
@@ -64,12 +70,12 @@ export class DetallesAptoComponent implements OnInit {
     );
   }
 
-  // Obtener el FormArray
+  // Obtener el FormArray de zonas
   get zonas() {
     return this.form.get('zonas') as FormArray;
   }
 
-  // Agregar una nueva zona al FormArray
+  // Agregar una nueva zona
   agregarZona() {
     const zonaFormGroup = this.fb.group({
       idZona: ['', Validators.required],
@@ -85,24 +91,47 @@ export class DetallesAptoComponent implements OnInit {
     this.zonas.removeAt(index);
   }
 
-  // Método de submit
-  onSubmit() {
+  // Método de guardar (submit)
+  onSubmit(): void {
     if (this.form.valid) {
-      console.log(this.form.value);
-      // Mostrar el toast de éxito
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Guardado',
-        detail: 'El apartamento ha sido guardado correctamente',
-      });
+      // Extrae solo el ID del proyecto (value)
+      const proyectoId = this.form.value.proyecto?.value;  // Se obtiene el valor del proyecto (ID)
+      const tipoApartamento = this.form.value.tipoApartamento;  // Nombre del apartamento
+  
+      const datosApartamento = {
+        nombre: tipoApartamento,  // Nombre del apartamento
+        medida: "80 m2",          // Medida fija
+        proyecto: proyectoId      // Solo el ID del proyecto
+      };
+  
+      console.log('Datos enviados:', datosApartamento);  // Imprime los datos antes de enviarlos
+  
+      this.proyectoService.createApartamento(datosApartamento).subscribe(
+        (response) => {
+          console.log('Apartamento creado exitosamente:', response);
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Guardado',
+            detail: 'El apartamento se guardó correctamente',
+          });
+          this.form.reset();
+          setTimeout(() => this.router.navigate(['/preAlistamiento']), 800);
+        },
+        (error) => {
+          console.error('Error al crear el apartamento:', error);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'No se pudo guardar el apartamento',
+          });
+        }
+      );
     } else {
-      console.log('Formulario no válido');
-      // Mostrar el toast de error
       this.messageService.add({
         severity: 'error',
-        summary: 'Error',
-        detail: 'El formulario no es válido',
+        summary: 'Formulario inválido',
+        detail: 'Por favor, completa todos los campos requeridos',
       });
     }
-  }
-}
+  }  
+}  
