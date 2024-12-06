@@ -17,9 +17,9 @@ export class ProductService {
   }
 
   getListProducts(): Observable<Product[]> {
-    this.myApiUrl = 'FindAll';
+    this.myApiUrl = 'producto/FindAll';
     return this.http.get<Product[]>(
-      this.myAppUrl + this.myApiUrl + this.myApiUrl
+      this.myAppUrl + this.myApiUrl 
     );
   }
 

@@ -97,6 +97,13 @@ export class PreAlistamientoComponent {
   }
   goToDetallesApto() {
     this.router.navigate(['/crearApto']);
+
+    
+  }
+  goToDetallesApto1() {
+    this.router.navigate(['/lista']);
+
+    
   }
   // Limpiar el formulario
   clearForm() {
