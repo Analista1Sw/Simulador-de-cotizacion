@@ -1,0 +1,19 @@
+.form-field {
+    width: 100%; /* Ancho completo del contenedor */
+    font-size: 1rem; /* Tamaño de fuente uniforme */
+    padding: 0.5rem; /* Espaciado interno */
+    border: 1px solid #d1d5db; /* Color del borde */
+    border-radius: 0.375rem; /* Bordes redondeados */
+    box-sizing: border-box; /* Incluir padding en el ancho total */
+    outline: none; /* Eliminar el borde predeterminado */
+  }
+  
+  .form-field:focus {
+    border-color: #2563eb; /* Color del borde al enfocar */
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.3); /* Sombra al enfocar */
+  }
+  
+  p-dropdown.form-field {
+    padding: 0; /* Los dropdowns no necesitan padding interno */
+  }
+  

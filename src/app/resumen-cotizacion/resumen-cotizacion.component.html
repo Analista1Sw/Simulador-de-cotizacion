@@ -1,13 +1,9 @@
 <img [src]="'images/LOGO-MAX.png'" width="150" height="100" />
 <div
-
   class="p-d-flex p-jc-center p-ai-center"
   style="min-height: 100vh; background-color: #f4f5f7"
-  
 >
-
   <div
-  
     class="p-card p-p-4 p-shadow-3 p-d-flex p-flex-column p-ai-center"
     style="
       border-radius: 12px;
@@ -45,21 +41,25 @@
         class="p-mb-4 p-p-3 p-shadow-2"
         style="background: #f7f9f9; border-radius: 8px"
       >
-        <h3 class="p-text-primary">
-          <i class="pi pi-user" style="color: #5c9b42; margin-right: 12px"></i>
-          Cliente
-        </h3>
-        <div class="p-grid p-align-start p-text-secondary">
-          <div class="p-col-12 p-md-6">
-            <p><strong>Cliente:</strong> {{ data.proyecto?.cliente }}</p>
-            <p><strong>Cédula:</strong> {{ data.proyecto?.cedula }}</p>
+        <div class="p-grid p-jc-between" style="gap: 16px">
+          <!-- Sección Cliente -->
+          <div
+            class="p-col-12 p-md-6 p-shadow-2"
+            style="background: #f7f9f9; border-radius: 8px; padding: 16px"
+          >
+            <h3 style="font-size: 1.2rem; color: #4caf50; margin-bottom: 12px">
+              <i class="pi pi-user" style="margin-right: 8px"></i> Cliente
+            </h3>
+            <p><strong>Cliente:</strong> {{ data?.prospecto?.nombre }}</p>
+            <p><strong>Cédula:</strong> {{ data?.prospecto?.documento }}</p>
           </div>
-          <div class="p-col-12 p-md-6">
-            <h3 class="p-text-primary">
-              <i
-                class="pi pi-folder-open"
-                style="color: #5c9b42; margin-right: 12px"
-              ></i>
+          <!-- Sección Proyecto -->
+          <div
+            class="p-col-12 p-md-6 p-shadow-2"
+            style="background: #f7f9f9; border-radius: 8px; padding: 16px"
+          >
+            <h3 style="font-size: 1.2rem; color: #4caf50; margin-bottom: 12px">
+              <i class="pi pi-folder-open" style="margin-right: 8px"></i>
               Proyecto
             </h3>
             <p><strong>Nombre Proyecto:</strong> {{ data.proyecto?.nombre }}</p>
@@ -76,7 +76,12 @@
         </h3>
         <div
           *ngFor="
-            let zona of ['productosZona1', 'productosZona2', 'productosZona3']
+            let zona of [
+              'productosZona1',
+              'productosZona2',
+              'productosZona3',
+              'productosZona4'
+            ]
           "
           class="p-mb-3"
         >
@@ -84,7 +89,7 @@
             class="p-p-3 p-shadow-2"
             style="background: #f7f9f9; border-radius: 8px"
           >
-            <h4 style="font-weight: bold; color: #555">{{ zona }}</h4>
+            <h4 style="font-weight: bold; color: #555">{{ zonas[zona] }}</h4>
             <table class="p-datatable p-datatable-striped" style="width: 100%">
               <thead>
                 <tr style="background-color: #eaeded; color: #5c9b42">
@@ -171,7 +176,6 @@
           deberá constar por escrito y ser expresamente aceptada por ambas
           partes para generar cualquier tipo de vínculo contractual.
         </p>
-        <!-- Texto truncado para brevedad -->
       </div>
     </div>
 
@@ -186,5 +190,26 @@
         Cargando datos...
       </div>
     </ng-template>
+    <div class="p-d-flex p-jc-between p-mt-4" style="width: 100%">
+      <!-- Botón para descargar PDF -->
+      <button
+        pButton
+        type="button"
+        label="Descargar PDF"
+        icon="pi pi-download"
+        class="p-button-success"
+        (click)="descargarPDF()"
+      ></button>
+
+      <!-- Botón para redirigir a fidelización -->
+      <button
+        pButton
+        type="button"
+        label="Volver a Fidelización"
+        icon="pi pi-arrow-left"
+        class="p-button-secondary"
+        (click)="volverAFidelizacion()"
+      ></button>
+    </div>
   </div>
 </div>

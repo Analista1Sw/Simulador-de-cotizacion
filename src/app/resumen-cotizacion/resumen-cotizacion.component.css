@@ -1,20 +1,92 @@
-.resumen-container {
-    margin: 20px;
-  }
-  
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-  }
-  
-  th, td {
-    border: 1px solid #ccc;
-    padding: 10px;
-    text-align: left;
-  }
-  
-  th {
-    background-color: #f4f4f4;
-  }
-  
+/* General para las tarjetas */
+.p-card {
+  padding: 24px; /* Espaciado interno */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 12px; /* Bordes redondeados */
+  margin-bottom: 24px; /* Separación entre tarjetas */
+}
+
+/* Espaciado global para grids */
+.p-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px; /* Espaciado entre columnas y filas */
+}
+
+/* Ajuste para columnas */
+.p-grid .p-col-12 {
+  flex: 1 1 100%;
+  max-width: 100%;
+  margin-bottom: 16px; /* Espaciado entre filas */
+}
+
+.p-grid .p-md-6 {
+  flex: 1 1 calc(50% - 16px);
+  max-width: calc(50% - 16px);
+}
+
+/* Sombra ligera */
+.p-shadow-2 {
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  background-color: #f7f9f9;
+  border-radius: 8px;
+  margin-bottom: 16px; /* Espaciado entre tarjetas */
+}
+
+/* Títulos */
+h3 {
+  margin: 0 0 16px 0; /* Márgenes inferiores para separación */
+  font-weight: 600;
+  color: #4caf50;
+  font-size: 1.2rem;
+}
+
+/* Textos generales */
+p {
+  margin-bottom: 12px; /* Espaciado entre párrafos */
+  line-height: 1.6; /* Altura de línea para legibilidad */
+  color: #555; /* Color de texto */
+}
+
+/* Estilo para encabezados */
+.p-text-center {
+  text-align: center;
+  margin-bottom: 24px; /* Espaciado inferior */
+}
+
+.p-text-primary {
+  color: #4caf50;
+}
+
+.p-text-secondary {
+  color: #555;
+}
+
+/* Tablas */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+}
+
+table th,
+table td {
+  padding: 8px 12px;
+  text-align: left;
+}
+
+table th {
+  background-color: #eaeded;
+  color: #4caf50;
+  font-weight: bold;
+}
+
+table td {
+  background-color: #ffffff;
+}
+
+/* Botones */
+button {
+  margin: 0 8px;
+}

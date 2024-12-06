@@ -1,0 +1,35 @@
+.p-button {
+    height: 40px;
+    font-size: 14px;
+  }
+  
+  .p-field {
+    margin-bottom: 1.5rem; /* Espaciado entre campos */
+  }
+  
+  .button-container {
+    margin-top: 2rem; /* Espaciado antes de los botones */
+  }
+  
+  .p-card {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e0e0e0;
+  }
+  
+  .p-button-secondary {
+    background-color: #f0f0f0;
+    color: #555;
+    border: 1px solid #ccc;
+  }
+  
+  .p-button-secondary:hover {
+    background-color: #e0e0e0;
+  }
+  
+  @media (max-width: 768px) {
+    .p-button {
+      width: 100%; /* Botones ocupan todo el ancho */
+      margin-bottom: 1rem; /* Separación entre botones */
+    }
+  }
+  

@@ -5,25 +5,31 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { MaterialesPorCategoria } from '../interfaces/MaterialesPorCategoria';
 import { Producto } from '../interfaces/CategoriaProducto';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CotizacionService {
-  private myAppUrl: string = 'http://10.1.2.47:8080/';
-  private apartamentosApiUrl: string = 'hefesto/apartamentosDetalle/FindAll';
-  private productosApiUrl: string = 'hefesto/producto/FindAll';
-  private cotizacionApiUrl: string = 'hefesto/cotizaciones/create';
-  constructor(private http: HttpClient) {}
+  private myAppUrl: string = '';
+  private myApiUrl: string = '';
+
+  constructor(private http: HttpClient) {
+    this.myAppUrl = environment.endpoint
+    this.myApiUrl = ''
+  }
+
 
   // Método para obtener zonas
   getZonas(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.myAppUrl}${this.apartamentosApiUrl}`);
+    this.myApiUrl = 'apartamentosDetalle/FindAll';
+    return this.http.get<any[]>(`${this.myAppUrl}${this.myApiUrl}`);
   }
 
   // Método para obtener materiales por zona (usando zonaId)
   getMaterialesByZona(zonaId: string): Observable<MaterialesPorCategoria> {
-    return this.http.get<any[]>(`${this.myAppUrl}${this.productosApiUrl}`).pipe(
+    this.myApiUrl = 'producto/FindAll';
+    return this.http.get<any[]>(`${this.myAppUrl}${this.myApiUrl}`).pipe(
       map((productos: any[]) => {
         // Agregar el idZona a cada producto
         const productosConZona = productos.map((producto) => ({
@@ -63,6 +69,7 @@ export class CotizacionService {
 
   // Método para obtener productos filtrados por categoría
   getProductosByCategoria(tipoCategoria: string): Observable<Producto[]> {
+    this.myApiUrl = 'apartamentosDetalle/FindAll';
     return this.getProductos().pipe(
       map((productos: Producto[]) =>
         productos.filter((producto) =>
@@ -76,13 +83,15 @@ export class CotizacionService {
 
   // Método para obtener todos los productos
   getProductos(): Observable<Producto[]> {
-    return this.http.get<Producto[]>(`${this.myAppUrl}${this.productosApiUrl}`);
+    this.myApiUrl = 'producto/FindAll';
+    return this.http.get<Producto[]>(`${this.myAppUrl}${this.myApiUrl}`);
   }
 
   // Método para enviar cotizaciones
-  sendAllQuotes(productosAEnviar: Producto[]): Observable<any> {
+  sendAllQuotes(productosAEnviar: any[]): Observable<any> {
+    this.myApiUrl = 'cotizaciones/create';
     return this.http.post<any>(
-      `${this.myAppUrl}${this.cotizacionApiUrl}`,
+      `${this.myAppUrl}${this.myApiUrl}`,
       productosAEnviar
     );
   }

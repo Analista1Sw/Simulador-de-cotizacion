@@ -1,8 +1,10 @@
 export interface Product{
   id?: number,
   tipoProducto: string;
+  descripcionProducto: string;
   precio: number;
-  unidadMedida: string;
+  idEmpresa: number;
+  unidadMedida: String;
   medida: number;
   categoriaProductos: CategoriaProducto[];
 }
