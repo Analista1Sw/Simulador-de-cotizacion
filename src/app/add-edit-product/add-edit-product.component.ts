@@ -48,6 +48,8 @@ import { RippleModule } from 'primeng/ripple';
   templateUrl: './add-edit-product.component.html',
   styleUrls: ['./add-edit-product.component.css'],
 })
+
+
 export class AddEditProductComponent {
   categorias: Category[] = [];
   id: number;
@@ -60,28 +62,27 @@ export class AddEditProductComponent {
     { id: 'UND', nombre: 'UND' },
   ];
 
-  // Creación del signal para la sincronización del formulario
-  fomr2 = signal<FormGroup>(
-    new FormGroup({
-      tipoProducto: new FormControl('', [
-        Validators.required,
-        Validators.maxLength(255),
-      ]),
-      descripcionProducto: new FormControl('', [Validators.required]), 
-      precio: new FormControl(null, Validators.required),
-      unidadMedida: new FormControl(''),
-      medida: new FormControl(null,Validators.required),
-      categoriaProductos: new FormControl(null, [Validators.required]),
-    })
-  );
+  // Define el formulario como una propiedad de la clase
+  fomr2: FormGroup;
 
   constructor(
     private messageService: MessageService,
     private _productService: ProductService,
     private _categoryService: CategoryService,
-    private aRoute: ActivatedRoute
+    private aRoute: ActivatedRoute,
+    private fb: FormBuilder // Necesario para crear el formulario
   ) {
     this.id = Number(aRoute.snapshot.paramMap.get('id'));
+
+    // Inicializa el formulario dentro del constructor
+    this.fomr2 = this.fb.group({
+      tipoProducto: ['', [Validators.required, Validators.maxLength(255)]],
+      descripcionProducto: ['', Validators.required],
+      precio: [null, Validators.required],
+      unidadMedida: [''],
+      medida: [null, Validators.required],
+      categoriaProductos: [null, Validators.required],
+    });
   }
 
   ngOnInit() {
@@ -93,7 +94,6 @@ export class AddEditProductComponent {
 
   getListCategories() {
     this._categoryService.getListProducts().subscribe((data: any[]) => {
-      // Extraer las categorías únicas
       const categoriasMap = new Map();
 
       data.forEach((producto) => {
@@ -111,32 +111,33 @@ export class AddEditProductComponent {
 
   addProduct() {
     const product: Product = {
-      tipoProducto: this.fomr2().value.tipoProducto,
-      descripcionProducto: this.fomr2().value.descripcionProducto || '', // Asegurarse de que se envíe un valor, aunque esté vacío
-      unidadMedida: this.fomr2().value.unidadMedida.id,
-      medida: this.fomr2().value.medida, // Debe ser un número
-      precio: this.fomr2().value.precio, // Debe ser un número
-      idEmpresa: 13, // Asegúrate de que se envíe el ID de la empresa correcto
-      categoriaProductos: this.fomr2().value.categoriaProductos?.id, // Solo el ID de la categoría
+      tipoProducto: this.fomr2.value.tipoProducto,
+      descripcionProducto: this.fomr2.value.descripcionProducto || '',
+      unidadMedida: this.fomr2.value.unidadMedida.id,
+      medida: this.fomr2.value.medida,
+      precio: this.fomr2.value.precio,
+      idEmpresa: 13,
+      categoriaProductos: this.fomr2.value.categoriaProductos?.id,
     };
 
-    console.log('Producto enviado:', product); // Depuración: Verifica que el JSON sea correcto
+    console.log('Producto enviado:', product);
 
     this._productService.saveProduct(product).subscribe({
       next: () => {
         this.showAdd();
-        this.fomr2().reset();
+        this.fomr2.reset();
       },
       error: (err) => {
-        console.error('Error al guardar el producto:', err); // Log para depuración
+        console.error('Error al guardar el producto:', err);
       },
     });
   }
 
   getProduct(id: number) {
     this._productService.getProduct(id).subscribe((data: Product) => {
-      this.fomr2().setValue({
+      this.fomr2.setValue({
         tipoProducto: data.tipoProducto,
+        descripcionProducto: data.descripcionProducto,
         precio: data.precio,
         unidadMedida: data.unidadMedida,
         medida: data.medida,

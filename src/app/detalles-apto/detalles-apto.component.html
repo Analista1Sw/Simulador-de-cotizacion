@@ -14,12 +14,12 @@
       background-color: #ffffff;
     "
   >
-  <!-- <div> {{form.value |json }} </div>
-   -->
+    <!-- <div> {{form.value |json }} </div> -->
+  
     <h2 class="text-center" style="margin-bottom: 2rem; color: #3f51b5">
       Crear Apartamento
     </h2>
-    
+
     <form [formGroup]="form" class="p-fluid">
       <!-- Campo de Proyecto -->
       <div class="p-field" style="margin-bottom: 1.5rem">
@@ -46,6 +46,18 @@
         />
       </div>
 
+      <!-- Campo de Medida Total -->
+      <div class="p-field" style="margin-bottom: 1.5rem">
+        <label for="medidaTotal">Medida Total (m²)</label>
+        <input
+          id="medidaTotal"
+          type="number"
+          formControlName="medidaTotal"
+          placeholder="Ej: 120.50"
+          class="p-inputtext p-inputtext-sm"
+        />
+      </div>
+
       <!-- Botón Agregar Zona -->
       <div class="p-d-flex p-jc-end" style="margin-bottom: 2rem">
         <button
@@ -67,7 +79,7 @@
           style="margin-bottom: 1.5rem; padding: 1rem"
         >
           <h4 style="color: #3f51b5; margin-bottom: 1.5rem">
-            Zona {{ i + 1 }} 
+            Zona {{ i + 1 }}
           </h4>
 
           <!-- Dropdown para seleccionar zona -->
@@ -78,6 +90,7 @@
               formControlName="idZona"
               [options]="zonasDisponibles"
               optionLabel="label"
+              optionValue="value" 
               placeholder="Seleccione una zona"
               class="p-inputtext-sm"
             ></p-dropdown>
@@ -112,6 +125,28 @@
               id="techo{{ i }}"
               type="text"
               formControlName="techo"
+              placeholder="Ej: 15.75"
+              class="p-inputtext p-inputtext-sm"
+            />
+          </div>
+
+          <div class="p-field" style="margin-bottom: 1.5rem">
+            <label for="pisos{{ i }}">Guarda Escoba (ML)</label>
+            <input
+              id="pisos{{ i }}"
+              type="text"
+              formControlName="guardaEscoba"
+              placeholder="Ej: 15.75"
+              class="p-inputtext p-inputtext-sm"
+            />
+          </div>
+
+          <div class="p-field" style="margin-bottom: 1.5rem">
+            <label for="pisos{{ i }}">Salpicadero (ML)</label>
+            <input
+              id="pisos{{ i }}"
+              type="text"
+              formControlName="salpicadero"
               placeholder="Ej: 15.75"
               class="p-inputtext p-inputtext-sm"
             />

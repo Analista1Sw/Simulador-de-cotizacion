@@ -90,3 +90,12 @@ table td {
 button {
   margin: 0 8px;
 }
+.bottom-image {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%); /* Centra la imagen horizontalmente */
+  width: 100%; /* O ajusta el tamaño según lo que necesites */
+  max-width: 100%; /* Para asegurarse de que la imagen no exceda el ancho de la pantalla */
+  height: auto; /* Mantiene la proporción de la imagen */
+}

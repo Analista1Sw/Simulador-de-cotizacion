@@ -11,6 +11,7 @@ import { ToastModule } from 'primeng/toast';
 import { Router } from '@angular/router';
 import { DatosProyecto } from '../interfaces/DatosProyecto';
 import { ProyectoService } from '../services/DatosProyecto.service';
+import { MySharedServiceService } from '../shared/my-shared-service.service';
 
 @Component({
   selector: 'app-fidelizacion-cliente',
@@ -35,18 +36,17 @@ export class FidelizacionClienteComponent implements OnInit {
   selectedRoom: string | null = null; // Agregar propiedad para la habitación seleccionada
   totalCost: number = 0; // Agregar propiedad para el costo total
 
-
-
   constructor(
     private fb: FormBuilder,
     private messageService: MessageService,
     private router: Router,
-    private proyectoService: ProyectoService
+    private proyectoService: ProyectoService,
+    private mySharedService: MySharedServiceService
   ) {}
 
   ngOnInit() {
     this.fidelizacionForm = this.fb.group({
-      cedula: ['', [Validators.required, Validators.minLength(8)]],
+      documento: ['', [Validators.required, Validators.minLength(8)]],
       nombre: ['', [Validators.required, Validators.minLength(3)]],
       correo: ['', [Validators.required, Validators.email]],
       telefono: [
@@ -64,14 +64,14 @@ export class FidelizacionClienteComponent implements OnInit {
   cargarProyectos() {
     this.proyectoService.getProyectos().subscribe({
       next: (proyectos) => {
-        console.log('Proyectos recibidos:', proyectos); 
+        console.log('Proyectos recibidos:', proyectos);
         this.proyectos = proyectos;
       },
       error: () => {
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
-          detail: 'Error al cargar proyectos'
+          detail: 'Error al cargar proyectos',
         });
       },
     });
@@ -80,51 +80,52 @@ export class FidelizacionClienteComponent implements OnInit {
   onProyectoChange(event: any) {
     const proyectoId = event.value ? event.value.id : null;
     if (proyectoId) {
-        this.proyectoService.getTiposApartamento(proyectoId).subscribe({
-          next: (tipos) => {
-            console.log('Tipos apartamento:', tipos); 
-            // Asegúrate de que el mapeo esté correcto
-            this.tiposApartamento = tipos.map(tipo => ({
-              label: tipo.nombre, // Lo que se mostrará en el dropdown
-              value: tipo.id      // El valor que se usará internamente
-            }));
-            this.fidelizacionForm.get('apartamentoId')?.enable();
-          },
-            error: () => {
-                this.messageService.add({
-                    severity: 'error',
-                    summary: 'Error',
-                    detail: 'Error al cargar tipos de apartamentos',
-                });
-            },
-        });
+      this.proyectoService.getTiposApartamento(proyectoId).subscribe({
+        next: (tipos) => {
+          console.log('Tipos apartamento:', tipos);
+          // Asegúrate de que el mapeo esté correcto
+          this.tiposApartamento = tipos.map((tipo) => ({
+            label: tipo.nombre, // Lo que se mostrará en el dropdown
+            value: tipo.id, // El valor que se usará internamente
+          }));
+          this.fidelizacionForm.get('apartamentoId')?.enable();
+        },
+        error: () => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Error al cargar tipos de apartamentos',
+          });
+        },
+      });
     } else {
-        this.tiposApartamento = [];
-        this.fidelizacionForm.get('apartamentoId')?.disable();
+      this.tiposApartamento = [];
+      this.fidelizacionForm.get('apartamentoId')?.disable();
     }
-}
+  }
 
   onSubmit() {
     if (this.fidelizacionForm.valid) {
-      this.proyectoService 
-        .postProyecto(this.fidelizacionForm.value)
-        .subscribe({
-          next: () => {
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Éxito',
-              detail: 'Formulario enviado correctamente',
-            });
-            setTimeout(() => this.router.navigate(['/cotizar']), 800);
-          },
-          error: () => {
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Error',
-              detail: 'Error al enviar el formulario',
-            });
-          },
-        });
+      this.proyectoService.postProyecto(this.fidelizacionForm.value).subscribe({
+        next: (response) => {
+          const prospectoId = response.id;
+          this.mySharedService.setProspectoId(prospectoId);
+          
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Éxito',
+            detail: 'Formulario enviado correctamente',
+          });
+          setTimeout(() => this.router.navigate(['/cotizar']), 800);
+        },
+        error: () => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Error al enviar el formulario',
+          });
+        },
+      });
     } else {
       this.messageService.add({
         severity: 'error',

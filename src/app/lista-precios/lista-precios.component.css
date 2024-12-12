@@ -1,4 +1,61 @@
-.custom-splitButton-menu {
-  max-height: 200px; /* Ajusta esta altura según tus necesidades */
-  overflow-y: auto;
+/* Imagen fija en la parte inferior */
+.bottom-image {
+  position: fixed; /* Fija la imagen al fondo */
+  bottom: 0; /* Se alinea al borde inferior */
+  left: 0; /* Alinea al borde izquierdo */
+  width: 100%; /* Ocupa todo el ancho de la pantalla */
+  height: auto; /* Mantiene las proporciones de la imagen */
+  max-height: 6vh; /* Reduce la altura máxima para que sea más delgada */
+  object-fit: cover; /* Ajusta cómo se muestra la imagen */
+  z-index: -1; /* Coloca la imagen detrás del contenido */
+}
+
+
+/* Espaciado para evitar superposición */
+body, .main-content {
+  padding-bottom: 6vh; /* Ajusta según la altura de la imagen (.bottom-image) */
+}
+
+/* Ajustes para pantallas pequeñas */
+@media (max-width: 768px) {
+  .bottom-image {
+    max-height: 4vh; /* En pantallas pequeñas, hazla aún más delgada */
+  }
+
+
+  .main-content {
+    padding-bottom: 4vh; /* Ajustar el espaciado para pantallas pequeñas */
+  }
+}
+
+/* Tabla con scroll horizontal */
+p-table {
+  width: 100%; /* Asegura que se ajuste al contenedor */
+  overflow-x: auto; /* Agrega scroll horizontal en pantallas pequeñas */
+  display: block;
+}
+
+p-table ::ng-deep table {
+  width: 100%; /* Hace que la tabla ocupe el ancho del contenedor */
+  min-width: 600px; /* Tamaño mínimo para evitar desbordamientos */
+  font-size: 14px; /* Ajusta el tamaño de fuente */
+  border-collapse: collapse;
+}
+
+/* Botones flexibles */
+.flex {
+  flex-wrap: wrap; /* Permite que los elementos se ajusten en varias líneas */
+  gap: 1rem; /* Espacio entre elementos */
+}
+
+@media (max-width: 768px) {
+  .flex {
+    flex-direction: column; /* Organiza en columna */
+    align-items: center; /* Centra los elementos */
+  }
+
+  p-splitButton,
+  p-button {
+    width: 100%; /* Ocupan todo el ancho */
+  }
 }

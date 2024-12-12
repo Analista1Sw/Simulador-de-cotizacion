@@ -3,10 +3,10 @@
   <p class="text-secondary font-normal italic">
     Ingresa la información del producto que deseas crear
   </p>
-  <!-- <div> {{fomr2().value |json }} </div> -->
+  <!-- <div> {{fomr2.value |json }} </div> -->
 </div>
 
-<form [formGroup]="fomr2()" (ngSubmit)="addProduct()">
+<form [formGroup]="fomr2" (ngSubmit)="addProduct()">
   <div class="field mb-5">
     <label for="descripcion" class="block text-900 font-medium mb-3"
       >Descripción del producto</label
@@ -16,7 +16,7 @@
       type="text"
       placeholder="Ej. Baldosa Cerámica"
       pInputText
-      formControlName="tipoProducto"
+      formControlName="descripcionProducto"
       class="form-field"
     />
   </div>
@@ -35,14 +35,14 @@
 
   <div class="field mb-5">
     <label class="block text-900 font-medium mb-3">Medida</label>
-    <!-- <input
+    <p-inputNumber
+      inputId="integeronly"
       formControlName="medida"
-      
-      placeholder="Ej. 60 | 60x60"
-      pInputN
-      class="form-field"
-    /> -->
-    <p-inputNumber inputId="integeronly" formControlName="medida" />
+      type="number"
+      placeholder="15.36"
+      class="form-field w-full"
+      [style]="{ width: '100%' }"
+    />
   </div>
 
   <div class="field mb-5">
@@ -52,9 +52,9 @@
       optionLabel="nombre"
       formControlName="unidadMedida"
       placeholder="Ej. N/A, M2, ML, UND"
-      class="form-field"
-    >
-    </p-dropdown>
+      class="form-field w-full"
+      [style]="{ width: '100%' }"
+    ></p-dropdown>
   </div>
 
   <div class="field mb-5">
@@ -67,6 +67,7 @@
       formControlName="categoriaProductos"
       placeholder="Selecciona una categoria"
       class="form-field"
+      [style]="{ width: '100%' }"
     >
     </p-dropdown>
   </div>
@@ -75,11 +76,10 @@
     type="submit"
     pButton
     pRipple
-    label="{{
-      this.fomr2().invalid ? 'Completa todos los campos' : 'Agregar Producto'
-    }}"
+    label="Agregar Producto"
     icon="pi pi-plus"
-    [disabled]="this.fomr2().invalid"
     class="w-full bg-primary text-white hover:bg-primary-700 border-none font-semibold py-3 rounded-md text-lg transition-all duration-300"
   ></button>
+
+  <p-toast></p-toast>
 </form>

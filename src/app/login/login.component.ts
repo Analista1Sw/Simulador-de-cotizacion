@@ -21,6 +21,9 @@ export class LoginComponent {
     const users = [
       { username: 'admin', password: 'admin123', role: 'admin' },
       { username: 'user', password: 'user123', role: 'user' },
+      { username: 'comercial1', password: 'Maxicasa24', role: 'user' },
+      { username: 'comercial2', password: 'Maxicasa24', role: 'user' },
+      { username: 'comercial3', password: 'Maxicasa24', role: 'user' },
     ];
 
     const user = users.find(

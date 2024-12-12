@@ -9,6 +9,9 @@ import { CommonModule } from '@angular/common';
 import { DialogModule } from 'primeng/dialog';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { InputTextModule } from 'primeng/inputtext';
+import { TableModule } from 'primeng/table';
+import { InputNumberModule } from 'primeng/inputnumber';
 import { CotizacionService } from '../services/cotizacion.service';
 import { MaterialesPorCategoria } from '../interfaces/MaterialesPorCategoria';
 import { Producto } from '../interfaces/MaterialesPorCategoria';
@@ -23,7 +26,8 @@ import { Producto } from '../interfaces/MaterialesPorCategoria';
     ButtonModule,
     FormsModule,
     DialogModule,
-    ToastModule
+    ToastModule,
+    InputTextModule, TableModule, InputNumberModule
   ],
   templateUrl: './cotizador.component.html',
   styleUrls: ['./cotizador.component.css'],
@@ -35,8 +39,8 @@ export class CotizadorComponent {
   materialesMuro: Producto[] = [];
   materialesPiso: Producto[] = [];
   materialesTecho: Producto[] = [];
-  materialesZocalo: Producto[] = [];
-  materialesAparatos: Producto[] = [];
+  // materialesZocalo: Producto[] = [];
+  // materialesAparatos: Producto[] = [];
   materialesGuardaEscoba: Producto[] = [];
 
   selectedMaterialMuroHabitacion: Producto | null = null;
@@ -49,6 +53,28 @@ export class CotizadorComponent {
   selectedMaterialPisoCocina: string | null = null;
   selectedMaterialTechoCocina: string | null = null;
   selectedGuardaEscoba: string | null = null;
+
+   // Variables para la sección de Instalaciones y Equipos
+   materialesCarpinteria = [
+    { descripcion: 'Puertas', cantidad: 1 },
+    { descripcion: 'Ventanas', cantidad: 1 }
+  ];
+
+  materialesAparatos = [
+    { descripcion: 'Aire Acondicionado', cantidad: 1 },
+    { descripcion: 'Luz', cantidad: 1 }
+  ];
+
+  materialesAccesorios = [
+    { descripcion: 'Tuberías', cantidad: 1 },
+    { descripcion: 'Conectores', cantidad: 1 }
+  ];
+
+  materialesRedElectrica = [
+    { descripcion: 'Cableado', cantidad: 1 },
+    { descripcion: 'Conectores', cantidad: 1 }
+  ];
+
 
   constructor(
     private router: Router,
@@ -71,12 +97,10 @@ export class CotizadorComponent {
         this.materialesMuro = materiales.muros;
         this.materialesPiso = materiales.pisos;
         this.materialesTecho = materiales.techos;
-        this.materialesZocalo = materiales.accesorios.filter((m) =>
-          m.categoria.includes('Zócalo')
-        );
-        this.materialesAparatos = materiales.accesorios.filter((m) =>
-          m.categoria.includes('Aparato')
-        );
+        // this.materialesZocalo = materiales.accesorios.filter((m) =>
+        //   m.categoria.includes('Zócalo')
+        // );
+       
       },
       (error) => {
         console.error('Error al cargar materiales:', error);
@@ -98,20 +122,22 @@ export class CotizadorComponent {
       this.selectedMaterialPisoBa,
       this.selectedMaterialTechoBa,
     ].filter((material) => material !== null);
-
+  
     const productosAEnviar = materialesSeleccionados.map((material) => ({
       idProducto: material!.id,
       idZona: 1, // Id de zona, según la lógica de tu backend
       cantidad: 1, // Cantidad predeterminada
     }));
-
-    this.cotizacionService.sendAllQuotes(productosAEnviar).subscribe(
-      () => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Éxito',
-          detail: 'Los materiales han sido enviados.',
-        });
+  
+    const idProspecto = 10;
+  
+    this.cotizacionService.sendAllQuotes(idProspecto, productosAEnviar).subscribe(
+      (response) => {
+        const idCotizacion = response.idCotizacion; // Asegúrate de que el backend devuelva este ID
+        console.log('ID de cotización recibido:', idCotizacion);
+  
+        // Almacenar el idCotizacion para redirigir
+        this.router.navigate(['/resumen', idCotizacion]);  // Redirige a la vista de resumen pasando el idCotizacion
       },
       (error) => {
         console.error('Error al enviar materiales:', error);
@@ -123,6 +149,7 @@ export class CotizadorComponent {
       }
     );
   }
+  
   // Muestra el modal cuando se hace clic en "Generar Cotización"
   showConfirmationDialog() {
     this.displayModal = true;

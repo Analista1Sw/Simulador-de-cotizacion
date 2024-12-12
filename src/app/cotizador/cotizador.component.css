@@ -14,3 +14,42 @@ h1 {
 .text-center {
   text-align: center;
 }
+
+.bottom-image {
+  position: fixed; /* Fija la imagen al fondo */
+  bottom: 0; /* Se alinea al borde inferior */
+  left: 0; /* Alinea al borde izquierdo */
+  width: 100%; /* Ocupa todo el ancho de la pantalla */
+  height: auto; /* Mantiene las proporciones de la imagen */
+  max-height: 6vh; /* Reduce la altura máxima para que sea más delgada */
+  object-fit: cover; /* Ajusta cómo se muestra la imagen */
+  z-index: -1; /* Coloca la imagen detrás del contenido */
+}
+
+.header-container {
+    display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    flex-wrap: wrap; /* Permite que los elementos se ajusten en múltiples líneas si es necesario */
+}
+
+.p-fluid {
+    width: 100%; /* Permite que el contenedor ocupe todo el ancho disponible */
+    max-width: 1200px; /* Limita el ancho máximo del contenedor */
+    margin: 0 auto; /* Centra el contenedor en la página */
+}
+
+@media (max-width: 768px) {
+    .header-container {
+        flex-direction: column; /* Cambia a columna en pantallas pequeñas */
+        align-items: center; /* Asegura que los elementos estén centrados */
+    }
+    
+    .text-center {
+        font-size: 1.5em;  
+    }
+
+    .bottom-image {
+        max-height: 10vh; /* Ajusta la altura máxima para pantallas pequeñas si es necesario */
+    }
+}

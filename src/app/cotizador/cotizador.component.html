@@ -104,26 +104,6 @@
             optionLabel="tipoProducto"
           ></p-dropdown>
         </div>
-        <div class="field">
-          <label for="muro">Zocalo</label>
-          <p-dropdown
-            id="muro"
-            [options]="materialesMuro"
-            [(ngModel)]="selectedMaterialMuroHabitacion"
-            placeholder="Selecciona material para zocalo"
-            optionLabel="tipoProducto"
-          ></p-dropdown>
-        </div>
-        <div class="field">
-          <label for="muro">Aparatos</label>
-          <p-dropdown
-            id="muro"
-            [options]="materialesMuro"
-            [(ngModel)]="selectedMaterialMuroHabitacion"
-            placeholder="Selecciona aparatos"
-            optionLabel="tipoProducto"
-          ></p-dropdown>
-        </div>
       </div>
     </p-tabPanel>
 
@@ -228,6 +208,101 @@
             optionLabel="tipoProducto"
           ></p-dropdown>
         </div>
+      </div>
+    </p-tabPanel>
+   
+    <!-- Tab Instalaciones y Equipos -->
+    <p-tabPanel header="🔧 Instalaciones y Equipos">
+      <div class="p-fluid">
+        <h3>Instalaciones y Equipos</h3>
+
+        <!-- Carpintería -->
+        <p-table [value]="materialesCarpinteria">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Descripción</th>
+              <th>Cantidad</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-material>
+            <tr>
+              <td>{{ material.descripcion }}</td>
+              <td>
+                <p-inputNumber
+                  [(ngModel)]="material.cantidad"
+                  [min]="1"
+                  [showButtons]="true"
+                ></p-inputNumber>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+
+        <!-- Aparatos -->
+        <p-table [value]="materialesAparatos">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Descripción</th>
+              <th>Cantidad</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-material>
+            <tr>
+              <td>{{ material.descripcion }}</td>
+              <td>
+                <p-inputNumber
+                  [(ngModel)]="material.cantidad"
+                  [min]="1"
+                  [showButtons]="true"
+                ></p-inputNumber>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+
+        <!-- Accesorios -->
+        <p-table [value]="materialesAccesorios">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Descripción</th>
+              <th>Cantidad</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-material>
+            <tr>
+              <td>{{ material.descripcion }}</td>
+              <td>
+                <p-inputNumber
+                  [(ngModel)]="material.cantidad"
+                  [min]="1"
+                  [showButtons]="true"
+                ></p-inputNumber>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+
+        <!-- Red Eléctrica -->
+        <p-table [value]="materialesRedElectrica">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Descripción</th>
+              <th>Cantidad</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-material>
+            <tr>
+              <td>{{ material.descripcion }}</td>
+              <td>
+                <p-inputNumber
+                  [(ngModel)]="material.cantidad"
+                  [min]="1"
+                  [showButtons]="true"
+                ></p-inputNumber>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
       </div>
     </p-tabPanel>
   </p-tabView>
