@@ -1,5 +1,5 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { RouterModule, Router  } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
@@ -44,7 +44,7 @@ export class PreAlistamientoComponent {
   constructor(
     private messageService: MessageService,
     private proyectoService: ProyectoService,
-    private router: Router 
+    private router: Router
   ) {}
 
   // Abrir el modal y definir si es proyecto o apartamento
@@ -78,7 +78,9 @@ export class PreAlistamientoComponent {
             summary: this.isCreatingApartment
               ? 'Apartamento Creado'
               : 'Proyecto Creado',
-            detail: `El ${this.isCreatingApartment ? 'apartamento' : 'proyecto'} ha sido creado exitosamente.`,
+            detail: `El ${
+              this.isCreatingApartment ? 'apartamento' : 'proyecto'
+            } ha sido creado exitosamente.`,
           });
         },
         (error) => {
@@ -86,24 +88,29 @@ export class PreAlistamientoComponent {
           this.messageService.add({
             severity: 'error',
             summary: 'Error',
-            detail: `Hubo un error al crear el ${this.isCreatingApartment ? 'apartamento' : 'proyecto'}.`,
+            detail: `Hubo un error al crear el ${
+              this.isCreatingApartment ? 'apartamento' : 'proyecto'
+            }.`,
           });
         }
       );
-      form.reset(); 
+      form.reset();
     } else {
       console.log('Formulario no válido');
     }
   }
+  goToDetallesProyecto() {
+    this.router.navigate(['/crearProyecto']);
+  }
   goToDetallesApto() {
     this.router.navigate(['/crearApto']);
-
-    
   }
-  goToDetallesApto1() {
+  goToListaPrecios() {
     this.router.navigate(['/lista']);
+  }
 
-    
+  goToConsultarApto() {
+    this.router.navigate(['/consultarApto']);
   }
   // Limpiar el formulario
   clearForm() {

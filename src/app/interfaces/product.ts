@@ -6,6 +6,7 @@ export interface Product{
   idEmpresa: number;
   unidadMedida: String;
   medida: number;
+  idZona?: number;
   categoriaProductos: CategoriaProducto[];
 }
 

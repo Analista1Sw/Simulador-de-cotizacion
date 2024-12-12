@@ -35,6 +35,8 @@ export interface Producto {
   medida: number;
   precio: number;
   idEmpresa: number;
+  idZona?: number;
+  idItemsZonas?: Number;
   categoriaProductos: CategoriaProducto[]; // Ensure this matches the expected type
 }
 

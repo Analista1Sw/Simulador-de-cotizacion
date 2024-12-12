@@ -77,7 +77,7 @@ export class AddEditProductComponent {
     // Inicializa el formulario dentro del constructor
     this.fomr2 = this.fb.group({
       tipoProducto: ['', [Validators.required, Validators.maxLength(255)]],
-      descipcionProducto: ['', Validators.required],
+      descripcionProducto: ['', Validators.required],
       precio: [null, Validators.required],
       unidadMedida: [''],
       medida: [null, Validators.required],

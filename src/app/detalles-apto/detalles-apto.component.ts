@@ -5,7 +5,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ProyectoService } from '../services/Proyectos.service';
 import { ButtonModule } from 'primeng/button';
-import { Toast, ToastModule } from 'primeng/toast';
+import { ToastModule } from 'primeng/toast';
 import { JsonPipe } from '@angular/common';
 import { MessageService } from 'primeng/api';
 import { Router, RouterModule } from '@angular/router';
@@ -21,17 +21,15 @@ import { Router, RouterModule } from '@angular/router';
     ReactiveFormsModule,
     ButtonModule,
     ToastModule,
-    JsonPipe, 
+    JsonPipe,
     RouterModule,
   ],
   providers: [MessageService],
 })
 export class DetallesAptoComponent implements OnInit {
-
   form!: FormGroup;
   proyectos: { label: string; value: number }[] = []; // Proyectos disponibles
   zonasDisponibles: { label: string; value: number }[] = [
-    // Zonas definidas manualmente
     { label: 'Privadas y Sociales', value: 1 },
     { label: 'Baño', value: 2 },
     { label: 'Cocina', value: 3 },
@@ -47,12 +45,13 @@ export class DetallesAptoComponent implements OnInit {
     this.form = this.fb.group({
       proyecto: ['', Validators.required],
       tipoApartamento: ['', Validators.required],
-      zonas: this.fb.array([]), // Inicializamos FormArray vacío
+      medidaTotal: [null, Validators.required],
+      zonas: this.fb.array([]),
     });
   }
 
   ngOnInit(): void {
-    this.cargarProyectos(); // Cargar proyectos disponibles
+    this.cargarProyectos();
   }
 
   cargarProyectos(): void {
@@ -70,52 +69,118 @@ export class DetallesAptoComponent implements OnInit {
     );
   }
 
-  // Obtener el FormArray de zonas
   get zonas() {
     return this.form.get('zonas') as FormArray;
   }
 
-  // Agregar una nueva zona
   agregarZona() {
     const zonaFormGroup = this.fb.group({
-      idZona: ['', Validators.required],
-      muros: ['', Validators.required],
-      pisos: ['', Validators.required],
-      techo: ['', Validators.required],
+      idZona: [null, Validators.required],
+      muros: [null, Validators.required],
+      pisos: [null, Validators.required],
+      techo: [null, Validators.required],
+      guardaEscoba: [null, Validators.required],
+      salpicadero: [null, Validators.required],
     });
     this.zonas.push(zonaFormGroup);
   }
 
-  // Eliminar una zona
   eliminarZona(index: number) {
     this.zonas.removeAt(index);
   }
 
-  // Método de guardar (submit)
   onSubmit(): void {
     if (this.form.valid) {
-      // Extrae solo el ID del proyecto (value)
-      const proyectoId = this.form.value.proyecto?.value;  // Se obtiene el valor del proyecto (ID)
-      const tipoApartamento = this.form.value.tipoApartamento;  // Nombre del apartamento
-  
+      const proyectoId = this.form.value.proyecto?.value;
+      const tipoApartamento = this.form.value.tipoApartamento;
+      const medidaTotal = this.form.value.medidaTotal;
+
+      // Datos del apartamento
       const datosApartamento = {
-        nombre: tipoApartamento,  // Nombre del apartamento
-        medida: "80 m2",          // Medida fija
-        proyecto: proyectoId      // Solo el ID del proyecto
+        nombre: tipoApartamento,
+        medida: `${medidaTotal} m²`,
+        proyecto: proyectoId,
       };
-  
-      console.log('Datos enviados:', datosApartamento);  // Imprime los datos antes de enviarlos
-  
+
+      console.log('Datos enviados al primer endpoint:', datosApartamento);
+
+      // Enviar el primer endpoint para crear el apartamento
       this.proyectoService.createApartamento(datosApartamento).subscribe(
         (response) => {
           console.log('Apartamento creado exitosamente:', response);
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Guardado',
-            detail: 'El apartamento se guardó correctamente',
-          });
-          this.form.reset();
-          setTimeout(() => this.router.navigate(['/preAlistamiento']), 800);
+          const idApartamento = response.id;
+
+          // Mapea los datos de las zonas para cumplir con el formato esperado
+          const detallesZonas = this.zonas.controls
+            .map((zona) => {
+              const zonaValues = zona.value;
+
+              // Asegúrate de que solo se envíe el idZona (no el objeto completo)
+              return [
+                {
+                  idZona: zonaValues.idZona,
+                  idItemZona: 1,
+                  medida: parseFloat(zonaValues.muros),
+                }, // MURO
+                {
+                  idZona: zonaValues.idZona,
+                  idItemZona: 2,
+                  medida: parseFloat(zonaValues.pisos),
+                }, // PISO
+                {
+                  idZona: zonaValues.idZona,
+                  idItemZona: 3,
+                  medida: parseFloat(zonaValues.guardaEscoba),
+                }, // GUARDA ESCOPA
+                {
+                  idZona: zonaValues.idZona,
+                  idItemZona: 4,
+                  medida: parseFloat(zonaValues.techo),
+                }, // TECHO
+                {
+                  idZona: zonaValues.idZona,
+                  idItemZona: 7,
+                  medida: parseFloat(zonaValues.salpicadero),
+                }, // SALPICADERO (ID 7 en tu lista)
+              ].filter((zona) => zona.medida > 0); // Filtrar medidas válidas
+            })
+            .flat();
+
+          const datosZonas = {
+            idApartamento,
+            zonas: detallesZonas,
+          };
+
+          console.log('Datos enviados al segundo endpoint:', datosZonas);
+
+          // Enviar los detalles del apartamento
+          this.proyectoService.createApartamentosDetalle(datosZonas).subscribe(
+            (responseDetalle) => {
+              console.log(
+                'Detalles del apartamento creados exitosamente:',
+                responseDetalle
+              );
+              this.messageService.add({
+                severity: 'success',
+                summary: 'Guardado',
+                detail:
+                  'El apartamento y sus detalles se guardaron correctamente',
+              });
+              this.form.reset();
+              setTimeout(() => this.router.navigate(['/preAlistamiento']), 800);
+            },
+            (errorDetalle) => {
+              console.error(
+                'Error al guardar los detalles del apartamento:',
+                errorDetalle
+              );
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'No se pudieron guardar los detalles del apartamento',
+              });
+            }
+          );
         },
         (error) => {
           console.error('Error al crear el apartamento:', error);
@@ -133,5 +198,5 @@ export class DetallesAptoComponent implements OnInit {
         detail: 'Por favor, completa todos los campos requeridos',
       });
     }
-  }  
-}  
+  }
+}

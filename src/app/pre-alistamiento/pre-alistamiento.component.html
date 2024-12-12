@@ -1,145 +1,67 @@
 <div
-  class="flex justify-content-center align-items-center"
+  *ngIf="!displayModal"
+  class="intro-section card flex flex-column justify-content-center align-items-center"
   style="
-    min-height: 80vh;
-    background: linear-gradient(to bottom right, #f4f4f9, #e0e7ff);
+    width: 500px; /* Más ancho */
+    max-width: 100%;
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 30px; /* Más espacio */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    margin: 20px;
   "
 >
+  <h2 class="text-center mb-3">Gestión de Proyectos</h2>
+  <p class="text-center mb-4" style="color: #555">
+    Aquí puedes crear nuevos apartamentos y proyectos para facilitar tu
+    gestión inmobiliaria.
+  </p>
   <div
-    *ngIf="!displayModal"
-    class="intro-section card flex flex-column justify-content-center align-items-center"
+    class="grid gap-2"
     style="
-      width: 400px;
-      max-width: 100%;
-      background-color: #ffffff;
-      border-radius: 10px;
-      padding: 20px;
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-      margin: 20px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px; 
     "
   >
-    <h2 class="text-center mb-3">Gestión de Proyectos</h2>
-    <p class="text-center mb-4" style="color: #555">
-      Aquí puedes crear nuevos apartamentos y proyectos para facilitar tu
-      gestión inmobiliaria.
-    </p>
     <p-button
       label="Crear Proyecto"
       [raised]="true"
       severity="success"
-      size="large"
+      size="small" 
       icon="pi pi-plus"
-      class="mb-2"
-      (click)="openModal(false)"
+      (click)="goToDetallesProyecto()"
     ></p-button>
     <p-button
       label="Crear Apartamento"
       [raised]="true"
       severity="success"
-      size="large"
-      icon="pi pi-plus"
-      class="mb-2"
+      size="small"
+      icon="pi pi-home"
       (click)="goToDetallesApto()"
     ></p-button>
     <p-button
-    label="Lista de Precios"
-    [raised]="true"
-    severity="success"
-    size="large"
-    icon="pi pi-plus"
-    class="mb-2"
-    (click)="goToDetallesApto1()"
-  ></p-button>
+      label="Lista de Precios"
+      [raised]="true"
+      severity="info"
+      size="small"
+      icon="pi pi-dollar"
+      (click)="goToListaPrecios()"
+    ></p-button>
+    <p-button
+      label="Consultar Apartamentos"
+      [raised]="true"
+      severity="secondary"
+      size="small"
+      icon="pi pi-search"
+      (click)="goToConsultarApto()"
+    ></p-button>
   </div>
-
-  <div
-    *ngIf="displayModal"
-    class="form-section card p-fluid"
-    style="
-      width: 600px;
-      max-width: 100%;
-      background-color: #ffffff;
-      border-radius: 10px;
-      padding: 20px;
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-      margin: 20px;
-    "
-  >
-    <h4 class="text-center mt-4 mb-3">Detalles del Proyecto</h4>
-
-    <form #projectForm="ngForm" (ngSubmit)="handleFormSubmit(projectForm)">
-      <div class="grid">
-        <!-- Nombre del Proyecto -->
-        <div class="col-12 md:col-6">
-          <div class="field">
-            <label for="nombre">Nombre del Proyecto:</label>
-            <input
-              id="nombre"
-              name="nombre"
-              [(ngModel)]="nombre"
-              required
-              #nombreInput="ngModel"
-              class="input-field w-full"
-            />
-            <small
-              *ngIf="nombreInput.invalid && nombreInput.touched"
-              class="p-error"
-              >El nombre es obligatorio.</small
-            >
-          </div>
-        </div>
-
-        <!-- Dirección -->
-        <div class="col-12 md:col-6">
-          <div class="field">
-            <label for="direccion">Dirección:</label>
-            <input
-              id="direccion"
-              name="direccion"
-              [(ngModel)]="direccion"
-              required
-              #direccionInput="ngModel"
-              class="input-field w-full"
-            />
-            <small
-              *ngIf="direccionInput.invalid && direccionInput.touched"
-              class="p-error"
-              >La dirección es obligatoria.</small
-            >
-          </div>
-        </div>
-        <!-- Descripción del Proyecto -->
-        <div class="col-12">
-          <div class="field">
-            <label for="descripcion">Descripción del Proyecto:</label>
-            <textarea
-              id="descripcion"
-              name="descripcion"
-              [(ngModel)]="descripcion"
-              rows="4"
-              class="input-field w-full"
-            ></textarea>
-          </div>
-        </div>
-      </div>
-
-      <!-- Botones de acción -->
-      <div class="flex justify-content-end gap-2 mt-4">
-        <p-button
-          label="Cancelar"
-          icon="pi pi-times"
-          (click)="displayModal = false"
-          class="p-button-text"
-        ></p-button>
-        <p-button
-          label="Guardar"
-          icon="pi pi-check"
-          [disabled]="projectForm.invalid"
-          type="submit"
-          class="p-button-success"
-        ></p-button>
-      </div>
-    </form>
-    <p-toast position="top-right"></p-toast>
-  </div>
+  <div class="p-d-flex p-jc-center p-mt-4">
+    <img
+   [src]="'images/imagen.png'"
+   class="bottom-image"
+   alt="Logos"
+ /> 
+</div>
 </div>

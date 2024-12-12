@@ -1,5 +1,7 @@
+Estilo para los campos de entrada
 .input-field {
-  width: calc(100% - 20px);
+  box-sizing: border-box; /* Evita problemas con el ancho total */
+  width: 100%; /* Asegura que ocupe todo el ancho disponible */
   padding: 10px;
   border-radius: 5px;
   border: 1px solid #ccc;
@@ -15,16 +17,25 @@
   border-color: #6b1a1a;
 }
 
-/* Estilo para el fondo del modal */
-.form-section {
-  background-color: #ffffff;
+.card {
+  width: 500px; /* Cambiar tamaño de la card */
+  padding: 30px; /* Espaciado más amplio */
 }
 
-/* Estilo para los botones */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Dos columnas */
+  gap: 15px; /* Separación más amplia */
+}
+
 .p-button {
-  min-width: 100px;
+  width: 100%; /* Los botones ocupan toda la celda */
+  padding: 8px 16px; /* Reducir tamaño */
 }
 
+
+
+/* Fondo y diseño del modal */
 .form-section {
   width: 600px;
   max-width: 100%;
@@ -33,15 +44,32 @@
   padding: 20px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   margin: 20px;
+  transition: box-shadow 0.3s;
 }
 
+.form-section:hover {
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilo para los botones */
+.p-button {
+  min-width: 100px;
+}
+
+.form-section .p-button {
+  margin: 0 5px; /* Espaciado entre botones */
+}
+
+/* Estilo para mensajes de error */
 .p-error {
   color: red;
 }
-.card {
-    transition: box-shadow .3s;
-}
-
-.card:hover {
-    box-shadow: 0 12px 24px rgba(0,0,0,0.2);
+.bottom-image {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%); /* Centra la imagen horizontalmente */
+  width: 100%; /* O ajusta el tamaño según lo que necesites */
+  max-width: 100%; /* Para asegurarse de que la imagen no exceda el ancho de la pantalla */
+  height: auto; /* Mantiene la proporción de la imagen */
 }

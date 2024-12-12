@@ -14,6 +14,8 @@ import { PruebaComponent } from './prueba/prueba.component';
 import { ResumenCotizacionComponent } from './resumen-cotizacion/resumen-cotizacion.component';
 import { LoginComponent } from './login/login.component';
 import { DetallesAptoComponent } from './detalles-apto/detalles-apto.component';
+import { ConsultarAptoComponent } from './consultar-apto/consultar-apto.component';
+import { CrearProyectoComponent } from './crear-proyecto/crear-proyecto.component';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -24,6 +26,8 @@ export const routes: Routes = [
   { path: 'resumen', component: ResumenCotizacionComponent },
   { path: 'preAlistamiento', component: PreAlistamientoComponent },
   { path: 'crearApto', component: DetallesAptoComponent },
+  { path: 'crearProyecto', component:CrearProyectoComponent},
+  { path: 'consultarApto', component:ConsultarAptoComponent},
   { path: 'prueba', component: PruebaComponent },
   { path: 'add', component: AddEditProductComponent },
   { path: 'edit/:id', component: AddEditProductComponent },

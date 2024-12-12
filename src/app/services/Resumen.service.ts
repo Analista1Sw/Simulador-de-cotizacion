@@ -6,9 +6,11 @@ import { environment } from '../../environments/environment';
 @Injectable({
   providedIn: 'root',
 })
-export class CotizacionService {
+export class ResumenService {
   private myAppUrl: string = '';
   private myApiUrl: string = '';
+
+  // private myappUrl: string = 'http://10.1.2.181:9091/hefesto/';
 
   constructor(private http: HttpClient) {
     this.myAppUrl = environment.endpoint
@@ -16,14 +18,14 @@ export class CotizacionService {
   }
 
   // Método para crear la cotización (POST)
-  createCotizacion(data: any,id:number): Observable<any> {
+  createCotizacion(data: any): Observable<any> {
     this.myApiUrl = 'cotizaciones/create'
-    return this.http.post<any>(this.myAppUrl+this.myApiUrl,id,data);
+    return this.http.post<any>(this.myAppUrl+this.myApiUrl,data);
   }
 
   // Método para obtener el resumen de la cotización (GET)
   getResumen(id: number): Observable<any> {
-    const apiUrl = `detalleCotizacion/${id}/listar`; // URL específica para el resumen
-    return this.http.get<any>(`${this.myAppUrl}${apiUrl}`);
+    this.myApiUrl = `detalleCotizacion/${id}/listar`; // URL específica para el resumen
+    return this.http.get<any>(`${this.myAppUrl}${this.myApiUrl}`);
   }
 }

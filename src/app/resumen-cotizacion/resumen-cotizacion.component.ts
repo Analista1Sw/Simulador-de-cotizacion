@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CotizacionService } from '../services/Resumen.service';
+import { ResumenService } from '../services/Resumen.service'
 import { ButtonModule } from 'primeng/button';
+import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router'; // Importar Router para la navegación
 import { jsPDF } from 'jspdf'; // Importar jsPDF para generar PDF
 
@@ -15,9 +16,12 @@ import { jsPDF } from 'jspdf'; // Importar jsPDF para generar PDF
 export class ResumenCotizacionComponent implements OnInit {
   data: any;
   
+  
 
   // Ejemplo de id que se pasará al servicio
-  private idCotizacion: number = 53;
+  private idCotizacion: number = 43
+
+  ;
 
   // Objeto para mapear los nombres de las zonas
   zonas: { [key: string]: string } = {
@@ -25,19 +29,21 @@ export class ResumenCotizacionComponent implements OnInit {
     productosZona2: 'Cocina',
     productosZona3: 'Baño',
     productosZona4: 'Lavado',
+    
   };
 
   constructor(
-    private cotizacionService: CotizacionService,
+    private resumenService: ResumenService,
     private router: Router // Inyección del Router para navegación
   ) {}
 
   ngOnInit() {
     // Pasar el idCotizacion al método getResumen()
-    this.cotizacionService.getResumen(this.idCotizacion).subscribe({
+    this.resumenService.getResumen(this.idCotizacion).subscribe({
       next: (response) => {
         this.data = response;
         console.log('Datos recibidos del backend:', this.data);
+        console.log('Accesorios:', this.data.accesorios);
       },
       error: (error) => {
         console.error('Error al obtener los datos:', error);

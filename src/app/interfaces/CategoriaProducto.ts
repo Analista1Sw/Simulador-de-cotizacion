@@ -12,6 +12,7 @@ export interface CategoriaProducto {
     medida: number;
     precio: number;
     idEmpresa: number;
+    idZona?: number;
     categoriaProductos: CategoriaProducto[]; // Ensure this matches the expected type
   }
   

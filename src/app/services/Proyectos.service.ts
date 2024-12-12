@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Proyecto } from '../interfaces/Proyecto';
 import { DatosProyecto } from '../interfaces/DatosProyecto';
+import { Apartamento } from '../interfaces/Proyecto';
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -13,7 +14,7 @@ export class ProyectoService {
   private myAppUrl: string = '';
   private myApiUrl: string = '';
 
-  // private myAppUrl: string = 'http://10.1.2.154:8080/';
+  private myappUrl: string = 'http://10.1.2.181:9091/hefesto/';
   // private myApiUrl: string = 'hefesto/proyecto/create';
   // private proyectosApiUrl: string = 'hefesto/proyecto/FindAll';
   // private ApartamentoApiUrl: string = 'hefesto/apartamentosDetalle/create';
@@ -50,7 +51,7 @@ export class ProyectoService {
 
   createApartamento(data: any): Observable<any> {
     this.myApiUrl = 'apartamentos/create';
-    return this.http.post(this.myAppUrl + this.myApiUrl, data).pipe(
+    return this.http.post(this.myappUrl + this.myApiUrl, data).pipe(
       catchError((error) => {
         console.error('Error al crear el apartamento:', error);
         if (error.status === 400) {
@@ -63,10 +64,10 @@ export class ProyectoService {
   
 
   createApartamentosDetalle(data: any): Observable<any> {
-    this.myApiUrl = 'apartamentosDetalle/create'
-    return this.http.post(this.myAppUrl + this.myApiUrl, data).pipe(
+    this.myApiUrl = 'apartamentosDetalle/Create'
+    return this.http.post(this.myappUrl + this.myApiUrl, data).pipe(
       catchError((error) => {
-        console.error('Error al crear el apartamento:', error);
+        console.error('Error al crear el dettalle del apartamento:', error);
         throw error;
       })
     );
@@ -81,4 +82,11 @@ export class ProyectoService {
       })
     );
   }
+
+    // Método para obtener los apartamentos de un proyecto
+    getApartamentosByProyecto(Id: number): Observable<Apartamento[]> {
+      this.myApiUrl = `apartamentos/proyecto/${Id}`
+      return this.http.get<Apartamento[]>(`${this.myAppUrl}${this.myApiUrl}`);  // Realizar la solicitud HTTP GET
+    }
+
 }

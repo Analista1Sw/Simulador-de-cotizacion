@@ -14,11 +14,12 @@ export class CotizacionService {
   private myAppUrl: string = '';
   private myApiUrl: string = '';
 
-  constructor(private http: HttpClient) {
-    this.myAppUrl = environment.endpoint
-    this.myApiUrl = ''
-  }
+  // private myappUrl: string = 'http://10.1.2.181:9091/hefesto/';
 
+  constructor(private http: HttpClient) {
+    this.myAppUrl = environment.endpoint;
+    this.myApiUrl = '';
+  }
 
   // Método para obtener zonas
   getZonas(): Observable<any[]> {
@@ -88,11 +89,17 @@ export class CotizacionService {
   }
 
   // Método para enviar cotizaciones
-  sendAllQuotes(productosAEnviar: any[]): Observable<any> {
+  sendAllQuotes(idProspecto: number, productosAEnviar: any[]): Observable<any> {
+    // Preparamos el cuerpo de la solicitud
+    const cuerpoCotizacion = {
+      idProspecto: idProspecto, // Aquí puedes obtener dinámicamente el id del prospecto si es necesario
+      detalles: productosAEnviar, // Aquí van los productos con idZona, idProducto, y cantidad
+    };
+
     this.myApiUrl = 'cotizaciones/create';
     return this.http.post<any>(
       `${this.myAppUrl}${this.myApiUrl}`,
-      productosAEnviar
+      cuerpoCotizacion
     );
   }
 }

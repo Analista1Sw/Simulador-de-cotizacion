@@ -80,7 +80,8 @@
               'productosZona1',
               'productosZona2',
               'productosZona3',
-              'productosZona4'
+              'productosZona4',
+              
             ]
           "
           class="p-mb-3"
@@ -110,7 +111,7 @@
 
       <!-- Sección Accesorios -->
       <div class="p-mb-4">
-        <h3 class="p-text-primary">
+        <h3 class="p-text-primary" >
           <i class="pi pi-tools" style="color: #5c9b42; margin-right: 12px"></i>
           Accesorios
         </h3>
@@ -126,7 +127,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let accesorio of data.accesorios">
+              <tr *ngFor="let accesorio of data.productosZona5">
                 <td>{{ accesorio.id }}</td>
                 <td>{{ accesorio.tipoProducto }}</td>
               </tr>

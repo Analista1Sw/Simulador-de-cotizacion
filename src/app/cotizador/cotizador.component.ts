@@ -122,20 +122,22 @@ export class CotizadorComponent {
       this.selectedMaterialPisoBa,
       this.selectedMaterialTechoBa,
     ].filter((material) => material !== null);
-
+  
     const productosAEnviar = materialesSeleccionados.map((material) => ({
       idProducto: material!.id,
       idZona: 1, // Id de zona, según la lógica de tu backend
       cantidad: 1, // Cantidad predeterminada
     }));
-
-    this.cotizacionService.sendAllQuotes(productosAEnviar).subscribe(
-      () => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Éxito',
-          detail: 'Los materiales han sido enviados.',
-        });
+  
+    const idProspecto = 10;
+  
+    this.cotizacionService.sendAllQuotes(idProspecto, productosAEnviar).subscribe(
+      (response) => {
+        const idCotizacion = response.idCotizacion; // Asegúrate de que el backend devuelva este ID
+        console.log('ID de cotización recibido:', idCotizacion);
+  
+        // Almacenar el idCotizacion para redirigir
+        this.router.navigate(['/resumen', idCotizacion]);  // Redirige a la vista de resumen pasando el idCotizacion
       },
       (error) => {
         console.error('Error al enviar materiales:', error);
@@ -147,6 +149,7 @@ export class CotizadorComponent {
       }
     );
   }
+  
   // Muestra el modal cuando se hace clic en "Generar Cotización"
   showConfirmationDialog() {
     this.displayModal = true;

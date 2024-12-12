@@ -1,0 +1,82 @@
+<div class="form-section card p-fluid" style="max-width: 600px; margin: auto; padding: 30px;">
+    <h4 class="text-center mt-4 mb-3">Crear Proyecto</h4>
+  
+    <form #projectForm="ngForm" (ngSubmit)="handleFormSubmit(projectForm)">
+      <div class="grid">
+    
+         <!-- Nombre del Proyecto -->
+         <div class="col-12 md:col-6">
+            <div class="field">
+              <label for="nombre">Nombre del Proyecto:</label>
+              <input
+                id="nombre"
+                name="nombre"
+                [(ngModel)]="nombre"
+                required
+                #nombreInput="ngModel"
+                class="input-field w-full"
+              />
+              <small
+                *ngIf="nombreInput.invalid && nombreInput.touched"
+                class="p-error"
+                >El nombre es obligatorio.</small
+              >
+            </div>
+        </div>
+  
+     
+         <!-- Dirección -->
+         <div class="col-12 md:col-6">
+            <div class="field">
+              <label for="direccion">Dirección:</label>
+              <input
+                id="direccion"
+                name="direccion"
+                [(ngModel)]="direccion"
+                required
+                #direccionInput="ngModel"
+                class="input-field w-full"
+              />
+              <small
+                *ngIf="direccionInput.invalid && direccionInput.touched"
+                class="p-error"
+                >La dirección es obligatoria.</small
+              >
+            </div>
+          </div>
+  
+        <!-- Descripción del Proyecto -->
+        <div class="col-12">
+          <div class="field">
+            <label for="descripcion">Descripción del Proyecto:</label>
+            <textarea
+              id="descripcion"
+              name="descripcion"
+              [(ngModel)]="descripcion"
+              rows="4"
+              class="input-field w-full"
+            ></textarea>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Botones de acción -->
+      <div class="flex justify-content-end gap-2 mt-4">
+        <p-button
+          label="Cancelar"
+          icon="pi pi-times"
+          (click)="resetForm(projectForm)"
+          class="p-button-text"
+        ></p-button>
+        <p-button
+          label="Guardar"
+          icon="pi pi-check"
+          [disabled]="projectForm.invalid"
+          type="submit"
+          class="p-button-success"
+        ></p-button>
+      </div>
+    </form>
+    <p-toast position="top-right"></p-toast>
+  </div>
+  

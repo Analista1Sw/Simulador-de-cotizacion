@@ -43,4 +43,13 @@
     color: #f5f5dc; /* Texto crema al pasar el mouse */
   }
   
-  
+  .bottom-image {
+    position: fixed; /* Fija la imagen al fondo */
+    bottom: 0; /* Se alinea al borde inferior */
+    left: 0; /* Alinea al borde izquierdo */
+    width: 100%; /* Ocupa todo el ancho de la pantalla */
+    height: auto; /* Mantiene las proporciones de la imagen */
+    max-height: 6vh; /* Reduce la altura máxima para que sea más delgada */
+    object-fit: cover; /* Ajusta cómo se muestra la imagen */
+    z-index: -1; /* Coloca la imagen detrás del contenido */
+  }
