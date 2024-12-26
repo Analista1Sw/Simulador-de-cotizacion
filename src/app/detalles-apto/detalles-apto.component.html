@@ -14,8 +14,26 @@
       background-color: #ffffff;
     "
   >
-    <!-- <div> {{form.value |json }} </div> -->
+    <!-- Botón para volver a la vista de prealistamiento -->
+    <p-button
+    icon="pi pi-arrow-left"
+    class="p-button-text"
+    (click)="navigateBack()"
+    [style]="{
+      'margin-bottom': '2rem', 
+      'display': 'block', 
+      'margin-left': '0', 
+      'border': 'none', 
+      'background': 'transparent',
+      'color': 'gray'
+    }"
+  ></p-button>
   
+  
+  
+
+    <!-- <div> {{form.value |json }} </div> -->
+
     <h2 class="text-center" style="margin-bottom: 2rem; color: #3f51b5">
       Crear Apartamento
     </h2>
@@ -90,7 +108,7 @@
               formControlName="idZona"
               [options]="zonasDisponibles"
               optionLabel="label"
-              optionValue="value" 
+              optionValue="value"
               placeholder="Seleccione una zona"
               class="p-inputtext-sm"
             ></p-dropdown>

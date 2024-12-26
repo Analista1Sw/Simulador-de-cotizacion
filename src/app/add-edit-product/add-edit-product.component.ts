@@ -3,7 +3,6 @@ import {
   FormBuilder,
   FormGroup,
   Validators,
-  FormControl,
   ReactiveFormsModule,
 } from '@angular/forms';
 import { ActivatedRoute, RouterModule } from '@angular/router';
@@ -48,11 +47,10 @@ import { RippleModule } from 'primeng/ripple';
   templateUrl: './add-edit-product.component.html',
   styleUrls: ['./add-edit-product.component.css'],
 })
-
-
 export class AddEditProductComponent {
   categorias: Category[] = [];
   id: number;
+  isEditMode: boolean = false; // Variable para identificar si es edición
 
   // Opciones para el dropdown de unidades de medida
   unidadesMedida = [
@@ -87,9 +85,10 @@ export class AddEditProductComponent {
 
   ngOnInit() {
     if (this.id != 0) {
-      this.getProduct(this.id);
+      this.isEditMode = true; // Se activa el modo de edición
+      this.getProduct(this.id); // Carga el producto para edición
     }
-    this.getListCategories();
+    this.getListCategories(); // Carga las categorías disponibles
   }
 
   getListCategories() {
@@ -122,15 +121,29 @@ export class AddEditProductComponent {
 
     console.log('Producto enviado:', product);
 
-    this._productService.saveProduct(product).subscribe({
-      next: () => {
-        this.showAdd();
-        this.fomr2.reset();
-      },
-      error: (err) => {
-        console.error('Error al guardar el producto:', err);
-      },
-    });
+    if (this.isEditMode) {
+      // Si estamos en modo de edición, se actualiza el producto
+      this._productService.updateProduct(this.id, product).subscribe({
+        next: () => {
+          this.showUpdate(); // Muestra mensaje de éxito de actualización
+          this.fomr2.reset();
+        },
+        error: (err) => {
+          console.error('Error al actualizar el producto:', err);
+        },
+      });
+    } else {
+      // Si estamos en modo de creación, se guarda el producto nuevo
+      this._productService.saveProduct(product).subscribe({
+        next: () => {
+          this.showAdd(); // Muestra mensaje de éxito de creación
+          this.fomr2.reset();
+        },
+        error: (err) => {
+          console.error('Error al guardar el producto:', err);
+        },
+      });
+    }
   }
 
   getProduct(id: number) {

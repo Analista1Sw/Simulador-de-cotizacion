@@ -1,16 +1,8 @@
 <!-- Contenedor Principal -->
 <p-toast [position]="'bottom-right'"></p-toast>
-<div class="main-content flex flex-wrap gap-3 align-items-center justify-content-between mt-5">
-  <p-splitButton
-    label="Categorias"
-    (onClick)="getListProducts()"
-    [model]="items"
-    size="small"
-    severity="contrast"
-    text
-    [scrollLeft]="true"
-    arrow
-  ></p-splitButton>
+<div
+  class="main-content flex flex-wrap gap-3 align-items-center justify-content-between mt-5"
+>
   <p-button
     severity="success"
     label="Nuevo"
@@ -18,6 +10,19 @@
     class="mr-2"
     size="small"
     routerLink="/add"
+  ></p-button>
+  <p-button
+    icon="pi pi-arrow-left"
+    class="p-button-text"
+    (click)="navigateBack()"
+    [style]="{
+      'margin-bottom': '2rem',
+      display: 'block',
+      'margin-left': '0', 
+      border: 'none',
+      background: 'transparent',
+      color: 'gray'
+    }"
   ></p-button>
 </div>
 
@@ -35,8 +40,7 @@
         <th>Descripcion</th>
         <th>Unidad</th>
         <th>Precio</th>
-        <th>Status</th>
-        <th>Reviews</th>
+        <th>Editar</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-product let-columns="columns">
@@ -53,16 +57,6 @@
             routerLink="/edit/{{ product.id }}"
           ></p-button>
         </td>
-        <td>
-          <p-button
-            label=""
-            icon="pi pi-trash"
-            [text]="true"
-            [raised]="true"
-            severity="warning"
-            (click)="deleteProduct(product.id!)"
-          ></p-button>
-        </td>
       </tr>
     </ng-template>
   </p-table>
@@ -70,9 +64,5 @@
 
 <!-- Imagen inferior -->
 <div class="p-d-flex p-jc-center">
-  <img
-    [src]="'images/LogosE.png'"
-    class="bottom-image"
-    alt="Logos"
-  />
+  <img [src]="'images/LogosE.png'" class="bottom-image" alt="Logos" />
 </div>

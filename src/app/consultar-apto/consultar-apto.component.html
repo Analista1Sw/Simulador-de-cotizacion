@@ -4,6 +4,20 @@
   class="form-container"
 >
   <div class="p-fluid p-formgrid p-grid">
+    <p-button
+      icon="pi pi-arrow-left"
+      class="p-button-text"
+      (click)="navigateBack()"
+      [style]="{
+        'margin-bottom': '2rem',
+        display: 'block',
+        'margin-left': '0',
+        border: 'none',
+        background: 'transparent',
+        color: 'gray'
+      }"
+    ></p-button>
+
     <div class="p-field p-col">
       <label for="proyecto"
         >Seleccione un Proyecto para Consultar Apartamentos</label
@@ -13,6 +27,7 @@
         formControlName="proyecto"
         [options]="proyectos"
         optionLabel="nombre"
+        optionValue="id"
         placeholder="Seleccione un proyecto"
         appendTo="body"
       >

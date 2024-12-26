@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
+import { Router } from '@angular/router';
 import { ProyectoService } from '../services/Proyectos.service';  // Asegúrate de tener un servicio de Proyecto
 
 @Component({
@@ -15,8 +16,8 @@ import { ProyectoService } from '../services/Proyectos.service';  // Asegúrate 
     CommonModule,
     ToastModule,
     ButtonModule,
-    FormsModule,        // Asegúrate de importar FormsModule aquí
-    InputTextModule,    // Asegúrate de importar InputTextModule aquí
+    FormsModule,        
+    InputTextModule,    
   ],
   providers: [MessageService],
   templateUrl: './crear-proyecto.component.html',
@@ -30,7 +31,8 @@ export class CrearProyectoComponent {
 
   constructor(
     private proyectoService: ProyectoService,  // Asegúrate de tener un servicio de Proyecto
-    private messageService: MessageService
+    private messageService: MessageService,
+    private router: Router
   ) {}
 
   // Método que maneja el envío del formulario para la creación de un proyecto
@@ -77,5 +79,6 @@ export class CrearProyectoComponent {
   // Método para resetear el formulario en caso de cancelar
   resetForm(form: NgForm) {
     form.reset();
+    this.router.navigate(['/preAlistamiento']); 
   }
 }

@@ -42,7 +42,7 @@ export class FidelizacionClienteComponent implements OnInit {
     private router: Router,
     private proyectoService: ProyectoService,
     private mySharedService: MySharedServiceService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.fidelizacionForm = this.fb.group({
@@ -110,7 +110,10 @@ export class FidelizacionClienteComponent implements OnInit {
         next: (response) => {
           const prospectoId = response.id;
           this.mySharedService.setProspectoId(prospectoId);
-          
+
+          const apartamentoId = this.fidelizacionForm.value.apartamentoId; // id del apartamento
+          this.mySharedService.setIdApartamento(apartamentoId); // Almacenas el idApartamento en el servicio
+
           this.messageService.add({
             severity: 'success',
             summary: 'Éxito',

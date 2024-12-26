@@ -54,6 +54,10 @@ export class DetallesAptoComponent implements OnInit {
     this.cargarProyectos();
   }
 
+  navigateBack() {
+    this.router.navigate(['/preAlistamiento']);
+  }
+
   cargarProyectos(): void {
     this.proyectoService.getProyectos().subscribe(
       (proyectos) => {

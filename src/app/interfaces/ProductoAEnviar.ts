@@ -1,10 +1,14 @@
 
 
-interface ProductoAEnviar {
-  idProducto: number; // o string, dependiendo de tus datos
-  idZona: number; // o string
+export interface ProductoAEnviar {
+  idProducto: number;
+  idZona: number;
+  idItemsZonas: number; // Actualizado de idItemZona a idItemsZonas
   cantidad: number;
-  idProyecto: number; // asumiendo que esto siempre es un número
+  idApartamento: number;
+  idProspecto: number;
 }
 
+
+const productosAEnviar: ProductoAEnviar[] = [];
 

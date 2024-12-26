@@ -1,85 +1,78 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ResumenService } from '../services/Resumen.service'
-import { ButtonModule } from 'primeng/button';
 import { ActivatedRoute } from '@angular/router';
-import { Router } from '@angular/router'; // Importar Router para la navegación
-import { jsPDF } from 'jspdf'; // Importar jsPDF para generar PDF
+import { HttpClient } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { ButtonModule } from 'primeng/button';
+
 
 @Component({
   selector: 'app-resumen-cotizacion',
   standalone: true,
-  imports: [CommonModule, ButtonModule],
   templateUrl: './resumen-cotizacion.component.html',
-  styleUrls: ['./resumen-cotizacion.component.css'],
+  imports: [CommonModule, ButtonModule],
 })
 export class ResumenCotizacionComponent implements OnInit {
-  data: any;
-  
-  
-
-  // Ejemplo de id que se pasará al servicio
-  private idCotizacion: number = 43
-
-  ;
-
-  // Objeto para mapear los nombres de las zonas
-  zonas: { [key: string]: string } = {
-    productosZona1: 'Privadas y Sociales',
-    productosZona2: 'Cocina',
-    productosZona3: 'Baño',
-    productosZona4: 'Lavado',
-    
-  };
+  idCotizacion: string | null = null;
+  detallesCotizacion: any = null;
+  productosPorZona: any[] = [];
+  totalCotizacion: number = 0;
 
   constructor(
-    private resumenService: ResumenService,
-    private router: Router // Inyección del Router para navegación
+    private route: ActivatedRoute,
+    private http: HttpClient,
+    private router: Router
   ) {}
 
   ngOnInit() {
-    // Pasar el idCotizacion al método getResumen()
-    this.resumenService.getResumen(this.idCotizacion).subscribe({
-      next: (response) => {
-        this.data = response;
-        console.log('Datos recibidos del backend:', this.data);
-        console.log('Accesorios:', this.data.accesorios);
-      },
-      error: (error) => {
-        console.error('Error al obtener los datos:', error);
-      },
+    // Capturando parámetros de la ruta
+    this.route.paramMap.subscribe(params => {
+      console.log('Parámetros de la ruta:', params); // Verifica todos los parámetros
+      this.idCotizacion = params.get('idCotizacion'); // Captura el parámetro dinámico
+      console.log('ID de Cotización capturado:', this.idCotizacion); // Verifica el valor capturado
+
+      if (this.idCotizacion) {
+        this.obtenerDetallesCotizacion(this.idCotizacion);
+      } else {
+        console.error('ID de cotización no encontrado.');
+      }
     });
-    
   }
 
-  // Función para descargar el PDF
-  descargarPDF(): void {
-    const doc = new jsPDF();
+  obtenerDetallesCotizacion(id: string) {
+    const url = `http://200.122.250.66:9095/hefesto/detalleCotizacion/${id}/listar`;
+    console.log('Llamando al backend con URL:', url); // Verifica la URL
 
-    doc.setFont('helvetica', 'bold');
-    doc.text('Resumen de Cotización', 10, 10);
+    this.http.get(url).subscribe(
+      (response: any) => {
+        console.log('Respuesta del backend:', response); // Muestra la respuesta del backend
+        this.detallesCotizacion = response;
 
-    if (this.data) {
-      doc.setFont('helvetica', 'normal');
-      doc.text(`Cliente: ${this.data?.prospecto?.nombre}`, 10, 20);
-      doc.text(`Cédula: ${this.data?.prospecto?.documento}`, 10, 30);
-      doc.text(`Proyecto: ${this.data?.proyecto?.nombre}`, 10, 40);
-      doc.text(`Número Cotización: ${this.data?.proyecto?.id}`, 10, 50);
-      doc.text(
-        `Total Cotización: ${this.data?.totalCotizacion?.toLocaleString(
-          'es-CO',
-          { style: 'currency', currency: 'COP' }
-        )}`,
-        10,
-        60
-      );
-    } else {
-      doc.text('No hay datos disponibles.', 10, 20);
+        // Procesar zonas dinámicamente
+        this.productosPorZona = this.mapearProductosPorZona(response);
+        this.totalCotizacion = response.totalCotizacion;
+        console.log('Productos por zona:', this.productosPorZona); // Muestra el procesamiento de zonas
+        console.log('Total de la cotización:', this.totalCotizacion); // Verifica el total
+      },
+      (error) => {
+        console.error('Error al obtener detalles de cotización:', error);
+      }
+    );
+  }
+
+  mapearProductosPorZona(data: any): any[] {
+    const zonas = [];
+    for (let i = 1; i <= 5; i++) {
+      if (data[`productosZona${i}`]) {
+        zonas.push({
+          zona: `Zona ${i}`,
+          productos: data[`productosZona${i}`]
+        });
+      }
     }
-
-    doc.save('Resumen_Cotizacion.pdf');
+    console.log('Zonas mapeadas:', zonas); // Verifica el mapeo de zonas
+    return zonas;
   }
-
   // Función para redirigir a la página de fidelización
   volverAFidelizacion(): void {
     this.router.navigate(['/fidel']);  

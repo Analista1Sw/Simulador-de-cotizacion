@@ -12,6 +12,9 @@ export interface MaterialesPorCategoria {
   muros: Material[];
   pisos: Material[];
   techos: Material[];
+  salpicadero: Material[];
+  guardaescoba: Material[];
+  cabinas: Material[];
   accesorios: Material[];
 }
 
@@ -37,13 +40,25 @@ export interface Producto {
   idEmpresa: number;
   idZona?: number;
   idItemsZonas?: Number;
+  cantidad?: number;
   categoriaProductos: CategoriaProducto[]; // Ensure this matches the expected type
 }
 
 export interface ProductoAEnviar {
-  idProducto: number; // o string, dependiendo de tus datos
-  idZona: number; // o string
+  idProducto: number;
+  idZona: number;
+  idItemsZonas: number; // Actualizado de idItemZona a idItemsZonas
   cantidad: number;
-  idProyecto: number;
-  categoriaProductos?: any[];
+  idApartamento: number;
+  idProspecto: number;
 }
+
+export interface DetalleCotizacion {
+  idProducto: number;
+  idZona: number;
+  idItemsZonas: number;
+  cantidad: number;
+  idApartamento: number;
+}
+
+

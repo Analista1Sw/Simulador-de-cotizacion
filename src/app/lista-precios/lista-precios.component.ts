@@ -19,6 +19,7 @@ import { RippleModule } from 'primeng/ripple';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { FormsModule } from '@angular/forms';
 import { SplitButtonModule } from 'primeng/splitbutton';
+import { Router } from '@angular/router'; 
 // import { AccordionModule } from 'primeng/accordion';
 // import { CustomCurrencyPipe } from '../custom-currency.pipe';
 import { PaginatorModule } from 'primeng/paginator';
@@ -60,7 +61,8 @@ export class ListaPreciosComponent {
   constructor(
     private _productService: ProductService,
     private _categoryService: CategoryService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private router: Router
   ) {
     // arreglo de categorias
     this.items = [
@@ -205,14 +207,15 @@ export class ListaPreciosComponent {
 
   formatCurrency(value: number): string {
     if (!value) return '';
-    let formattedValue = new Intl.NumberFormat('en-US', {
+    let formattedValue = new Intl.NumberFormat('es-CO', {
       style: 'currency',
-      currency: 'USD',
+      currency: 'COP',
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
-    }).format(value / 100);
+    }).format(value);
     return formattedValue;
   }
+  
 
   showdelete() {
     this.messageService.add({
@@ -220,5 +223,10 @@ export class ListaPreciosComponent {
       summary: 'Producto eliminado',
       detail: 'El producto ha sido eliminado con exito',
     });
+  }
+
+  
+  navigateBack() {
+    this.router.navigate(['/preAlistamiento']);
   }
 }

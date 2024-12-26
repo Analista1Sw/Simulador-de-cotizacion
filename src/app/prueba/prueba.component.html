@@ -1,0 +1,25 @@
+<!-- <div>
+  <form [formGroup]="form" (ngSubmit)="enviar()">
+    <h3>Zonas y Productos</h3>
+
+    <div formArrayName="zonas">
+      <div *ngFor="let zona of zonasFormArray.controls; let i = index" [formGroupName]="i">
+        <h4>{{ zona.value.nombreZona }}</h4>
+
+        <div formArrayName="items">
+          <div *ngFor="let item of zona.get('items')?.controls; let j = index" [formGroupName]="j">
+            <label>{{ item.value?.nombreItem }}</label>
+
+            <select formControlName="idProducto">
+              <option *ngFor="let producto of productosPorZona[item.value.nombreItem]" [value]="producto.id">
+                {{ producto.nombre }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button type="submit">Enviar</button>
+  </form>
+</div> -->

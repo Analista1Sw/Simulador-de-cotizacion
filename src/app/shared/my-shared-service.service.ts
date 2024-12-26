@@ -9,6 +9,7 @@ import { environment } from '../../environments/environment';
 export class MySharedServiceService {
   private myAppUrl: string = '';
   private prospectoId: number | null = null;
+  private idApartamento: number | null = null;
 
   constructor(private http: HttpClient) {
     this.myAppUrl = environment.endpoint
@@ -20,5 +21,13 @@ export class MySharedServiceService {
 
   getProspectoId(): number | null {
     return this.prospectoId;
+  }
+
+  setIdApartamento(id: number) {
+    this.idApartamento = id;
+  }
+
+  getIdApartamento(): number | null {
+    return this.idApartamento;
   }
 }

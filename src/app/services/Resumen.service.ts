@@ -25,7 +25,7 @@ export class ResumenService {
 
   // Método para obtener el resumen de la cotización (GET)
   getResumen(id: number): Observable<any> {
-    this.myApiUrl = `detalleCotizacion/${id}/listar`; // URL específica para el resumen
+    this.myApiUrl = `detalleCotizacion/${id}/listar`; 
     return this.http.get<any>(`${this.myAppUrl}${this.myApiUrl}`);
   }
 }

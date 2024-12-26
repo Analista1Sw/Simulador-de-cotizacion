@@ -2,7 +2,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { MaterialesPorCategoria } from '../interfaces/MaterialesPorCategoria';
 import { Producto } from '../interfaces/CategoriaProducto';
 import { environment } from '../../environments/environment';
@@ -42,6 +42,10 @@ export class CotizacionService {
           muros: [],
           pisos: [],
           techos: [],
+          salpicadero: [],
+          guardaescoba: [],
+          cabinas: [],
+        
           accesorios: [],
         };
 
@@ -57,11 +61,24 @@ export class CotizacionService {
             case 'ACABADO TECHOS':
               materialesPorCategoria.techos.push(producto);
               break;
+              case 'SALPICADERO':
+              materialesPorCategoria.salpicadero.push(producto);
+              break;
             default:
               materialesPorCategoria.accesorios.push(producto);
               break;
+              case 'GUARDA ESCOBA':
+                materialesPorCategoria.guardaescoba.push(producto);
+                break;
+                case 'CABINAS':
+                  materialesPorCategoria.cabinas.push(producto);
+                  break;
+               
+                
+             
           }
         });
+
 
         return materialesPorCategoria;
       })
@@ -90,16 +107,21 @@ export class CotizacionService {
 
   // Método para enviar cotizaciones
   sendAllQuotes(idProspecto: number, productosAEnviar: any[]): Observable<any> {
-    // Preparamos el cuerpo de la solicitud
     const cuerpoCotizacion = {
-      idProspecto: idProspecto, // Aquí puedes obtener dinámicamente el id del prospecto si es necesario
-      detalles: productosAEnviar, // Aquí van los productos con idZona, idProducto, y cantidad
+      idProspecto: idProspecto,
+      detalles: productosAEnviar,
     };
-
+  
     this.myApiUrl = 'cotizaciones/create';
     return this.http.post<any>(
       `${this.myAppUrl}${this.myApiUrl}`,
       cuerpoCotizacion
+    ).pipe(
+      tap((response: any) => {
+        console.log('Respuesta completa del backend:', response); // Inspecciona la respuesta
+      })
     );
   }
+  
+  
 }

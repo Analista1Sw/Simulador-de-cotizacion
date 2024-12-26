@@ -1,216 +1,127 @@
-<img [src]="'images/LOGO-MAX.png'" width="150" height="100" />
-<div
-  class="p-d-flex p-jc-center p-ai-center"
-  style="min-height: 100vh; background-color: #f4f5f7"
->
-  <div
-    class="p-card p-p-4 p-shadow-3 p-d-flex p-flex-column p-ai-center"
+<div style="max-width: 800px; margin: 0 auto; padding: 32px">
+  <h2
+    class="p-text-center"
     style="
-      border-radius: 12px;
-      max-width: 1000px;
-      width: 100%;
-      padding: 16px;
-      background-color: #ffffff;
+      font-size: 2.4rem;
+      font-weight: bold;
+      color: #4caf50;
+      text-align: center;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
     "
   >
-    <h2
-      class="p-text-center p-mb-4"
+    <i class="pi pi-file" style="margin-right: 8px"></i> Resumen de Cotización
+  </h2>
+
+  <div
+    style="
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      background-color: #f7f9f9;
+      padding: 20px;
+      border-radius: 10px;
+    "
+  >
+    <!-- Sección Cliente -->
+    <div
       style="
-        font-size: 2.4rem;
-        font-weight: bold;
-        color: #4caf50;
-        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
-        text-align: center;
+        flex-basis: calc(50% - 16px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        background-color: #ffffff;
+        border-radius: 10px;
+        padding: 20px;
       "
     >
-      <i
-        class="pi pi-file"
-        style="
-          color: #4caf50;
-          margin-right: 8px;
-          margin-left: 8px;
-          font-size: 2.2rem;
-        "
-      ></i>
-      Resumen de Cotización
-    </h2>
-
-    <div *ngIf="data; else cargando">
-      <!-- Sección Proyecto -->
-      <div
-        class="p-mb-4 p-p-3 p-shadow-2"
-        style="background: #f7f9f9; border-radius: 8px"
-      >
-        <div class="p-grid p-jc-between" style="gap: 16px">
-          <!-- Sección Cliente -->
-          <div
-            class="p-col-12 p-md-6 p-shadow-2"
-            style="background: #f7f9f9; border-radius: 8px; padding: 16px"
-          >
-            <h3 style="font-size: 1.2rem; color: #4caf50; margin-bottom: 12px">
-              <i class="pi pi-user" style="margin-right: 8px"></i> Cliente
-            </h3>
-            <p><strong>Cliente:</strong> {{ data?.prospecto?.nombre }}</p>
-            <p><strong>Cédula:</strong> {{ data?.prospecto?.documento }}</p>
-          </div>
-          <!-- Sección Proyecto -->
-          <div
-            class="p-col-12 p-md-6 p-shadow-2"
-            style="background: #f7f9f9; border-radius: 8px; padding: 16px"
-          >
-            <h3 style="font-size: 1.2rem; color: #4caf50; margin-bottom: 12px">
-              <i class="pi pi-folder-open" style="margin-right: 8px"></i>
-              Proyecto
-            </h3>
-            <p><strong>Nombre Proyecto:</strong> {{ data.proyecto?.nombre }}</p>
-            <p><strong>Número Cotización:</strong> {{ data.proyecto?.id }}</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Sección Productos por Zona -->
-      <div class="p-mb-4">
-        <h3 class="p-text-primary">
-          <i class="pi pi-map" style="color: #5c9b42; margin-right: 12px"></i>
-          Productos por Zona
-        </h3>
-        <div
-          *ngFor="
-            let zona of [
-              'productosZona1',
-              'productosZona2',
-              'productosZona3',
-              'productosZona4',
-              
-            ]
-          "
-          class="p-mb-3"
-        >
-          <div
-            class="p-p-3 p-shadow-2"
-            style="background: #f7f9f9; border-radius: 8px"
-          >
-            <h4 style="font-weight: bold; color: #555">{{ zonas[zona] }}</h4>
-            <table class="p-datatable p-datatable-striped" style="width: 100%">
-              <thead>
-                <tr style="background-color: #eaeded; color: #5c9b42">
-                  <th>ID</th>
-                  <th>Tipo Producto</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let producto of data[zona]">
-                  <td>{{ producto.id }}</td>
-                  <td>{{ producto.tipoProducto }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      <!-- Sección Accesorios -->
-      <div class="p-mb-4">
-        <h3 class="p-text-primary" >
-          <i class="pi pi-tools" style="color: #5c9b42; margin-right: 12px"></i>
-          Accesorios
-        </h3>
-        <div
-          class="p-p-3 p-shadow-2"
-          style="background: #f7f9f9; border-radius: 8px"
-        >
-          <table class="p-datatable p-datatable-striped" style="width: 100%">
-            <thead>
-              <tr style="background-color: #eaeded; color: #5c9b42">
-                <th>ID</th>
-                <th>Tipo Producto</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let accesorio of data.productosZona5">
-                <td>{{ accesorio.id }}</td>
-                <td>{{ accesorio.tipoProducto }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- Sección Total Cotización -->
-      <div
-        class="p-mb-4 p-p-3 p-shadow-2"
-        style="background: #f7f9f9; border-radius: 8px"
-      >
-        <h3 class="p-text-primary">
-          <i
-            class="pi pi-money-bill"
-            style="color: #5c9b42; margin-right: 12px"
-          ></i>
-          Total Cotización
-        </h3>
-        <p class="p-text-bold p-text-lg" style="color: #333">
-          <strong>Total:</strong> {{ data.totalCotizacion | currency }}
-        </p>
-      </div>
-
-      <!-- Sección texto legal -->
-      <div
-        class="p-mt-5 p-p-3 p-shadow-2 p-text-justify"
-        style="background-color: #fff8e1; border-radius: 5px; color: #5a5c5b"
-      >
-        <p>
-          La presente cotización constituye exclusivamente una estimación
-          preliminar de carácter informativo y referencial, elaborada con base
-          en la información general proporcionada hasta el momento, y no
-          representa una oferta comercial según los términos previstos en el
-          artículo 845 del Código de Comercio Colombiano. Los valores,
-          especificaciones y condiciones aquí expresados son aproximados y
-          podrán variar según las condiciones específicas del proyecto,
-          disponibilidad de materiales, fluctuaciones de precios en el mercado,
-          modificaciones en el alcance del trabajo y resultados de la visita
-          técnica al sitio de ejecución. Para la elaboración de una propuesta
-          formal y vinculante, se requerirá necesariamente una visita técnica al
-          sitio, evaluación detallada de condiciones específicas y confirmación
-          escrita de las especificaciones técnicas finales del proyecto. Esta
-          estimación tiene una vigencia referencial y los precios están sujetos
-          a confirmación al momento de emitir una propuesta formal, la cual
-          deberá constar por escrito y ser expresamente aceptada por ambas
-          partes para generar cualquier tipo de vínculo contractual.
-        </p>
-      </div>
+      <h3 style="font-size: 1.5rem; color: #4caf50">Cliente</h3>
+      <p><strong>Cliente:</strong> {{ detallesCotizacion.prospecto.nombre }}</p>
+      <p>
+        <strong>Cédula:</strong> {{ detallesCotizacion.prospecto.documento }}
+      </p>
     </div>
 
-    <!-- Estado Cargando -->
-    <ng-template #cargando>
-      <div class="p-text-center p-text-secondary">
-        <i
-          class="pi pi-spinner pi-spin"
-          style="font-size: 2rem; color: #5c9b42"
-        ></i
-        ><br />
-        Cargando datos...
-      </div>
-    </ng-template>
-    <div class="p-d-flex p-jc-between p-mt-4" style="width: 100%">
-      <!-- Botón para descargar PDF -->
-      <button
-        pButton
-        type="button"
-        label="Descargar PDF"
-        icon="pi pi-download"
-        class="p-button-success"
-        (click)="descargarPDF()"
-      ></button>
-
-      <!-- Botón para redirigir a fidelización -->
-      <button
-        pButton
-        type="button"
-        label="Volver a Fidelización"
-        icon="pi pi-arrow-left"
-        class="p-button-secondary"
-        (click)="volverAFidelizacion()"
-      ></button>
+    <!-- Sección Proyecto -->
+    <div
+      style="
+        flex-basis: calc(50% - 16px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        background-color: #ffffff;
+        border-radius: 10px;
+        padding: 20px;
+      "
+    >
+      <h3 style="font-size: 1.5rem; color: #4caf50">Proyecto</h3>
+      <p>
+        <strong>Nombre Proyecto:</strong> {{ detallesCotizacion.proyecto.nombre
+        }}<br /><strong>Apartamento:</strong>
+        {{ detallesCotizacion.proyecto.apartamento }}
+      </p>
     </div>
+  </div>
+
+  <!-- Información adicional (productos y total cotización) -->
+  <div *ngIf="detallesCotizacion" style="margin-top: 40px">
+    <h2 style="font-size: 1.8rem; color: #4caf50">Productos por Zona</h2>
+
+    <div *ngFor="let zona of productosPorZona" style="margin-bottom: 20px">
+      <h3 style="font-size: 1.5rem">{{ zona.zona }}</h3>
+      <table style="width: 100%; border-collapse: collapse">
+        <thead>
+          <tr>
+            <th style="border-bottom: 2px solid #4caf50; padding-bottom: 8px">
+              Producto
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let producto of zona.productos">
+            <td style="border-bottom: 1px solid #ddd; padding: 8px">
+              {{ producto.tipoProducto }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Total Cotización: {{ totalCotizacion | currency }}</h2>
+
+    <div
+      style="
+        max-height: 600px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding: 10px;
+        border-radius: 10px;
+        background-color: #f9f9f9;
+      "
+    >
+      <p>
+        La presente cotización constituye exclusivamente una estimación
+        preliminar de carácter informativo y referencial, elaborada con base en
+        la información general proporcionada hasta el momento, y no representa
+        una oferta comercial según los términos previstos en el artículo 845 del
+        Código de Comercio Colombiano. Los valores, especificaciones y
+        condiciones aquí expresados son aproximados y podrán variar según las
+        condiciones específicas del proyecto, disponibilidad de materiales,
+        fluctuaciones de precios en el mercado, modificaciones en el alcance del
+        trabajo y resultados de la visita técnica al sitio de ejecución. Para la
+        elaboración de una propuesta formal y vinculante, se requerirá
+        necesariamente una visita técnica al sitio, evaluación detallada de
+        condiciones específicas y confirmación escrita de las especificaciones
+        técnicas finales del proyecto. Esta estimación tiene una vigencia
+        referencial y los precios están sujetos a confirmación al momento de
+        emitir una propuesta formal, la cual deberá constar por escrito y ser
+        expresamente aceptada por ambas partes para generar cualquier tipo de
+        vínculo contractual.
+      </p>
+    </div>
+
+    <button
+      pButton
+      type="button"
+      label="Volver a Fidelización"
+      icon="pi pi-arrow-left"
+      class="p-button-secondary"
+      (click)="volverAFidelizacion()"
+    ></button>
   </div>
 </div>

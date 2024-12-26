@@ -23,7 +23,7 @@ export const routes: Routes = [
   { path: 'lista', component: ListaPreciosComponent },
   { path: 'fidel', component: FidelizacionClienteComponent },
   { path: 'cotizar', component: CotizadorComponent },
-  { path: 'resumen', component: ResumenCotizacionComponent },
+  { path: 'resumen/:idCotizacion', component: ResumenCotizacionComponent },
   { path: 'preAlistamiento', component: PreAlistamientoComponent },
   { path: 'crearApto', component: DetallesAptoComponent },
   { path: 'crearProyecto', component:CrearProyectoComponent},

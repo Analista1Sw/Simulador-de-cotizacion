@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router'; 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
 import { ButtonModule } from 'primeng/button';
@@ -30,7 +31,8 @@ export class ConsultarAptoComponent {
 
   constructor(
     private fb: FormBuilder,
-    private proyectoService: ProyectoService 
+    private proyectoService: ProyectoService,
+    private router: Router
   ) {
     // Inicializa el formulario
     this.form = this.fb.group({
@@ -45,19 +47,34 @@ export class ConsultarAptoComponent {
   // Obtener la lista de proyectos 
   getProyectos() {
     this.proyectoService.getProyectos().subscribe((data: any[]) => {
-      this.proyectos = data; 
+      this.proyectos = data.map((proyecto) => ({
+        id: proyecto.id,
+        nombre: proyecto.nombre, // Ajusta según el campo que quieras usar como etiqueta
+      }));
     });
   }
 
   // Consultar apartamentos por el proyecto seleccionado
   consultarApartamentos() {
-    const proyectoId = this.form.value.proyecto; // Obtener el ID del proyecto seleccionado
+    const proyectoId = Number(this.form.value.proyecto); // Convierte el valor a número
     if (proyectoId) {
       this.proyectoService
         .getApartamentosByProyecto(proyectoId)
-        .subscribe((data: Apartamento[]) => {
-          this.apartamentos = data; // Asigna los apartamentos a la variable
-        });
+        .subscribe(
+          (data: Apartamento[]) => {
+            this.apartamentos = data; // Asigna los apartamentos a la variable
+          },
+          (error) => {
+            console.error('Error al obtener apartamentos:', error);
+          }
+        );
+    } else {
+      console.warn('ID del proyecto no válido:', proyectoId);
     }
   }
+
+  navigateBack() {
+    this.router.navigate(['/preAlistamiento']);
+  }
+  
 }
