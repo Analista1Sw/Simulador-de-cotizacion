@@ -42,6 +42,8 @@ export class CotizacionService {
           muros: [],
           pisos: [],
           techos: [],
+          salpicadero: [],
+          guardaescoba: [],
           accesorios: [],
         };
 
@@ -57,11 +59,19 @@ export class CotizacionService {
             case 'ACABADO TECHOS':
               materialesPorCategoria.techos.push(producto);
               break;
+              case 'SALPICADERO':
+              materialesPorCategoria.salpicadero.push(producto);
+              break;
             default:
               materialesPorCategoria.accesorios.push(producto);
               break;
+              case 'GUARDA ESCOBA':
+                materialesPorCategoria.guardaescoba.push(producto);
+                break;
+             
           }
         });
+
 
         return materialesPorCategoria;
       })

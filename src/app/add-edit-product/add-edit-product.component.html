@@ -12,11 +12,11 @@
       >Descripción del producto</label
     >
     <input
-      id="descripcion"
+      id="tipoProducto"
       type="text"
       placeholder="Ej. Baldosa Cerámica"
       pInputText
-      formControlName="descripcionProducto"
+      formControlName="tipoProducto"
       class="form-field"
     />
   </div>
@@ -33,17 +33,7 @@
     />
   </div>
 
-  <div class="field mb-5">
-    <label class="block text-900 font-medium mb-3">Medida</label>
-    <p-inputNumber
-      inputId="integeronly"
-      formControlName="medida"
-      type="number"
-      placeholder="15.36"
-      class="form-field w-full"
-      [style]="{ width: '100%' }"
-    />
-  </div>
+
 
   <div class="field mb-5">
     <label class="block text-900 font-medium mb-3"> Unidad de Medida</label>
@@ -83,3 +73,6 @@
 
   <p-toast></p-toast>
 </form>
+
+
+

@@ -19,7 +19,7 @@ export class ResumenCotizacionComponent implements OnInit {
   
 
   // Ejemplo de id que se pasará al servicio
-  private idCotizacion: number = 43
+  private idCotizacion: number = 48
 
   ;
 

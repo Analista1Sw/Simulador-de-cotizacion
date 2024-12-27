@@ -12,6 +12,8 @@ export interface MaterialesPorCategoria {
   muros: Material[];
   pisos: Material[];
   techos: Material[];
+  salpicadero: Material[];
+  guardaescoba: Material[];
   accesorios: Material[];
 }
 

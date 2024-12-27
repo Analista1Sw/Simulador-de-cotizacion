@@ -42,6 +42,8 @@ export class CotizadorComponent {
   // materialesZocalo: Producto[] = [];
   // materialesAparatos: Producto[] = [];
   materialesGuardaEscoba: Producto[] = [];
+  materialesSalpicaderoCocina: Producto[] = [];
+  materialesCabina: Producto[] = [];
 
   selectedMaterialMuroHabitacion: Producto | null = null;
   selectedMaterialPisoHabitacion: Producto | null = null;
@@ -52,17 +54,32 @@ export class CotizadorComponent {
   selectedMaterialMuroCocina: string | null = null;
   selectedMaterialPisoCocina: string | null = null;
   selectedMaterialTechoCocina: string | null = null;
+  selectedMaterialSalpicaderoCocina: Producto | null = null;
+  selectedMaterialMuroLavado: string | null = null;
+  selectedMaterialPisoLavado: string | null = null;
+  selectedMaterialTechoLavado: string | null = null;
   selectedGuardaEscoba: string | null = null;
+  selectedCabina: string | null = null;
 
    // Variables para la sección de Instalaciones y Equipos
    materialesCarpinteria = [
-    { descripcion: 'Puertas', cantidad: 1 },
-    { descripcion: 'Ventanas', cantidad: 1 }
+    { descripcion: 'Puertas', cantidad: 0 },
+    { descripcion: 'VentaCloseth TP1: 1.51 <> 180 x 2.20nas', cantidad: 0 },
+    { descripcion: 'Closet TP2: 120<>150', cantidad: 0 },
+    { descripcion: 'Mueble alto de cocina h 40 cm', cantidad: 0 },
+    { descripcion: 'Mueble bajo de cocina h 90 cm', cantidad: 0 },
+    { descripcion: 'Mueble lavamanos', cantidad: 0 },
+
+    
+
   ];
 
   materialesAparatos = [
-    { descripcion: 'Aire Acondicionado', cantidad: 1 },
-    { descripcion: 'Luz', cantidad: 1 }
+    { descripcion: 'Meson en granito', cantidad: 0 },
+    { descripcion: 'Lavaplados en acero inox', cantidad: 0 },
+    { descripcion: 'Estufa Esmaltada 60 cm CG4PSNSE N', cantidad: 0 },
+    { descripcion: 'Griferia Griferia Cocina Witi Acero', cantidad: 0 },
+    { descripcion: 'Griferia Cocina Veletri Inox', cantidad: 0 },
   ];
 
   materialesAccesorios = [
@@ -82,7 +99,7 @@ export class CotizadorComponent {
     private messageService: MessageService
   ) {
     this.form2 = new FormGroup({
-      zona: new FormControl(null, Validators.required),
+      zona: new FormControl(null, Validators.required), 
     });
   }
 
@@ -97,9 +114,9 @@ export class CotizadorComponent {
         this.materialesMuro = materiales.muros;
         this.materialesPiso = materiales.pisos;
         this.materialesTecho = materiales.techos;
-        // this.materialesZocalo = materiales.accesorios.filter((m) =>
-        //   m.categoria.includes('Zócalo')
-        // );
+        this.materialesSalpicaderoCocina = materiales.salpicadero;
+        this.materialesGuardaEscoba = materiales.guardaescoba;
+        
        
       },
       (error) => {
@@ -134,13 +151,13 @@ export class CotizadorComponent {
     this.cotizacionService.sendAllQuotes(idProspecto, productosAEnviar).subscribe(
       (response) => {
         const idCotizacion = response.idCotizacion; // Asegúrate de que el backend devuelva este ID
-        console.log('ID de cotización recibido:', idCotizacion);
+        console.log('ID de cotización recibido: ', idCotizacion);
   
         // Almacenar el idCotizacion para redirigir
         this.router.navigate(['/resumen', idCotizacion]);  // Redirige a la vista de resumen pasando el idCotizacion
       },
       (error) => {
-        console.error('Error al enviar materiales:', error);
+        console.error('Error al enviar materiales: ', error);
         this.messageService.add({
           severity: 'error',
           summary: 'Error',

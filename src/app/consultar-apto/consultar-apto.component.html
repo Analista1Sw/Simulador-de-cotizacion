@@ -1,6 +1,6 @@
 <form
   [formGroup]="form"
-  (ngSubmit)="consultarApartamentos()"
+  (ngSubmit)="getApartamentosByProyecto()"
   class="form-container"
 >
   <div class="p-fluid p-formgrid p-grid">
@@ -13,6 +13,7 @@
         formControlName="proyecto"
         [options]="proyectos"
         optionLabel="nombre"
+        optionValue="id"
         placeholder="Seleccione un proyecto"
         appendTo="body"
       >

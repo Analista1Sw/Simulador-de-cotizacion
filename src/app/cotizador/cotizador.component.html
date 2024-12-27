@@ -57,16 +57,6 @@
             optionLabel="tipoProducto"
           ></p-dropdown>
         </div>
-        <div class="field">
-          <label for="muro">Carpinteria</label>
-          <p-dropdown
-            id="muro"
-            [options]="materialesMuro"
-            [(ngModel)]="selectedMaterialMuroHabitacion"
-            placeholder="Selecciona material para carpinteria"
-            optionLabel="tipoProducto"
-          ></p-dropdown>
-        </div>
       </div>
     </p-tabPanel>
 
@@ -101,6 +91,16 @@
             [options]="materialesTecho"
             [(ngModel)]="selectedMaterialTechoBa"
             placeholder="Selecciona material para techo"
+            optionLabel="tipoProducto"
+          ></p-dropdown>
+        </div>
+        <div class="field">
+          <label for="techo">Cabina</label>
+          <p-dropdown
+            id="techo"
+            [options]="materialesCabina"
+            [(ngModel)]="selectedCabina"
+            placeholder="Selecciona material para cabina"
             optionLabel="tipoProducto"
           ></p-dropdown>
         </div>
@@ -142,25 +142,26 @@
           ></p-dropdown>
         </div>
         <div class="field">
-          <label for="techo">Guarda Escoba</label>
+          <label for="techo">Salpicadero</label>
           <p-dropdown
-            id="techo"
-            [options]="materialesTecho"
-            [(ngModel)]="selectedMaterialTechoCocina"
-            placeholder="Selecciona material para techo"
+            id="salpicadero"
+            [options]="materialesSalpicaderoCocina"
+            [(ngModel)]="selectedMaterialSalpicaderoCocina"
+            placeholder="Selecciona material para Salpicadero"
             optionLabel="tipoProducto"
           ></p-dropdown>
         </div>
         <div class="field">
-          <label for="muro">Accesorios</label>
+          <label for="techo">Guarda Escoba</label>
           <p-dropdown
-            id="muro"
-            [options]="materialesMuro"
-            [(ngModel)]="selectedMaterialMuroHabitacion"
-            placeholder="Selecciona accesorios"
+            id="techo"
+            [options]="materialesTecho"
+            [(ngModel)]="selectedGuardaEscoba"
+            placeholder="Selecciona material para techo"
             optionLabel="tipoProducto"
           ></p-dropdown>
         </div>
+        
       </div>
     </p-tabPanel>
 
@@ -173,7 +174,7 @@
           <p-dropdown
             id="muro"
             [options]="materialesMuro"
-            [(ngModel)]="selectedMaterialMuroCocina"
+            [(ngModel)]="selectedMaterialMuroLavado"
             placeholder="Selecciona material para muro"
             optionLabel="tipoProducto"
           ></p-dropdown>
@@ -183,7 +184,7 @@
           <p-dropdown
             id="piso"
             [options]="materialesPiso"
-            [(ngModel)]="selectedMaterialPisoCocina"
+            [(ngModel)]="selectedMaterialPisoLavado"
             placeholder="Selecciona material para piso"
             optionLabel="tipoProducto"
           ></p-dropdown>
@@ -193,7 +194,7 @@
           <p-dropdown
             id="techo"
             [options]="materialesTecho"
-            [(ngModel)]="selectedMaterialTechoCocina"
+            [(ngModel)]="selectedMaterialTechoLavado"
             placeholder="Selecciona material para techo"
             optionLabel="tipoProducto"
           ></p-dropdown>
@@ -208,11 +209,21 @@
             optionLabel="tipoProducto"
           ></p-dropdown>
         </div>
+        <div class="field">
+          <label for="techo">Salpicadero</label>
+          <p-dropdown
+            id="salpicadero"
+            [options]="materialesSalpicaderoCocina"
+            [(ngModel)]="selectedMaterialSalpicaderoCocina"
+            placeholder="Selecciona material para Salpicadero"
+            optionLabel="tipoProducto"
+          ></p-dropdown>
+        </div>
       </div>
     </p-tabPanel>
    
     <!-- Tab Instalaciones y Equipos -->
-    <p-tabPanel header="🔧 Instalaciones y Equipos">
+    <p-tabPanel header="🔧 Carpintería y Accesorios">
       <div class="p-fluid">
         <h3>Instalaciones y Equipos</h3>
 
@@ -230,7 +241,7 @@
               <td>
                 <p-inputNumber
                   [(ngModel)]="material.cantidad"
-                  [min]="1"
+                  [min]="0"
                   [showButtons]="true"
                 ></p-inputNumber>
               </td>

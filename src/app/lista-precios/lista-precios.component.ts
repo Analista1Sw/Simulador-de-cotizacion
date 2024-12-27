@@ -205,14 +205,15 @@ export class ListaPreciosComponent {
 
   formatCurrency(value: number): string {
     if (!value) return '';
-    let formattedValue = new Intl.NumberFormat('en-US', {
+    let formattedValue = new Intl.NumberFormat('es-CO', {
       style: 'currency',
-      currency: 'USD',
+      currency: 'COP',
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
-    }).format(value / 100);
+    }).format(value);
     return formattedValue;
   }
+  
 
   showdelete() {
     this.messageService.add({

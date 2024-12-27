@@ -14,7 +14,7 @@ export class ProyectoService {
   private myAppUrl: string = '';
   private myApiUrl: string = '';
 
-  private myappUrl: string = 'http://10.1.2.181:9091/hefesto/';
+  // private myappUrl: string = 'http://10.1.2.181:9091/hefesto/';
   // private myApiUrl: string = 'hefesto/proyecto/create';
   // private proyectosApiUrl: string = 'hefesto/proyecto/FindAll';
   // private ApartamentoApiUrl: string = 'hefesto/apartamentosDetalle/create';
@@ -51,7 +51,7 @@ export class ProyectoService {
 
   createApartamento(data: any): Observable<any> {
     this.myApiUrl = 'apartamentos/create';
-    return this.http.post(this.myappUrl + this.myApiUrl, data).pipe(
+    return this.http.post(this.myAppUrl + this.myApiUrl, data).pipe(
       catchError((error) => {
         console.error('Error al crear el apartamento:', error);
         if (error.status === 400) {
@@ -65,7 +65,7 @@ export class ProyectoService {
 
   createApartamentosDetalle(data: any): Observable<any> {
     this.myApiUrl = 'apartamentosDetalle/Create'
-    return this.http.post(this.myappUrl + this.myApiUrl, data).pipe(
+    return this.http.post(this.myAppUrl + this.myApiUrl, data).pipe(
       catchError((error) => {
         console.error('Error al crear el dettalle del apartamento:', error);
         throw error;

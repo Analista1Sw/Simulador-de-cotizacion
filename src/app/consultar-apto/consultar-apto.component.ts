@@ -50,7 +50,7 @@ export class ConsultarAptoComponent {
   }
 
   // Consultar apartamentos por el proyecto seleccionado
-  consultarApartamentos() {
+  getApartamentosByProyecto() {
     const proyectoId = this.form.value.proyecto; // Obtener el ID del proyecto seleccionado
     if (proyectoId) {
       this.proyectoService
